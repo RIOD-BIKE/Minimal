@@ -1,0 +1,7 @@
+{
+  "name": "riod_front",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

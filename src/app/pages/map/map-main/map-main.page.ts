@@ -1,6 +1,6 @@
 
 import { Component, OnInit } from '@angular/core';
-import { MapBoxComponent } from '../../../Components/map-box/map-box.component';
+import { MapBoxComponent } from '../../../components/map-box/map-box.component';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
 @Component({
@@ -16,7 +16,6 @@ export class MapMainPage implements OnInit {
     this.statusBar.overlaysWebView(true);
     this.statusBar.backgroundColorByHexString('#44000000');
     this.mapBox.setupMap();
- 
   }
 
 

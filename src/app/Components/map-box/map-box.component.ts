@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { UserService } from '../../services/user/user.service';
 import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
@@ -61,7 +62,8 @@ export class MapBoxComponent implements OnInit {
       container: 'map',
       style: this.style,
       zoom: 13,
-      center: [this.position.longitude, this.position.latitude]
+      center: [this.position.longitude, this.position.latitude],
+      accessToken: environment.mapbox.accessToken
     });
     this.map.addControl(new mapboxgl.NavigationControl());
   }

@@ -8,7 +8,7 @@ import * as mapboxgl from 'mapbox-gl';
 })
 export class UserService {
 
-  constructor(private geolocation: Geolocation, ) { mapboxgl.accessToken=environment.mapbox.accessToken}
+  constructor(private geolocation: Geolocation, ) {}
 
   public behaviorMyOwnPosition = new BehaviorSubject(null);
 

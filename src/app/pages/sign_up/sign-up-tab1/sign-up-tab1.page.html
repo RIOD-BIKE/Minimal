@@ -1,9 +1,24 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>sign_up_tab1</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content>
-
+<ion-content fullscreen class="signup-background">
+  <div class="div30"></div>
+  <ion-row>
+    <ion-col size="12">
+      <h1>Hi :)</h1>
+      <h2 class="mt40">
+        This subheadline shouldnt be longer than two rows in height.
+      </h2>
+    </ion-col>
+  </ion-row>
 </ion-content>
+
+<ion-footer
+  style="height: 13vh !important; padding-left: 5vw; padding-right: 5vw;"
+  no-shadow
+>
+  <ion-row>
+    <ion-col class="ion-text-right">
+      <ion-button (click)="DEMONextPage()" color="dark" class="b-btn primary">
+        <ion-icon slot="icon-only" name="arrow-forward"></ion-icon>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</ion-footer>

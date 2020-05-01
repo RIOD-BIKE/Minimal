@@ -4,21 +4,22 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { MapMainPageRoutingModule } from './map-main-routing.module';
+import { MapStartPageRoutingModule } from './map-start-routing.module';
 
-import { MapMainPage } from './map-main.page';
+import { MapStartPage } from './map-start.page';
 import { ComponentsModule } from 'src/app/components/components.module';
-
+import { MapBoxComponent } from 'src/app/components/map-box/map-box.component';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    MapStartPageRoutingModule,
     ComponentsModule,
-    MapMainPageRoutingModule,
-
   ],
-  declarations: [MapMainPage]
+  declarations: [MapStartPage],
+  entryComponents: [MapBoxComponent],
+  providers: []
 })
-export class MapMainPageModule {}
+export class MapStartPageModule {}

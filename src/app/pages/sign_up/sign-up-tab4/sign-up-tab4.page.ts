@@ -14,7 +14,7 @@ export class SignUpTab4Page implements OnInit {
   }
 
   DEMONextPage(){
-    this.router.navigate(['/sign-up-tab1']);
+    this.router.navigate(['/map-start']);
   }
 
 }

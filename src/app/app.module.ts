@@ -10,9 +10,11 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { TutorialOverlay1Component } from './Components/tutorial/tutorial-overlay1/tutorial-overlay1.component';
+import { TutorialOverlay2Component } from './Components/tutorial/tutorial-overlay2/tutorial-overlay2.component';
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, TutorialOverlay1Component, TutorialOverlay2Component],
+  entryComponents: [TutorialOverlay1Component, TutorialOverlay2Component],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [
     StatusBar,

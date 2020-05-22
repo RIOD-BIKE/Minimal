@@ -19,7 +19,7 @@ export class SignUpTab2Page implements OnInit {
   public recaptchaVerifier:firebase.auth.RecaptchaVerifier;
   constructor(private router: Router, private authService: AuthService) { 
     !firebase.apps.length ? firebase.initializeApp(environment.firebase) : firebase.app();
-    this.init();
+    // this.init();
     }
     
     init(){
@@ -29,7 +29,7 @@ export class SignUpTab2Page implements OnInit {
     });
     }
   ngOnInit() {
-
+    this.init();
   }
 
 

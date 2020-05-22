@@ -1,47 +1,46 @@
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import * as mapboxgl from 'mapbox-gl';
+import { Platform } from '@ionic/angular';
+
+
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private geolocation: Geolocation, ) {}
+  constructor(private geolocation: Geolocation, private platform: Platform) {}
 
   public behaviorMyOwnPosition = new BehaviorSubject(null);
-
+  private firstTimeCalling = true;
   private firstCall = true;
   private oldTimestamp;
 
-
-
-
-  showUserOnMap() {
-    const options = { timeout: 10000, enableHighAccuracy: true, maximumAge: 10 };
-
-    const watch = this.geolocation.watchPosition(options);
-
-    watch.subscribe(myOwnPosition => {
-      if (this.firstCall == true) {
-        this.behaviorMyOwnPosition.next(myOwnPosition);
-        this.oldTimestamp = this.behaviorMyOwnPosition.getValue();
-        this.firstCall = false;
-      }
-
-      if (this.oldTimestamp.timestamp == myOwnPosition.timestamp) {
-      } else {
-        this.behaviorMyOwnPosition.next(myOwnPosition);
-        this.oldTimestamp = myOwnPosition;
-      }
+ async getUserPosition(): Promise<any> {
+    return new Promise<any>(resolve => {
+    //console.log('GetUser');
+    this.platform.ready().then(rdy => {
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 25000
+      };
+      this.geolocation.watchPosition(options).subscribe(x=>{
+        this.behaviorMyOwnPosition.next(x);
+        this.firstTimeCalling=false;
+      //  console.log(x.coords);
+        resolve();
+      });
     });
-
-    return this.behaviorMyOwnPosition;
+    });
   }
 
-  getOwnPosition(){
-    return this.behaviorMyOwnPosition;
+  public saveRoute(newRoute:string){
+    console.log("Route Saved Adress: "+newRoute);
   }
 
+  public getfirstTimeCalling(){
+    return this.firstTimeCalling;
+  }
 }

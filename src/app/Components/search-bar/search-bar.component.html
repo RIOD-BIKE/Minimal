@@ -1,6 +1,14 @@
 <div class="over">
-    <div class="wrap">
-        <input class="search" placeholder="Hier suchen.." />
+    <div class="wrap" >
+        <ion-input class="search" debounce=500   [(ngModel)]="selectedAddresses" (ionChange)="search($event)"  placeholder="Hier suchen.." ></ion-input>
+        <div style="position:absolute; width:100%; z-index:999;margin-top:7.5em ;left:0%">
+            <ion-list lines="none" *ngIf="addressesString.length > 0"> 
+                <ion-item button *ngFor="let address of addressesString" (click)="onSelect(address)">
+                    <ion-icon name ="pin"></ion-icon>
+                    {{address[1]}}
+                </ion-item>
+            </ion-list>
+        </div>
         <button class="btn"><img src="'../../../assets/settings/profile-pic.jpg" alt="Avatar"></button>
     </div>
     <div class="container">

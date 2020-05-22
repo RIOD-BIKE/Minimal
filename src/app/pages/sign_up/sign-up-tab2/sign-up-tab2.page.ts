@@ -5,7 +5,7 @@ import { SearchCountryField, TooltipLabel, CountryISO } from 'ngx-intl-tel-input
 import * as firebase from 'firebase';
 import { NavController, AlertController } from '@ionic/angular';
 import { environment } from 'src/environments/environment';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-sign-up-tab2',
@@ -17,10 +17,19 @@ export class SignUpTab2Page implements OnInit {
 
 
   public recaptchaVerifier:firebase.auth.RecaptchaVerifier;
-  constructor(private router: Router, private authService: AuthService) { firebase.initializeApp(environment.firebase);}
-
+  constructor(private router: Router, private authService: AuthService) { 
+    !firebase.apps.length ? firebase.initializeApp(environment.firebase) : firebase.app();
+    this.init();
+    }
+    
+    init(){
+      
+    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+      'size': 'invisible'
+    });
+    }
   ngOnInit() {
-    this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
+
   }
 
 
@@ -28,8 +37,8 @@ export class SignUpTab2Page implements OnInit {
     const appVerifier = this.recaptchaVerifier;
     const phoneNumberString = "+" + phoneNumber;
     this.authService.getVerification(phoneNumberString,appVerifier).then(x=>{
-      if(x==true){
-      this.router.navigate(['/sign-up-tab3']);
+      if(x==true){  //Rückgabewert ob SMS Send
+      this.router.navigate(['/sign-up-tab3']); // TODO: Errors catchen
       }
     });
 

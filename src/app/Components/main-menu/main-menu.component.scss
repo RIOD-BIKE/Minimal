@@ -66,6 +66,11 @@ input {
     float: right;
     height: 50px;
 }
+ion-input {
+    width: calc(100% - 60px);
+    float: right;
+    height: 50px;
+}
 
 h3{
     text-align: center;

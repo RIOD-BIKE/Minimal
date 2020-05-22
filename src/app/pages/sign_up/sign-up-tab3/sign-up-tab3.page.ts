@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/services/auth.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
+import { timeout } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sign-up-tab3',
@@ -16,12 +17,16 @@ export class SignUpTab3Page implements OnInit {
   ngOnInit() { 
   }
 
-  verifyUser(){
-    const verifyNumber=this.vNumb;
+  verifyUser(verifyNumber:number){
     this.authService.sendVerification(verifyNumber).then(x=>{
-      if(x==true){
-        this.router.navigate(['/sign-up-tab4']);
-      }
+    if(x==true){
+      this.router.navigate(['/sign-up-tab4']);
+    } else if(x==false){
+      //fehlerfall abfangen
+    }
+        
+       
+      
     });
   }
 

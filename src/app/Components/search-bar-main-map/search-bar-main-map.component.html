@@ -1,0 +1,14 @@
+
+<ion-item >     
+    <div style="margin:auto; margin-top: 2.5em; width: -webkit-fill-available; justify-content: center; margin-bottom: 1em;"   >
+      <ion-searchbar placeholder="Hier Suchen"  [(ngModel)]="searchInput" (ionInput)="searchInputHandler()" *ngIf="!showRecentNav"></ion-searchbar>
+    </div>
+</ion-item>
+<ion-content>
+  <ion-list>
+    <ion-item-group *ngFor="let route of recentRoutes">
+      <ion-item-divider secondary (click)="loadRoute($route.id)">{{route.name}}</ion-item-divider>
+
+    </ion-item-group>
+  </ion-list>
+</ion-content>>

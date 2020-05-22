@@ -1,5 +1,24 @@
 <ion-header>
-	<search-bar></search-bar>
+ 
+    <search-bar [hidden]="!showStart"></search-bar>
+    <main-menu [hidden]="!showMain" ></main-menu>
+  
 </ion-header>
 <map-box></map-box>
-<riding-toggle></riding-toggle>
+  <ion-row id="ONLY FOR TESTING">
+    <ion-button color="tertiary" shape="round" style="height: 60px; width: 60px;" (click)="locateDevice()">
+      <div>
+        <ion-icon icon="locate-outline"></ion-icon>
+      </div>
+    </ion-button>
+    <ion-button color="primary" shape="round" style="height: 60px; width: 60px;" (click)="setShowChange()">
+      <div>
+        <ion-icon icon="book"></ion-icon>
+      </div>
+    </ion-button>
+  </ion-row>
+<riding-toggle [hidden]="!showStart"></riding-toggle>
+
+<ion-footer [hidden]="!showMain" >
+  <router-info-in-bottom></router-info-in-bottom>
+</ion-footer>

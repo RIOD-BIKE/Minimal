@@ -14,6 +14,11 @@ import { of } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 
 const TOKEN_KEY='user-access-token';
+export enum ThirdParties {
+  Google,
+  Twitter,
+  Facebook
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -73,6 +78,24 @@ export class AuthService {
       resolve(false);
     });
   });
+  }
+
+  async handleThirdPartySignIn(thirdParty: ThirdParties) {
+    let provider: firebase.auth.AuthProvider;
+    switch (thirdParty) {
+      case ThirdParties.Google:
+        provider = new firebase.auth.GoogleAuthProvider();
+        break;
+      case ThirdParties.Facebook:
+        provider = new firebase.auth.FacebookAuthProvider();
+        break;
+      case ThirdParties.Twitter:
+        provider = new firebase.auth.TwitterAuthProvider();
+        break;
+    }
+    const result = await firebase.auth().signInWithPopup(provider);
+    console.log(`${result.user.displayName} with UID ${result.user.uid} logged in!`);
+    await this.signIn(result.user.uid)
   }
 
   signIn(uid:string):Promise<any>{

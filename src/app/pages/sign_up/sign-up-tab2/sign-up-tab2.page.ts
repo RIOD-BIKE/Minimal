@@ -1,3 +1,4 @@
+import { ThirdParties } from './../../../services/auth/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -42,5 +43,35 @@ export class SignUpTab2Page implements OnInit {
       }
     });
 
+  }
+
+  async signInGoogle() {
+    try {
+      await this.authService.handleThirdPartySignIn(ThirdParties.Google);
+      this.router.navigate(['/sign-up-tab4']);
+    } catch (e) {
+      // TODO: Display error to user
+      console.log(`Error signInGoogle: ${e}`);
+    }
+  }
+
+  async signInFacebook() {
+    try {
+      await this.authService.handleThirdPartySignIn(ThirdParties.Facebook);
+      this.router.navigate(['/sign-up-tab4']);
+    } catch (e) {
+      // TODO: Display error to user
+      console.log(`Error signInFacebook: ${e}`);
+    }
+  }
+
+  async signInTwitter() {
+    try {
+      await this.authService.handleThirdPartySignIn(ThirdParties.Twitter);
+      this.router.navigate(['/sign-up-tab4']);
+    } catch (e) {
+      // TODO: Display error to user
+      console.log(`Error signInTwitter: ${e}`);
+    }
   }
 }

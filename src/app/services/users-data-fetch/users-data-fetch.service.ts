@@ -48,4 +48,16 @@ export class UsersDataFetchService {
       })
     });
   }
+
+  async firestore_setName(uid: string, name: string) {
+    await this.afs.collection("users").doc(uid).update({
+      name: name
+    });
+  }
+
+  async firestore_getName(uid: string) {
+    const user = (await this.afs.collection("users").doc(uid).ref.get()).data();
+    console.log(user);
+    return user["name"] as string;
+  }
 }

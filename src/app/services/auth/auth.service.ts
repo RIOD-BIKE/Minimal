@@ -95,7 +95,9 @@ export class AuthService {
     }
     const result = await firebase.auth().signInWithPopup(provider);
     console.log(`${result.user.displayName} with UID ${result.user.uid} logged in!`);
+    await this.userDataFetch.firestore_createUser(result.user.uid);
     await this.signIn(result.user.uid)
+    await this.userDataFetch.firestore_setName(result.user.uid, result.user.displayName);
   }
 
   signIn(uid:string):Promise<any>{

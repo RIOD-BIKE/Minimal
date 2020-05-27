@@ -48,3 +48,4 @@ import { TutorialOverlay2Component } from './Components/tutorial/tutorial-overla
   ],
   bootstrap: [AppComponent]
 })
+export class AppModule {}

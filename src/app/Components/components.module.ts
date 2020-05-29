@@ -8,7 +8,7 @@ import { RideIndicatorFinalComponent } from './ride-indicator-final/ride-indicat
 import { RideIndicatorFreeComponent } from './ride-indicator-free/ride-indicator-free.component';
 import { RideMapAssemblyComponent } from './ride-map-assembly/ride-map-assembly.component';
 import { RideMapFinalComponent } from './ride-map-final/ride-map-final.component';
-
+import { WaitingAtAsSmallComponent } from './waiting-at-as-small/waiting-at-as-small.component';
 
 
 import { NgModule } from '@angular/core';
@@ -16,9 +16,9 @@ import { IonicModule } from '@ionic/angular';
 
 @NgModule({
 
-    declarations: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent, RidingToggleComponent, RideIndicatorAssemblyComponent, RideIndicatorFinalComponent, RideIndicatorFreeComponent, RideMapAssemblyComponent, RideMapFinalComponent],
+    declarations: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent, RidingToggleComponent, RideIndicatorAssemblyComponent, RideIndicatorFinalComponent, RideIndicatorFreeComponent, RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent],
     imports: [IonicModule],
-    exports: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent, RidingToggleComponent, RideIndicatorAssemblyComponent, RideIndicatorFinalComponent, RideIndicatorFreeComponent, RideMapAssemblyComponent, RideMapFinalComponent],
+    exports: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent, RidingToggleComponent, RideIndicatorAssemblyComponent, RideIndicatorFinalComponent, RideIndicatorFreeComponent, RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent],
     providers:[MapBoxComponent]
 
   })

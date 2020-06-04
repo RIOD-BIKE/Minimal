@@ -53,6 +53,7 @@ export class MapStartPage implements OnInit {
       resolve();
     });
   }
+
   setShowStart(): Promise<any>{
     return new Promise(resolve => {
     this.showMain = false;

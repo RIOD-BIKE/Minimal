@@ -12,8 +12,6 @@ import { MapStartPage } from 'src/app/pages/map/map-start/map-start.page';
 })
 export class MainMenuComponent implements OnInit {
 
- 
-  
   private AssemblyPoint_1: RoutingGeoAssemblyPoint;
   private AssemblyPoint_2: RoutingGeoAssemblyPoint;
   private AssemblyPoint_3: RoutingGeoAssemblyPoint;
@@ -21,11 +19,12 @@ export class MainMenuComponent implements OnInit {
   private addresses: string[] = [];
   private timeCounter: number;
   private distanceCounter: number;
-  private start;
-  public newStart;
-  @Input() public selectedAddresses;
+  private start: string;
+  public newStart: any;
+  @Input() public selectedAddresses: string;
 
-  constructor(private mapIntegration:MapIntegrationService,private mapBox: MapBoxComponent ,private userService: UserService, private routingUserService:RoutingUserService) {  
+  constructor(private mapIntegration: MapIntegrationService, private mapBox: MapBoxComponent,
+              private userService: UserService, private routingUserService: RoutingUserService) {
     this.init();
   }
 

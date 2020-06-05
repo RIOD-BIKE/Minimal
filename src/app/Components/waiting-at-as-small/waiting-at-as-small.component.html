@@ -1,5 +1,7 @@
 <div class="timerCircle" id="timerCircle" hidden="true">
-    <button class="timerCircle timerCircleBtn" ion-button>2:49</button>
+    <button class="timerCircle timerCircleBtn" ion-button>
+        <h4> {{minute}} : {{second}}</h4>
+    </button>
     <div class="progessCircle" [style.backgroundImage]="progessCircleColor" id="progessCircle">
     </div>
 </div>
@@ -21,7 +23,7 @@
     </div>
     <div class="wrap wrap3">
         <div class="icon">
-            <button ion-button id="btn2-toChange">2:49</button>
+            <button ion-button id="btn2-toChange"> <h4 style="line-height: 0; margin: 0px;"> {{minute}}:{{second}}</h4></button>
         </div>
 
     </div>
@@ -33,5 +35,5 @@
     </div>
 </div>
 <div class="wrap-progess" id="hide">
-    <div class="progess-full" [style.backgroundImage]="progessColor" [style.width]="progessWidth"></div>
+    <div class="progess-full" id="progessBar" [style.backgroundImage]="progessColor"></div>
 </div>

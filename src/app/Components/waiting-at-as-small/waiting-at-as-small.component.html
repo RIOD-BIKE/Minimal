@@ -1,7 +1,12 @@
+<div class="timerCircle" id="timerCircle" hidden="true">
+    <button class="timerCircle timerCircleBtn" ion-button>2:49</button>
+    <div class="progessCircle" [style.backgroundImage]="progessCircleColor" id="progessCircle">
+    </div>
+</div>
 <div class="over" id="myOver">
     <div class="wrap1">
         <button ion-button class="btn1" id="hide-div" (click)="hideMore()"></button>
-        <button ion-button class="btn1" id="show-div" (click)="showMore()"></button>
+        <button ion-button class="btn1" id="show-div" hidden="true" (click)="showMore()"></button>
     </div>
     <div class="wrap wrap2">
         <div class="icon">
@@ -18,7 +23,9 @@
         <div class="icon">
             <button ion-button id="btn2-toChange">2:49</button>
         </div>
+
     </div>
+
     <div class="wrap">
         <div class="item">
             <input type="checkbox" class="riod-toggle" /> <!-- onclick='handleClick(this);' -->
@@ -26,5 +33,5 @@
     </div>
 </div>
 <div class="wrap-progess" id="hide">
-    <div class="progess-full"></div>
+    <div class="progess-full" [style.backgroundImage]="progessColor" [style.width]="progessWidth"></div>
 </div>

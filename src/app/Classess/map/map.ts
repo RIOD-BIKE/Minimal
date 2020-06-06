@@ -117,14 +117,11 @@ export class GeoAssemblyPoint implements IGeoJsonAssemblyPoint {
         coordinates,
       };
 
-      this.properties = {name:properties[0].name, longitude: coordinates[0], latitude: coordinates[1]};
+      this.properties = {name: properties[0].name, longitude: coordinates[0], latitude: coordinates[1]};
 
 
     }
   }
-
-
-
 
 export class ClusterCollection {
   type = 'FeatureCollection';

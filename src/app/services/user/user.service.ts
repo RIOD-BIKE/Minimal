@@ -1,3 +1,4 @@
+import { PositionI } from './../../Classess/map/map';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
@@ -11,31 +12,34 @@ import { Platform } from '@ionic/angular';
 })
 export class UserService {
 
-  constructor(private geolocation: Geolocation, private platform: Platform) {}
+  constructor(private geolocation: Geolocation, private platform: Platform) { }
 
   public behaviorMyOwnPosition = new BehaviorSubject(null);
   private firstTimeCalling = true;
   // private firstCall = true;
   // private oldTimestamp;
 
- async getUserPosition(): Promise<any> {
-    return new Promise<any>(resolve => {
-    this.platform.ready().then(rdy => {
-      const options = {
-        enableHighAccuracy: true,
-        timeout: 25000
-      };
-      this.geolocation.watchPosition(options).subscribe(x => {
-        this.behaviorMyOwnPosition.next(x);
-        this.firstTimeCalling = false;
-        resolve();
+  async getUserPosition(): Promise<PositionI> {
+    return new Promise<PositionI>(resolve => {
+      this.platform.ready().then(rdy => {
+        const options = {
+          enableHighAccuracy: true,
+          timeout: 25000
+        };
+        this.geolocation.watchPosition(options).subscribe(x => {
+          this.behaviorMyOwnPosition.next(x);
+          this.firstTimeCalling = false;
+        //   resolve();
+        });
+        this.geolocation.getCurrentPosition().then((resp) => {
+          resolve(new PositionI(resp.coords.longitude, resp.coords.latitude));
+        });
       });
-    });
     });
   }
 
-  public saveRoute(newRoute:string){
-    console.log("Route Saved Adress: "+newRoute);
+  public saveRoute(newRoute: string) {
+    console.log("Route Saved Adress: " + newRoute);
   }
 
   public getfirstTimeCalling() {

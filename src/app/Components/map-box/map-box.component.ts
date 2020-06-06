@@ -21,17 +21,15 @@ export class MapBoxComponent implements OnInit {
   private map: mapboxgl.Map;
   private myPosition: PositionI = new PositionI(0, 0);
 
-  private test = false;
-
   private clusterSource: any;
   public clusterMarkers: any;
-  private firstTry: boolean = true;
+  private firstTry = true;
   private assemblyPointSource: any;
   private assemblyPointMarkers: any;
 
   constructor(private routingUserService: RoutingUserService, private geolocation: Geolocation, private userservice: UserService,
-    private mapIntegrationService: MapIntegrationService, private platform: Platform,
-    private mapDataFetchService: MapDataFetchService, private storage: Storage) {
+    private mapIntegrationService: MapIntegrationService, private mapDataFetchService: MapDataFetchService,
+    private storage: Storage) {
     this.init();
   }
 
@@ -44,13 +42,13 @@ export class MapBoxComponent implements OnInit {
   public async setupMap() {
     try {
       // if (this.userservice.getfirstTimeCalling() == true) {
-        await this.userservice.getUserPosition().then(y => {
-          this.userservice.behaviorMyOwnPosition.subscribe(x => {
-            this.myPosition = new PositionI(x.coords.longitude, x.coords.latitude);
-          });
-          this.inizializeMap();
-          if (this.map) { setTimeout(() => this.map.resize(), 0); } // Buggy MapBox draw-fix
-        });
+      // await this.userservice.getUserPosition().then(y => {
+      //   this.userservice.behaviorMyOwnPosition.subscribe(x => {
+      //     this.myPosition = new PositionI(x.coords.longitude, x.coords.latitude);
+      //   });
+      //   this.inizializeMap();
+      //   if (this.map) { setTimeout(() => this.map.resize(), 0); } // Buggy MapBox draw-fix
+      // });
       // } else {
       //   this.userservice.behaviorMyOwnPosition.subscribe(x => {
       //     this.myPosition = new PositionI(x.coords.longitude, x.coords.latitude);
@@ -58,7 +56,12 @@ export class MapBoxComponent implements OnInit {
       //   this.inizializeMap();
       //   if (this.map) { setTimeout(() => this.map.resize(), 0); } // Buggy MapBox draw-fix
       // }
-    } catch (e) { console.log(e); }
+      this.myPosition = await this.userservice.getUserPosition();
+    } catch (e) {
+      console.log(e);
+    }
+    this.inizializeMap();
+    setTimeout(() => this.map.resize(), 0);
   }
 
 
@@ -75,7 +78,7 @@ export class MapBoxComponent implements OnInit {
         })
       });
       this.mapDataFetchService.retrieveAssemblyPoints().subscribe((value) => {
-        console.log("APS" + value.values);
+        // console.log("APS" + value.values);
         this.assemblyPointMarkers = value;
       });
       resolve();
@@ -88,9 +91,8 @@ export class MapBoxComponent implements OnInit {
         this.drawClusters();
         this.drawAssemblyPoints();
       });
-
+      this.drawUserPoint();
     });
-    this.drawUserPoint();
   }
 
 
@@ -104,7 +106,7 @@ export class MapBoxComponent implements OnInit {
         center: [this.myPosition.position.longitude, this.myPosition.position.latitude],
         accessToken: environment.mapbox.accessToken
       });
-      console.log('BuildMap');
+      // console.log('BuildMap');
       this.map.jumpTo({ center: [this.myPosition.position.longitude, this.myPosition.position.latitude] });
       resolve();
     });
@@ -112,18 +114,20 @@ export class MapBoxComponent implements OnInit {
 
 
   public async moveMapToCurrent() {
-    // try {
-    //   this.myPosition = new PositionI(this.userservice.behaviorMyOwnPosition.value.coords.longitude, this.userservice.behaviorMyOwnPosition.value.coords.latitude);
-    // } catch (e) { console.log(e); }
 
-    await this.userservice.getUserPosition().then(y => {
-      this.userservice.behaviorMyOwnPosition.subscribe(x => {
-        this.myPosition = new PositionI(x.coords.longitude, x.coords.latitude);
-      });
-    });
+    // await this.userservice.getUserPosition().then(y => {
+    //   this.userservice.behaviorMyOwnPosition.subscribe(x => {
+    //     this.myPosition = new PositionI(x.coords.longitude, x.coords.latitude);
+    //   });
+    // });
+
+    try {
+      this.myPosition = await this.userservice.getUserPosition();
+    } catch (e) {
+      console.log(e);
+    }
 
     this.map.flyTo({ zoom: 15, center: [this.myPosition.position.longitude, this.myPosition.position.latitude] });
-
   }
 
 
@@ -137,14 +141,20 @@ export class MapBoxComponent implements OnInit {
     this.map.on('load', (event) => {
       this.map.addSource('clusters', {
         type: 'geojson',
-        data: { type: 'FeatureCollection', features: [] }
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
       });
 
       this.clusterSource = this.map.getSource('clusters');
       const data = new ClusterCollection(this.clusterMarkers);
       this.clusterSource.setData(data);
 
-      data.features.forEach(x => { const el = document.createElement('div'); el.className = 'marker'; });
+      data.features.forEach(x => {
+        const el = document.createElement('div');
+        el.className = 'marker';
+      });
 
       this.map.addLayer({
         id: 'clusters',
@@ -162,12 +172,15 @@ export class MapBoxComponent implements OnInit {
 
 
   updateCluster(newMarkers) {
-    console.log(newMarkers);
-    console.log('UpdatedCluster');
+    // console.log(newMarkers);
+    // console.log('UpdatedCluster');
 
     const source = this.map.getSource('clusters') as mapboxgl.GeoJSONSource;
     const data2 = new ClusterCollection(newMarkers);
-    data2.features.forEach(x => { const el = document.createElement('div'); el.className = 'marker'; });
+    data2.features.forEach(x => {
+      const el = document.createElement('div');
+      el.className = 'marker';
+    });
 
     source.setData(newMarkers[0]); // ONLY ONE MARKER UPDATES - FeatureCollection--->>
   }
@@ -177,7 +190,10 @@ export class MapBoxComponent implements OnInit {
     this.map.on('load', (event) => {
       this.map.addSource('assemblyPoints', {
         type: 'geojson',
-        data: { type: 'FeatureCollection', features: [] }
+        data: {
+          type: 'FeatureCollection',
+          features: []
+        }
       });
 
       // Should be Observable Calling -> FirebaseList
@@ -185,14 +201,18 @@ export class MapBoxComponent implements OnInit {
       const data2 = new AssemblyPointCollection(this.assemblyPointMarkers);
       this.assemblyPointSource.setData(data2);
 
-      data2.features.forEach(x => { const el = document.createElement('div'); el.className = 'marker'; });
+      data2.features.forEach(x => {
+        const el = document.createElement('div');
+        el.className = 'marker';
+      });
 
       this.map.addLayer({
         id: 'assemblyPoints',
         source: 'assemblyPoints',
         type: 'symbol',
         layout: {
-          'visibility': 'visible',
+          // 'visibility': 'visible',
+          visibility: 'visible',
           'icon-image': 'bicycle-15',
           'icon-allow-overlap': true
         },
@@ -202,9 +222,6 @@ export class MapBoxComponent implements OnInit {
 
   // draw User with Bearing
   drawUserPoint() {
-    console.log('draw');
-    console.log(this.myPosition.position.longitude, this.myPosition.position.latitude);
-
     const geolocate = new mapboxgl.GeolocateControl({
       positionOptions: {
         enableHighAccuracy: true
@@ -215,55 +232,14 @@ export class MapBoxComponent implements OnInit {
     });
 
     this.map.addControl(geolocate);
+
     this.map.on('load', (event) => {
       geolocate.trigger();
     });
 
-    geolocate.on('geolocate', (event) => {
-      console.log(event);
-    });
-
-
-
-
-
-
-    // const marker = new mapboxgl.Marker().setLngLat([this.myPosition.position.longitude, this.myPosition.position.latitude]).addTo(this.map);
-
-    // const geojson = {
-    //   type: 'FeatureCollection',
-    //   features: [{
-    //     type: 'Feature',
-    //     geometry: {
-    //       type: 'Point',
-    //       coordinates: {
-    //         longi: this.myPosition.position.longitude,
-    //         lati: this.myPosition.position.latitude
-    //       }
-    //     },
-    //     properties: {
-    //       title: 'Mapbox',
-    //       description: 'MyLocation'
-    //     }
-    //   }]
-    // };
-
-    // // add markers to map
-    // geojson.features.forEach(function (marker) {
-
-    //   // create a HTML element for each feature
-    //   const el = document.createElement('div');
-    //   el.className = 'marker';
-
-    // //   // make a marker for each feature and add to the map
-    //   console.log('Drawmap');
-    //   console.log(paraMap);
-
-    //   new mapboxgl.Marker(el)
-    //     .setLngLat([marker.geometry.coordinates.longi, marker.geometry.coordinates.lati])
-    //     .addTo(paraMap);
+    // geolocate.on('geolocate', (event) => {
+    //   console.log(event);
     // });
-    // this.map = paraMap;
   }
 
 
@@ -314,7 +290,7 @@ export class MapBoxComponent implements OnInit {
   }
 
   toggleAssemblyPointLayerVisibility() {
-    var visibility = this.map.getLayoutProperty('assemblyPoints', 'visibility');
+    const visibility = this.map.getLayoutProperty('assemblyPoints', 'visibility');
     if (visibility === 'visible') {
       console.log("APs hidden");
       if (this.firstTry === true) {

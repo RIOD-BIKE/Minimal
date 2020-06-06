@@ -19,7 +19,7 @@ export class MainMenuComponent implements OnInit {
   private addresses: string[] = [];
   private timeCounter: number;
   private distanceCounter: number;
-  private start: string;
+  // private start: string;
   public newStart: any;
   @Input() public selectedAddresses: string;
 
@@ -31,15 +31,15 @@ export class MainMenuComponent implements OnInit {
   setUpStart() {
     this.routingUserService.getfinishPoint().then( x => {
       // x is Array [0]==coordinates | [1] ==AdressName
-    if(this.userService.getfirstTimeCalling() == true) {
-      this.userService.getUserPosition().then( () => {
-        this.start = this.userService.behaviorMyOwnPosition.value;
-        console.log(this.start + 'NewlyDrawn');
-      });
-    } else {
-      this.start = this.userService.behaviorMyOwnPosition.value;
-      console.log(this.start + 'GetValueGPS');
-    }
+    // if(this.userService.getfirstTimeCalling() == true) {
+    //   this.userService.getUserPosition().then( () => {
+    //     this.start = this.userService.behaviorMyOwnPosition.value;
+    //     console.log(this.start + 'NewlyDrawn');
+    //   });
+    // } else {
+    //   this.start = this.userService.behaviorMyOwnPosition.value;
+    //   console.log(this.start + 'GetValueGPS');
+    // }
     });
     // Create 2 Markers Start/Finish --> Problem: Feature Udates, whe changing Start/Finish Positions
   }

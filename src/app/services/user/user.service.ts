@@ -15,8 +15,8 @@ export class UserService {
 
   public behaviorMyOwnPosition = new BehaviorSubject(null);
   private firstTimeCalling = true;
-  private firstCall = true;
-  private oldTimestamp;
+  // private firstCall = true;
+  // private oldTimestamp;
 
  async getUserPosition(): Promise<any> {
     return new Promise<any>(resolve => {
@@ -38,7 +38,7 @@ export class UserService {
     console.log("Route Saved Adress: "+newRoute);
   }
 
-  public getfirstTimeCalling(){
+  public getfirstTimeCalling() {
     return this.firstTimeCalling;
   }
 }

@@ -46,17 +46,20 @@ export class MapDataFetchService {
   // get All Clusters of User via Firestore
 
   retrieveClusters(): BehaviorSubject<Array<GeoCluster>> {
-    this.auth.getUserUID().toPromise().then(uid => {
-      console.log(uid);
-      const clusterCollection = this.db.collection('users').doc(uid).collection('clusters'); 
+    this.auth.getUserUID().toPromise().then(async uid => {
+      const clusterCollection = this.db.collection('users').doc(uid);
       clusterCollection.valueChanges().subscribe(data => {
-        data.forEach(x => {
-          console.log(this.clusterValueChange);
-          this.cluster.push(new GeoCluster(x.coordinates, x.properties)); });
-        console.log("Firestore new Cluster Values"+this.cluster);
-        return this.clusterValueChange.next(this.cluster);
+        for (const path of data['clusters']) {
+          const ref = this.db.doc(path);
+          ref.get().toPromise().then(cData => {
+            const c = cData.data();
+            // console.log(c);
+            this.cluster.push(new GeoCluster(c['coordinates'].reverse(), [c['count']]));
+            this.clusterValueChange.next(this.cluster);
           });
-     });
+        }
+      });
+    });
     return this.clusterValueChange = new BehaviorSubject<Array<GeoCluster>>(this.cluster);
   }
   retrieveClusterObservable(): Observable<Array<GeoCluster>> {
@@ -73,7 +76,7 @@ export class MapDataFetchService {
           const ref = this.db.doc(path);
           ref.get().toPromise().then(apData => {
             const ap = apData.data();
-            console.log(ap);
+            // console.log(ap);
             this.aps.push(new GeoAssemblyPoint(ap['coordinates'].reverse(), [ap['name']]));
             this.apsValueChange.next(this.aps);
           });

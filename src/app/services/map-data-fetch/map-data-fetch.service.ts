@@ -1,4 +1,5 @@
-
+import { UserService } from './../user/user.service';
+import { AngularFireDatabase } from '@angular/fire/database';
 import {  RouteCl, GeoCluster, GeoAssemblyPoint } from '../../Classess/map/map';
 import { Injectable } from '@angular/core';
 import { Subscriber, Observable, BehaviorSubject, Subject } from 'rxjs';
@@ -24,7 +25,7 @@ export class MapDataFetchService {
 
 
 
-  constructor(private db: AngularFirestore, private auth: AuthService) {
+  constructor(private db: AngularFirestore, private auth: AuthService, private rtDB: AngularFireDatabase, private userService: UserService) {
    this.aps = new Array<GeoAssemblyPoint>();
    this.cluster = new Array<GeoCluster>();
    }
@@ -115,8 +116,15 @@ export class MapDataFetchService {
   }
 
   // send UserPosition to Firebase RealTime DB
-  sendUserPosition() {
-
+  async sendUserPosition() {
+    const uid = await this.auth.getUserUID().toPromise();
+    // note: is blocking until user moved!
+    const position = await this.userService.getUserPosition();
+    this.rtDB.object('users/' + uid).set({
+      'bearing': 0,
+      'latitude': position.position.latitude,
+      'longitude': position.position.longitude
+    });
   }
 
 }

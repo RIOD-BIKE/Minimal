@@ -1,3 +1,4 @@
+import { MapDataFetchService } from './../../../services/map-data-fetch/map-data-fetch.service';
 import { Component, OnInit } from '@angular/core';
 import { MapBoxComponent } from 'src/app/Components/map-box/map-box.component';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -19,7 +20,8 @@ export class MapStartPage implements OnInit {
   public showMain = false;
   private showRide: false;
  constructor(private routingUserService: RoutingUserService, private mapBox: MapBoxComponent,
-             private statusBar: StatusBar, private mainMenu: MainMenuComponent, private modalController: ModalController ) {
+             private statusBar: StatusBar, private mainMenu: MainMenuComponent, private modalController: ModalController,
+             private mapDataFetch: MapDataFetchService) {
   this.init();
  }
  init() {
@@ -68,6 +70,10 @@ export class MapStartPage implements OnInit {
       component: TutorialOverlay1Component
     });
     return await modal.present();
+  }
+
+  DEMOsendToRTDB() {
+    this.mapDataFetch.sendUserPosition();
   }
 
 }

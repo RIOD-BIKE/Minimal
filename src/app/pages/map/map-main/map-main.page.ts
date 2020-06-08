@@ -1,3 +1,4 @@
+import { MapDataFetchService } from './../../../services/map-data-fetch/map-data-fetch.service';
 
 import { Component, OnInit } from '@angular/core';
 

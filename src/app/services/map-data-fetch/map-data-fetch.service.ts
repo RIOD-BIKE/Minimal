@@ -15,6 +15,7 @@ import { AuthService } from '../auth/auth.service';
 export class MapDataFetchService {
   private positionAPs;
   private positionDBAPs: Array<GeoCluster>;
+  private userFirestore: Observable<any>;
 
 // Cluster Array and BehaviorSubject
   cluster: Array<GeoCluster>; clusterValueChange: BehaviorSubject<Array<GeoCluster>>;
@@ -26,9 +27,12 @@ export class MapDataFetchService {
 
 
   constructor(private db: AngularFirestore, private auth: AuthService, private rtDB: AngularFireDatabase, private userService: UserService) {
-   this.aps = new Array<GeoAssemblyPoint>();
-   this.cluster = new Array<GeoCluster>();
-   }
+    this.aps = new Array<GeoAssemblyPoint>();
+    this.cluster = new Array<GeoCluster>();
+    this.auth.getUserUID().toPromise().then(uid => {
+      this.userFirestore = this.db.collection('users').doc(uid).valueChanges();
+    });
+  }
 
   // sets Status if User is in Cluster - via Firestore
   getUserClusterStatus() {
@@ -47,19 +51,17 @@ export class MapDataFetchService {
   // get All Clusters of User via Firestore
 
   retrieveClusters(): BehaviorSubject<Array<GeoCluster>> {
-    this.auth.getUserUID().toPromise().then(async uid => {
-      const clusterCollection = this.db.collection('users').doc(uid);
-      clusterCollection.valueChanges().subscribe(data => {
-        for (const path of data['clusters']) {
-          const ref = this.db.doc(path);
-          ref.get().toPromise().then(cData => {
-            const c = cData.data();
-            // console.log(c);
-            this.cluster.push(new GeoCluster(c.coordinates.reverse(), [c.count]));
-            this.clusterValueChange.next(this.cluster);
-          });
-        }
-      });
+    console.log(this.userFirestore);
+    this.userFirestore.subscribe(data => {
+      for (const path of data['clusters']) {
+        const ref = this.db.doc(path);
+        ref.get().toPromise().then(cData => {
+          const c = cData.data();
+          // console.log(c);
+          this.cluster.push(new GeoCluster(c.coordinates.reverse(), [c.count]));
+          this.clusterValueChange.next(this.cluster);
+        });
+      }
     });
     return this.clusterValueChange = new BehaviorSubject<Array<GeoCluster>>(this.cluster);
   }
@@ -70,19 +72,16 @@ export class MapDataFetchService {
 
   // get All AssemblyPoints of User via Firestore
   retrieveAssemblyPoints(): BehaviorSubject<Array<GeoAssemblyPoint>> {
-    this.auth.getUserUID().toPromise().then(async uid => {
-      const apCollection = this.db.collection('users').doc(uid);
-      apCollection.valueChanges().subscribe(data => {
-        for (const path of data['assemblyPoints']) {
-          const ref = this.db.doc(path);
-          ref.get().toPromise().then(apData => {
-            const ap = apData.data();
-            // console.log(ap);
-            this.aps.push(new GeoAssemblyPoint(ap.coordinates.reverse(), [ap.name]));
-            this.apsValueChange.next(this.aps);
-          });
-        }
-      });
+    this.userFirestore.subscribe(data => {
+      for (const path of data['assemblyPoints']) {
+        const ref = this.db.doc(path);
+        ref.get().toPromise().then(apData => {
+          const ap = apData.data();
+          // console.log(ap);
+          this.aps.push(new GeoAssemblyPoint(ap.coordinates.reverse(), [ap.name]));
+          this.apsValueChange.next(this.aps);
+        });
+      }
     });
     return this.apsValueChange = new BehaviorSubject<Array<GeoAssemblyPoint>>(this.aps);
   }

@@ -17,14 +17,16 @@ export class SignUpTab2Page implements OnInit {
 
 
 
-  public recaptchaVerifier:firebase.auth.RecaptchaVerifier;
+  public recaptchaVerifier: firebase.auth.RecaptchaVerifier;
+  public phoneNumber: number;
+
   constructor(private router: Router, private authService: AuthService) { 
     !firebase.apps.length ? firebase.initializeApp(environment.firebase) : firebase.app();
     // this.init();
     }
-    
+
     init(){
-      
+
     this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
       'size': 'invisible'
     });

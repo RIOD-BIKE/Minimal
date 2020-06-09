@@ -9,7 +9,7 @@ import { timeout } from 'rxjs/operators';
   styleUrls: ['./sign-up-tab3.page.scss'],
 })
 export class SignUpTab3Page implements OnInit {
-  private vNumb:number;
+  public vNumb:number;
 
   constructor(private router: Router, private authService: AuthService) { }
   

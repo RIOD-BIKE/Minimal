@@ -11,7 +11,7 @@ import { take } from 'rxjs/operators';
 })
 export class SignUpTab4Page implements OnInit {
 
-  private name: string;
+  public name: string;
 
   constructor(private router: Router, private userDataFetch: UsersDataFetchService, private authService: AuthService) {
   }

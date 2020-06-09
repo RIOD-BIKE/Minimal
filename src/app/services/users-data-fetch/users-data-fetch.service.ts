@@ -22,32 +22,45 @@ export class UsersDataFetchService {
     })
   }
 
-  firestore_createUser(uid: string): Promise<any> {
-    return new Promise(resolve => {
-      this.afs.collection('users').doc(uid).get().toPromise().then(qSnap => {
-        if(!qSnap.exists){
-        this.afs.collection('users').doc(uid).set({
-          name: '',
-          activeCluster: '',
-          isUser: true
-        }).then(y => {
-          this.afs.collection('users').doc(uid).collection('clusters').doc('123456').set({
-            coordinates: [8.038522, 52.276253],
-            properties: [{name: 'CL1', count: 3, potMemberCount: 12}]
-          }).then(x => {
-            this.afs.collection('users').doc(uid).collection('assemblyPoints').doc('223456').set({
-              coordinates:[8.038633, 52.276377],
-              properties:[{name: 'Assembly-1', maxMember: 15, potMember: 8, direction: 'W'}]
-            }).then(x => {
-              console.log("back");
-              resolve(true);
-            });
-          });
-        });
-        }
-        resolve(false);
-      });
+  // firestore_createUser(uid: string): Promise<any> {
+  //   return new Promise(resolve => {
+  //     this.afs.collection('users').doc(uid).get().toPromise().then(qSnap => {
+  //       if(!qSnap.exists){
+  //       this.afs.collection('users').doc(uid).set({
+  //         name: '',
+  //         activeCluster: '',
+  //         isUser: true
+  //       }).then(y => {
+  //         this.afs.collection('users').doc(uid).collection('clusters').doc('123456').set({
+  //           coordinates: [8.038522, 52.276253],
+  //           properties: [{name: 'CL1', count: 3, potMemberCount: 12}]
+  //         }).then(x => {
+  //           this.afs.collection('users').doc(uid).collection('assemblyPoints').doc('223456').set({
+  //             coordinates:[8.038633, 52.276377],
+  //             properties:[{name: 'Assembly-1', maxMember: 15, potMember: 8, direction: 'W'}]
+  //           }).then(x => {
+  //             console.log("back");
+  //             resolve(true);
+  //           });
+  //         });
+  //       });
+  //       }
+  //       resolve(false);
+  //     });
+  //   });
+  // }
+
+  async firestore_createUser(uid: string) {
+    const userExists = (await this.afs.collection('users').doc(uid).get().toPromise()).exists;
+    if (userExists) return false;
+    await this.afs.collection('users').doc(uid).set({
+      activeCluster: null,
+      assemblyPoints: [],
+      clusters: [],
+      isUser: true,
+      name: ''
     });
+    return true;
   }
 
   async firestore_setName(uid: string, name: string) {

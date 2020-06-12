@@ -3,9 +3,9 @@ name: Ionic & Cordova Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, backend-integration ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, backend-integration ]
 
 jobs:
   build:

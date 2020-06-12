@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'sign-up-tab1', pathMatch: 'full' },
+  { path: '', redirectTo: 'first-screen', pathMatch: 'full' },
   {
     path: 'map-main',
     loadChildren: () => import('./pages/map/map-main/map-main.module').then( m => m.MapMainPageModule)
@@ -32,7 +32,8 @@ const routes: Routes = [
   {
     path: 'map-start',
     loadChildren: () => import('./pages/map/map-start/map-start.module').then( m => m.MapStartPageModule)
-  },  {
+  },
+  {
     path: 'indicator-single1',
     loadChildren: () => import('./pages/indicator/indicator-single1/indicator-single1.module').then( m => m.IndicatorSingle1PageModule)
   },
@@ -51,6 +52,10 @@ const routes: Routes = [
   {
     path: 'map-ride',
     loadChildren: () => import('./pages/map/map-ride/map-ride.module').then( m => m.MapRidePageModule)
+  },
+  {
+    path: 'first-screen',
+    loadChildren: () => import('./pages/sign_up/first-screen/first-screen.module').then( m => m.FirstScreenPageModule)
   }
 
 

@@ -13,12 +13,13 @@ import { TutorialOverlay2Component } from 'src/app/Components/tutorial/tutorial-
 })
 export class MapMainPage implements OnInit {
 
-  constructor(private mapBox: MapBoxComponent,private statusBar: StatusBar, private modalController:ModalController ) { }
+  constructor(private mapBox: MapBoxComponent, private statusBar: StatusBar, private modalController:ModalController ) { }
 
   ngOnInit() {
     this.statusBar.overlaysWebView(true);
     this.statusBar.backgroundColorByHexString('#44000000');
     this.mapBox.setupMap();
+    this.presentModal();
   }
 
   async presentModal() {

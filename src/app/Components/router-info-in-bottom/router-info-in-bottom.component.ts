@@ -54,6 +54,7 @@ export class RouterInfoInBottomComponent implements OnInit {
   }
 
   saveRoute(){
+    this.presentModal();
     this.routingUserService.getfinishPoint().then(x=>{
       this.routingUserService.getPoints().then(y=>{
         this.userService.saveRoute(x,y);

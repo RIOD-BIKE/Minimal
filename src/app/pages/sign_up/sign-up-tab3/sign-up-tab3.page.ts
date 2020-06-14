@@ -37,4 +37,7 @@ export class SignUpTab3Page implements OnInit {
     }
   }
 
+  back() {
+    // TODO: Implement back navigation
+  }
 }

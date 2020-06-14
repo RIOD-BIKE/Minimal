@@ -13,13 +13,14 @@ import { MapStartPage } from 'src/app/pages/map/map-start/map-start.page';
 })
 export class MainMenuComponent implements OnInit {
 
-  @Input() private selectedAddresses;
-  @Input() private selectedStartAddresses;
+  // TODO: Is @Input() necessary, as there is no input is passed to this module?
+  @Input() selectedAddresses;
+  @Input() selectedStartAddresses;
   
 
-  private addressesString: any[]= [];
-  private addressesStartString: any[]= [];
-  private points:RoutingGeoAssemblyPoint[]=[];
+  addressesString: any[]= [];
+  addressesStartString: any[]= [];
+  points:RoutingGeoAssemblyPoint[]=[];
   private start;
   private addresses;
   private routingAddress;
@@ -28,7 +29,6 @@ export class MainMenuComponent implements OnInit {
   constructor(private mapIntegration:MapIntegrationService,private mapBox: MapBoxComponent ,private userService: UserService, private routingUserService:RoutingUserService) {  
     this.init();
     this.points[0]= new RoutingGeoAssemblyPoint(0,0,"+++");
-
   }
 
   setUpStart(){

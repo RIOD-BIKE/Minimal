@@ -25,4 +25,7 @@ export class SignUpTab4Page implements OnInit {
     this.router.navigate(['/map-start']);
   }
 
+  back() {
+    // TODO: Implement back navigation
+  }
 }

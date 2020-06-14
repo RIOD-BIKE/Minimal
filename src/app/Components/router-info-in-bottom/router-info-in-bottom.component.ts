@@ -16,7 +16,7 @@ import { MainMenuComponent } from '../main-menu/main-menu.component';
 export class RouterInfoInBottomComponent implements OnInit {
   private duration:number;
   private distance:number;
-  private infoArray=["null1","null2"];
+  infoArray=["null1","null2"];
   constructor(private mapStart: MapStartPage,private mainMenu:MainMenuComponent,private mapBox: MapBoxComponent, private routingUserService: RoutingUserService, private userService:UserService, private modalController :ModalController) { }
 
   ngOnInit() {

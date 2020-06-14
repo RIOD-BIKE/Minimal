@@ -7,7 +7,7 @@
 <ion-content>
   <ion-list>
     <ion-item-group *ngFor="let route of recentRoutes">
-      <ion-item-divider secondary (click)="loadRoute($route.id)">{{route.name}}</ion-item-divider>
+      <ion-item-divider secondary (click)="loadRoute(route.id)">{{route.name}}</ion-item-divider>
 
     </ion-item-group>
   </ion-list>

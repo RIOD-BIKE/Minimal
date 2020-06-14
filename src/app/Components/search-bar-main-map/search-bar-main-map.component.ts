@@ -8,10 +8,10 @@ import { DOCUMENT } from '@angular/common';
   styleUrls: ['./search-bar-main-map.component.scss'],
 })
 export class SearchBarMainMapComponent implements OnInit {
- displayColor: string;
- showRecentNav: boolean;
- private searchInput: string;
- private recentRoutes;
+  displayColor: string;
+  showRecentNav: boolean;
+  searchInput: string;
+  recentRoutes;
   constructor(  @Inject(DOCUMENT) private document: Document) {
     this.displayColor = '#66000000';
     this.showRecentNav = false;

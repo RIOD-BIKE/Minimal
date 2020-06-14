@@ -80,4 +80,8 @@ export class SignUpTab2Page implements OnInit {
     });
     await alert.present();
   }
+
+  back() {
+    // TODO: Implement back navigation
+  }
 }

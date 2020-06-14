@@ -23,9 +23,10 @@ import { TutorialOverlay1Component } from './Components/tutorial/tutorial-overla
 import { TutorialOverlay2Component } from './Components/tutorial/tutorial-overlay2/tutorial-overlay2.component';
 import { ButtonOverlayComponent } from './Components/button-overlay/button-overlay.component';
 import { ExplainSlidesComponent } from './Components/explain-slides/explain-slides.component';
+import { SearchBarMainMapComponent } from './Components/search-bar-main-map/search-bar-main-map.component';
 
 @NgModule({
-  declarations: [AppComponent, TutorialOverlay1Component, TutorialOverlay2Component, ButtonOverlayComponent, ExplainSlidesComponent],
+  declarations: [AppComponent, TutorialOverlay1Component, TutorialOverlay2Component, ButtonOverlayComponent, ExplainSlidesComponent, SearchBarMainMapComponent],
   entryComponents: [TutorialOverlay1Component, TutorialOverlay2Component, ButtonOverlayComponent, ExplainSlidesComponent],
   imports: [
     BrowserModule,

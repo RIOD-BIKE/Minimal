@@ -46,4 +46,7 @@ export class SearchBarComponent implements OnInit {
     // Change to Show options --> Animation
   }
 
+  openSettings() {
+    this.router.navigate(['settings-main']);
+  }
 }

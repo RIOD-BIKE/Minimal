@@ -42,6 +42,7 @@ export class AuthService {
       console.log('Loaded User: ' + data);
       if (data) {
         this.authState.next(data);
+        this.currentUser = data;
       } else {
         this.authState.next({ role: null });
       }

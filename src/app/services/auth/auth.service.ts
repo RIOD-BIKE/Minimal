@@ -1,6 +1,6 @@
 import { Injectable, ErrorHandler } from '@angular/core';
 import * as firebase from 'firebase';
-import { NavController, AlertController } from '@ionic/angular';
+import { NavController, AlertController, Platform } from '@ionic/angular';
 import { AngularFirestore, QuerySnapshot } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
@@ -24,7 +24,6 @@ export enum ThirdParties {
   providedIn: 'root'
 })
 export class AuthService {
-  private confirmationResult: firebase.auth.ConfirmationResult;
   private authState = new BehaviorSubject(null);
   private user: Observable<any>;
   private verificationId: string;
@@ -32,7 +31,7 @@ export class AuthService {
 
   constructor(private userDataFetch: UsersDataFetchService, public navCtrl: NavController, public alertCtrl: AlertController,
     private db: AngularFirestore, private storage: Storage, private router: Router, private angularFireAuth: AngularFireAuth,
-    private firebaseAuthentication: FirebaseAuthentication) {
+    private firebaseAuthentication: FirebaseAuthentication, private platform: Platform) {
     this.loadUser();
     this.user = this.authState.asObservable().pipe(filter(response => response));
   }
@@ -77,8 +76,15 @@ export class AuthService {
         provider = new firebase.auth.TwitterAuthProvider();
         break;
     }
-    await firebase.auth().signInWithRedirect(provider);
-    const result = await firebase.auth().getRedirectResult();
+
+    let result: firebase.auth.UserCredential;
+    if (this.platform.is('desktop') || this.platform.is('mobileweb')) {
+      result = await firebase.auth().signInWithPopup(provider);
+    } else {
+      await firebase.auth().signInWithRedirect(provider);
+      result = await firebase.auth().getRedirectResult();
+    }
+    console.log(result);
     console.log(`${result.user.displayName} with UID ${result.user.uid} logged in!`);
     await this.userDataFetch.firestore_createUser(result.user.uid);
     await this.signIn(result.user.uid);
@@ -125,8 +131,11 @@ export class AuthService {
   async signout() {
     await this.storage.set(TOKEN_KEY, null);
     this.authState.next(null);
-    this.router.navigate(['/sign-up-tab2']); // TODO: Alert SignOut
+    this.currentUser = {};
   }
 
+  async deleteUser() {
+    // TODO: Delete User from Firebase Authentication
+  }
 
 }

@@ -47,6 +47,6 @@ export class SearchBarComponent implements OnInit {
   }
 
   openSettings() {
-    this.router.navigate(['settings-main']);
+    this.router.navigate(['settings-main-dropbox']);
   }
 }

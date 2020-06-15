@@ -5,9 +5,8 @@ import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'map-start', pathMatch: 'full',
-  { path: '', redirectTo: 'first-screen', pathMatch: 'full',
-  canActivate: [AuthGuard],
-  data: {role: 'USER', authGuradRedirect: 'sing-up-tab1'}
+  {
+    path: '', redirectTo: 'first-screen', pathMatch: 'full'
   },
   {
     path: 'map-main',

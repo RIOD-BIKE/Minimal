@@ -21,8 +21,7 @@ export class SettingsMainPage implements OnInit {
 
   cancel() {
     // TODO: optimized navigating back
-    console.log("cancel!");
-    this.router.navigate(['map-start']);
+    this.router.navigate(['settings-main-dropbox']);
   }
 
   async save() {

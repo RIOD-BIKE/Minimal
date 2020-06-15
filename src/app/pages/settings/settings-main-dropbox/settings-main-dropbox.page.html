@@ -2,7 +2,7 @@
     <ion-grid>
         <ion-row>
             <ion-col>
-                <button class="cancel"></button>
+                <button (click)="cancel()" class="cancel"></button>
             </ion-col>
         </ion-row>
     </ion-grid>
@@ -22,7 +22,7 @@
                 </div>
             </ion-col>
             <ion-col size="3">
-                <button class="edit"></button>
+                <button (click)="openUserSettings()" class="edit"></button>
             </ion-col>
         </ion-row>
         <ion-row>
@@ -105,7 +105,7 @@
         </ion-row>
         <ion-row>
             <ion-col size="6">
-                <button ion-button class="accountDelete">Account löschen</button>
+                <button ion-button (click)="deleteAccount()" class="accountDelete">Account löschen</button>
             </ion-col>
         </ion-row>
     </ion-grid>

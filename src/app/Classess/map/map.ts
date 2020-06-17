@@ -82,7 +82,8 @@ export interface IGeoJsonAssemblyPoint {
     type: string;
     geometry: IGeometry;
     properties?: Array<any>;
-    direction: string;
+    available?: String;
+    
 }
 export interface IGeoPointMarker {
   type: string;
@@ -106,7 +107,6 @@ export class GeoCluster implements IGeoJsonCluster {
       coordinates,
     };
     properties = properties;
-    console.log(properties);
   }
 }
 
@@ -115,18 +115,54 @@ export class GeoAssemblyPoint implements IGeoJsonAssemblyPoint {
     type = 'Feature';
     geometry: IGeometry;
     properties;
-    direction;
-
-    constructor(coordinates, properties? ) {
-      this.geometry = {
-        type: 'Point',
-        // coordinates: coordinates,
-        coordinates,
-      };
-      
-      this.properties = {name: properties[0],longitude: coordinates[0],latitude:coordinates[1]};
 
 
+
+    constructor(coordinates,textField,iconName, properties?,available?) {
+      this.geometry = {type: 'Point',coordinates,};
+      var obj=[];
+      available.forEach(x=>{
+          for(let i=0;i<x.length;i++){    
+           obj.push(x[i]);
+        }
+
+
+      switch(obj.length){
+        case 0: {
+          this.properties={title:properties[0],latitude:coordinates[0],longitude:coordinates[1],available_count:0,textField:textField,iconName:iconName};
+          break;
+        }
+        case 1: {
+          this.properties={title:properties[0],latitude:coordinates[0],longitude:coordinates[1],available_1:obj[0],available_count:1,textField:textField,iconName:iconName};
+          break;
+        }
+        case 2: {
+          this.properties={title:properties[0],latitude:coordinates[0],longitude:coordinates[1],available_1:obj[0],available_2:obj[1],available_count:2,textField:textField,iconName:iconName};
+          break;
+        }
+        case 3: {
+          this.properties={title:properties[0],latitude:coordinates[0],longitude:coordinates[1],available_1:obj[0],available_2:obj[1],available_3:obj[2],available_count:3,textField:textField,iconName:iconName};
+          break;
+        }
+        case 4: {
+          this.properties={title:properties[0],latitude:coordinates[0],longitude:coordinates[1],available_1:obj[0],available_2:obj[1],available_3:obj[2],available_4:obj[3],available_count:4,textField:textField,iconName:iconName};
+          break;
+        }
+        case 5: {
+          this.properties={title:properties[0],latitude:coordinates[0],longitude:coordinates[1],available_1:obj[0],available_2:obj[1],available_3:obj[2],available_4:obj[3],available_5:obj[4],available_count:5,textField:textField,iconName:iconName};
+          break;
+        }
+        case 6: {
+          this.properties={title:properties[0],latitude:coordinates[0],longitude:coordinates[1],available_1:obj[0],available_2:obj[1],available_3:obj[2],available_4:obj[3],available_5:obj[4],available_6:obj[5],available_count:6,textField:textField,iconName:iconName};
+          break;
+        }
+        default: {
+          this.properties={title:properties[0],latitude:coordinates[0],longitude:coordinates[1],textField:textField,iconName:iconName};
+          break;
+        }
+      }     
+      })
+    
     }
   }
   export class GeoPointMarker implements IGeoPointMarker {
@@ -138,7 +174,6 @@ export class GeoAssemblyPoint implements IGeoJsonAssemblyPoint {
     constructor(coordinates, properties? ) {
       this.geometry = {
         type: 'Point',
-        // coordinates: coordinates,
         coordinates,
       };
 
@@ -165,11 +200,17 @@ export class PointMarker {
 export class RoutingGeoAssemblyPoint {
   position: Position;
   name: string;
-  constructor(longitude: number, latitude: number, name: string){
+  available: Array<String>;
+  textField:String="";
+  iconName:String="";
+  constructor(longitude: number, latitude: number, name: string,available:Array<String>,textField:String,iconName:String){
     this.position = {
       longitude, latitude
     },
     this.name = name;
+    this.available=available;
+    this.textField=textField;
+    this.iconName=iconName;
   }
 
 }

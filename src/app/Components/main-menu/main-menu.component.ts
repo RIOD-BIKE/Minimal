@@ -5,7 +5,7 @@ import { MapBoxComponent } from '../map-box/map-box.component';
 import { Subscription } from 'rxjs';
 import { RoutingGeoAssemblyPoint } from 'src/app/Classess/map/map';
 import { MapIntegrationService, Feature } from 'src/app/services/map-integration/map-integration.service';
-import { MapStartPage } from 'src/app/pages/map/map-start/map-start.page';
+
 @Component({
   selector: 'main-menu',
   templateUrl: './main-menu.component.html',
@@ -13,22 +13,22 @@ import { MapStartPage } from 'src/app/pages/map/map-start/map-start.page';
 })
 export class MainMenuComponent implements OnInit {
 
-  // TODO: Is @Input() necessary, as there is no input is passed to this module?
-  @Input() selectedAddresses;
-  @Input() selectedStartAddresses;
+  @Input() private selectedAddresses;
+  @Input() private selectedStartAddresses;
   
 
-  addressesString: any[]= [];
-  addressesStartString: any[]= [];
-  points:RoutingGeoAssemblyPoint[]=[];
+  private addressesString: any[]= [];
+  private addressesStartString: any[]= [];
+  private points:RoutingGeoAssemblyPoint[]=[];
   private start;
   private addresses;
   private routingAddress;
   private routingStartAddress;
 
   constructor(private mapIntegration:MapIntegrationService,private mapBox: MapBoxComponent ,private userService: UserService, private routingUserService:RoutingUserService) {  
-    this.init();
-    this.points[0]= new RoutingGeoAssemblyPoint(0,0,"+++");
+    //this.init();
+    //this.points[0]= new RoutingGeoAssemblyPoint(0,0,"+++",null);
+
   }
 
   setUpStart(){
@@ -54,7 +54,7 @@ export class MainMenuComponent implements OnInit {
               }else{
                 this.points[i]=newAP;
                 if(i<2){
-                  this.points[i+1]=new RoutingGeoAssemblyPoint(0,0,"+++");
+                  //this.points[i+1]=new RoutingGeoAssemblyPoint(0,0,"+++",null);
                 }
                 this.routingUserService.setPoints(newAP);
                 return;

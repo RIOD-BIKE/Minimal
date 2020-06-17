@@ -13,17 +13,18 @@ import { RideIndicatorFreeComponent } from './ride-indicator-free/ride-indicator
 import { RideMapAssemblyComponent } from './ride-map-assembly/ride-map-assembly.component';
 import { RideMapFinalComponent } from './ride-map-final/ride-map-final.component';
 import { WaitingAtAsSmallComponent } from './waiting-at-as-small/waiting-at-as-small.component';
+import { RouterStartComponent } from './router-start/router-start.component';
 
 @NgModule({
   declarations: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent],
+    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent,RouterStartComponent],
   imports: [IonicModule, CommonModule, FormsModule],
   exports: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent],
+    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent,RouterStartComponent],
   providers: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent]
+    RideMapAssemblyComponent, RideMapFinalComponent,RouterStartComponent]
 })
 export class ComponentsModule { }

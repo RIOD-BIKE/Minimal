@@ -1,27 +1,25 @@
 import { ModalController } from '@ionic/angular';
-import { ButtonOverlayComponent } from './../button-overlay/button-overlay.component';
-import { Component, OnInit, Input, Output } from '@angular/core';
-import { MapStartPage } from 'src/app/pages/map/map-start/map-start.page';
+import { ButtonOverlayComponent } from '../button-overlay/button-overlay.component';
+import { Component, OnInit, Input } from '@angular/core';
+
 import { RoutingUserService } from 'src/app/services/routing-user/routing-user.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { MapBoxComponent } from '../map-box/map-box.component';
 import { MainMenuComponent } from '../main-menu/main-menu.component';
-import { EventEmitter } from '@angular/core';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
 
 
-
 @Component({
-  selector: 'router-info-in-bottom',
-  templateUrl: './router-info-in-bottom.component.html',
-  styleUrls: ['./router-info-in-bottom.component.scss'],
+  selector: 'router-start',
+  templateUrl: './router-start.component.html',
+  styleUrls: ['./router-start.component.scss'],
 })
-export class RouterInfoInBottomComponent implements OnInit {
+export class RouterStartComponent implements OnInit {
   private duration:number;
   private distance:number;
-  private infoArray=[];
+  private infoArray=["null1","null2"];
 
-  constructor(private mainMenu:MainMenuComponent,private mapBox: MapBoxComponent, private routingUserService: RoutingUserService, private userService:UserService, private modalController :ModalController) { }
+  constructor(private mainMenu:MainMenuComponent,private mapBox: MapBoxComponent, private routingUserService: RoutingUserService, private userService:UserService, private modalController :ModalController,private search:SearchBarComponent) { }
 
   ngOnInit() {
     this.routingUserService.getDistance();
@@ -29,13 +27,13 @@ export class RouterInfoInBottomComponent implements OnInit {
 
   closeView(){
     this.mainMenu.closeView();
-    this.infoArray=[];
     this.routingUserService.resetAll();
     this.mapBox.removeRoute();
+    //this.mapStart.setShowStart();
     this.mapBox.disableAssemblyClick().then(()=>{
     this.mapBox.updateAssemblyPoints();
     });
-    this.routingUserService.setDisplayType("Start");
+    this.search.reset();
   }
 
   startRoute(){
@@ -53,6 +51,7 @@ export class RouterInfoInBottomComponent implements OnInit {
           });
         });      
       });
+      this.routingUserService.setDisplayType("Route_Info");
     });
   }
 

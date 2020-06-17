@@ -57,7 +57,7 @@ export class MapDataFetchService {
   // get All Clusters of User via Firestore
 
   retrieveClusters(): BehaviorSubject<Array<GeoCluster>> {
-    console.log(this.userFirestore);
+    //console.log(this.userFirestore);
     this.userFirestore.subscribe(data => {
       for (const path of data['clusters']) {
         const ref = this.db.doc(path);
@@ -79,12 +79,12 @@ export class MapDataFetchService {
   // get All AssemblyPoints of User via Firestore
   retrieveAssemblyPoints(): BehaviorSubject<Array<GeoAssemblyPoint>> {
     this.userFirestore.subscribe(data => {
+      this.aps=[];
       for (const path of data['assemblyPoints']) {
         const ref = this.db.doc(path);
         ref.get().toPromise().then(apData => {
           const ap = apData.data();
-           //console.log(ap.name+"NAME");
-          this.aps.push(new GeoAssemblyPoint([ap.coordinates.longitude, ap.coordinates.latitude], [ap.name]));
+          this.aps.push(new GeoAssemblyPoint([ap.coordinates.longitude, ap.coordinates.latitude],"","marker_DAP",[ap.name],[ap.available]));
           this.apsValueChange.next(this.aps);
         });
       }
@@ -93,13 +93,7 @@ export class MapDataFetchService {
   }
 
 
-  // get Recent Routes Ionic Storage
-  getUserRecentRoutes() {
-  //demo Value Creation Routes //Json Points or Simple Coordinates?
-  let recentRoutes: Array<RouteCl> = [new RouteCl(52.274557, 8.047160, 'First Route'),
-  new RouteCl(52.274557, 8.047160, 'Second Route'), new RouteCl(52.274557, 8.047160, 'Third Route'),
-  new RouteCl(52.274557, 8.047160, '4 Route'), new RouteCl(52.274557, 8.047160, 'Fifth Route')];
-  }
+
 
 
 

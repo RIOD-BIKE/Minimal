@@ -1,53 +1,62 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController, NavController } from '@ionic/angular';
-import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { Component, OnInit,Input, NgZone } from '@angular/core';
 import { MapBoxComponent } from '../map-box/map-box.component';
-import { Router } from '@angular/router';
 import { MapIntegrationService, Feature  } from 'src/app/services/map-integration/map-integration.service';
 import { RoutingUserService } from 'src/app/services/routing-user/routing-user.service';
-import { MapStartPage } from 'src/app/pages/map/map-start/map-start.page';
+
+
 @Component({
   selector: 'search-bar',
   templateUrl: './search-bar.component.html',
   styleUrls: ['./search-bar.component.scss'],
 })
 export class SearchBarComponent implements OnInit {
+  @Input() searchBarInputV:string="";
+  private addressesString:String[][]=[];
+  constructor(private routingUserService: RoutingUserService,
+              private mapIntegration: MapIntegrationService,private mapBox: MapBoxComponent,private change:NgZone) { }
 
+  ngOnInit() {
   
-  constructor(private mapStart: MapStartPage,private routingUserService: RoutingUserService,
-              private navCtrl: NavController, private modalController: ModalController, private nativeGeocoder: NativeGeocoder,
-              private mapIntegration: MapIntegrationService, private router: Router, private mapBox: MapBoxComponent) { }
+  }
 
-  public addresses: string[] = [];   // Simple way -> Should improved with Class Creation
-  public addressesString: string[][] = [];
-
-  ngOnInit() {}
-
-  search(event: any) {
-    const searchTerm = event.target.value.toLowerCase();
+  search(event) {
+    const searchTerm = this.searchBarInputV.toLowerCase();
     if(searchTerm && searchTerm.length > 0) {
       this.mapIntegration.searchAddress(searchTerm).subscribe((features: Feature[]) => {
-        console.log(features);
-        this.addresses = features.map(feat => feat.place_name);
         this.addressesString = features.map(feat => [feat.geometry.coordinates, feat.place_name]);
-        console.log(this.addressesString);
       });
-    } else {
-      this.addresses = [];
     }
   }
 
   onSelect(address: any){
     this.routingUserService.setFinishPoint(address).then(() => {
-      this.addresses = [];
-      this.addressesString = [];
-      this.mapStart.setShowMain();
+      this.routingUserService.deleteAllPoints().then(()=>{
+        this.mapBox.removeRoute().then(()=>{
+          this.mapBox.disableAssemblyClick().then(()=>{
+            this.mapBox.updateAssemblyPoints();
+            this.routingUserService.getfinishPoint().then(x=>{
+              this.mapBox.drawFinishMarker();
+              this.addressesString = [];
+              //this.mapStart.setShowMain();
+              this.routingUserService.setDisplayType("Main");
+             
+            });
+          });
+        });
+      });
     });
-    // Change to Show options --> Animation
   }
 
-  openSettings() {
-    // this.router.navigate(['settings-main-dropbox']);
-    this.navCtrl.navigateForward('settings-main-dropbox');
+
+
+  reset(){
+    console.log("hup")
+    this.searchBarInputV="";
+    console.log(this.searchBarInputV)
+    this.change.run(()=>{
+      this.searchBarInputV="";
+    })
+
   }
+
 }

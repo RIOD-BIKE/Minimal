@@ -77,7 +77,7 @@ export class MapIntegrationService {
 
   searchAddress(query: string){
     const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
-    return this.http.get(url + query + '.json?types=address&access_token=' + environment.mapbox.accessToken)
+    return this.http.get(url + query + '.json?autocomplete?types=address&access_token=' + environment.mapbox.accessToken)
       .pipe(map((res: MapboxOutput) => {
         console.log(res.query.values);
         return res.features;

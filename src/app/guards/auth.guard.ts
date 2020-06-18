@@ -15,7 +15,7 @@ export class AuthGuard implements CanActivate {
     const expectedData = next.data.role;
     // TODO: Check, if AuthService has already loaded user to fix racing condition.
     const key = 'role';
-    const role = this.auth.getCurrentUser()['role'];
+    const role = this.auth.getCurrentUser()[key];
     if (role !== expectedData) {
       console.log(`User with role ${role} not authorized (expected ${expectedData})`);
       this.router.parseUrl('/sign-up-tab1');

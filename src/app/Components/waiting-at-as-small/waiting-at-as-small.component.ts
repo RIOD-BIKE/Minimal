@@ -6,13 +6,13 @@ import { GestureController } from '@ionic/angular';
 import { Gesture, GestureConfig } from '@ionic/core';
 
 @Component({
-	selector: 'waiting-at-as-small',
-	templateUrl: './waiting-at-as-small.component.html',
-	styleUrls: ['./waiting-at-as-small.component.scss'],
+selector: 'waiting-at-as-small',
+templateUrl: './waiting-at-as-small.component.html',
+styleUrls: ['./waiting-at-as-small.component.scss'],
 })
 export class WaitingAtAsSmallComponent implements OnInit, AfterViewInit {
-	progessCircleSize = 180; //change the size and radius of Circle Progess hier, value depend on Time. Max =180 Min=100
-	progessSize = 100; //change the width of progess bar hier, value depend on Time. Max =100
+	progessCircleSize = 180; // change the size and radius of Circle Progess hier, value depend on Time. Max =180 Min=100
+	progessSize = 100; // change the width of progess bar hier, value depend on Time. Max =100
 	progessGo: any = false;
 	progessCircleRadius = (this.progessCircleSize / 2) + 'px';
 	progessColor = 'linear-gradient(to right,red, #383838, red)';
@@ -24,7 +24,7 @@ export class WaitingAtAsSmallComponent implements OnInit, AfterViewInit {
 	count: any;
 	moveOn: any = true;
 
-	@Input() handleHeight: number = 138;
+	@Input() handleHeight = 138;
 
 	constructor(
 		private mapBox: MapBoxComponent,
@@ -35,7 +35,7 @@ export class WaitingAtAsSmallComponent implements OnInit, AfterViewInit {
 		private renderer: Renderer2
 	) { }
 	startTimer() {
-		this.IntervalVar = setInterval(function () {
+		this.IntervalVar = setInterval(function() {
 			this.second--;
 			this.progessCircleSize = this.progessCircleSize - 0.7;
 			this.progessSize = this.progessSize - (100 / 180);
@@ -48,18 +48,18 @@ export class WaitingAtAsSmallComponent implements OnInit, AfterViewInit {
 				this.minute = '00';
 				clearInterval(this.IntervalVar);
 				this.progessGo = true;
-				this.progessCircleSize = 180; //change the size and radius of Circle Progess hier, value depend on Time. Max =180 Min=100
-				this.progessSize = 100; //change the width of progess bar hier, value depend on Time. Max =100
+				this.progessCircleSize = 180; // change the size and radius of Circle Progess hier, value depend on Time. Max =180 Min=100
+				this.progessSize = 100; // change the width of progess bar hier, value depend on Time. Max =100
 
 				// this.hidevalue = true;
 			}
-			var circleProgess = document.getElementById("progessCircle");
-			var progessBar = document.getElementById("progessBar");
+			const circleProgess = document.getElementById('progessCircle');
+			const progessBar = document.getElementById('progessBar');
 			progessBar.style.width = this.progessSize + '%';
 			circleProgess.style.width = this.progessCircleSize + 'px';
 			circleProgess.style.height = this.progessCircleSize + 'px';
 			circleProgess.style.borderRadius = this.progessCircleRadius;
-			//circleProgess.style.marginLeft = '-'+this.progessCircleRadius;
+			// circleProgess.style.marginLeft = '-'+this.progessCircleRadius;
 			if (this.progessSize < 31 && this.progessGo == false) {
 				this.progessColor = 'linear-gradient(to right,yellow, #383838, yellow)';
 			}
@@ -80,42 +80,42 @@ export class WaitingAtAsSmallComponent implements OnInit, AfterViewInit {
 		this.startTimer();
 	}
 	showMore() {
-		var x = document.getElementById("hide");
-		var y = document.getElementById("btn2-toChange");
-		var timerCircle = document.getElementById("timerCircle");
+		const x = document.getElementById('hide');
+		const y = document.getElementById('btn2-toChange');
+		const timerCircle = document.getElementById('timerCircle');
 		x.hidden = true;
 		timerCircle.hidden = false;
-		var z = document.getElementById("show-div");
-		var t = document.getElementById("hide-div");
+		const z = document.getElementById('show-div');
+		const t = document.getElementById('hide-div');
 		z.hidden = true;
 		t.hidden = false;
 		y.hidden = true;
 	}
 	hideMore() {
-		var x = document.getElementById("hide");
-		var y = document.getElementById("btn2-toChange");
-		var timerCircle = document.getElementById("timerCircle");
+		const x = document.getElementById('hide');
+		const y = document.getElementById('btn2-toChange');
+		const timerCircle = document.getElementById('timerCircle');
 		x.hidden = false;
-		var z = document.getElementById("show-div");
-		var t = document.getElementById("hide-div");
+		const z = document.getElementById('show-div');
+		const t = document.getElementById('hide-div');
 		z.hidden = false;
 		t.hidden = true;
 		y.hidden = false;
 		timerCircle.hidden = true;
 	}
 	async ngAfterViewInit() {
-		var changeDivHeight = document.getElementById("myOver");
-		changeDivHeight.style.height = "auto";
+		const changeDivHeight = document.getElementById('myOver');
+		changeDivHeight.style.height = 'auto';
 		const options: GestureConfig = {
-			el: document.getElementById("myOver"),
+			el: document.getElementById('myOver'),
 			direction: 'y',
 			gestureName: 'slide-drawer-swipe',
 			onStart: (ev) => {
 				// do something as the gesture begins
-				changeDivHeight.style.height = "auto";
+				changeDivHeight.style.height = 'auto';
 			},
 			onMove: (ev) => {
-				if (ev.deltaY < 0 && this.moveOn == true) {
+				if (ev.deltaY < 0 && this.moveOn === true) {
 					this.count = 90 - ev.deltaY;
 					changeDivHeight.style.height = this.count + 'px';
 					if (this.count > 160) {
@@ -125,25 +125,25 @@ export class WaitingAtAsSmallComponent implements OnInit, AfterViewInit {
 						this.showMore();
 						this.moveOn = false;
 					}
-				} else if ( this.moveOn == false && ev.deltaY > 0) {	
-					//console.log('Delta' +  (this.count - ev.deltaY));
+				} else if (this.moveOn == false && ev.deltaY > 0) {
+					// console.log('Delta' +  (this.count - ev.deltaY));
 					this.count = 200 - ev.deltaY;
-					changeDivHeight.style.height =  this.count + 'px';
-					
-					if(this.count < 180){
+					changeDivHeight.style.height = this.count + 'px';
+
+					if (this.count < 180) {
 						this.count = 0;
-						changeDivHeight.style.height = "auto";
+						changeDivHeight.style.height = 'auto';
 						this.hideMore();
 					}
-				} 
+				}
 			},
 			onEnd: (ev) => {
 				if (this.count < 200) {
-					changeDivHeight.style.height = "auto";
+					changeDivHeight.style.height = 'auto';
 					this.moveOn = true;
 					this.hideMore();
 				} else {
-					changeDivHeight.style.height = "200px";
+					changeDivHeight.style.height = '200px';
 					this.showMore();
 					this.moveOn = false;
 				}

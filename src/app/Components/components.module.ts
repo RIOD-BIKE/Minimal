@@ -18,13 +18,13 @@ import { RouterStartComponent } from './router-start/router-start.component';
 @NgModule({
   declarations: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent,RouterStartComponent],
+    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent],
   imports: [IonicModule, CommonModule, FormsModule],
   exports: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent,RouterStartComponent],
+    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent],
   providers: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent,RouterStartComponent]
+    RideMapAssemblyComponent, RideMapFinalComponent, RouterStartComponent]
 })
 export class ComponentsModule { }

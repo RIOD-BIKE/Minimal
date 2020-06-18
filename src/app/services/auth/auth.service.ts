@@ -63,6 +63,13 @@ export class AuthService {
     await this.firebaseAuthentication.signInWithVerificationId(this.verificationId, code.toString());
   }
 
+  async handleAnonymousSignIn() {
+    const result = await firebase.auth().signInAnonymously();
+    console.log(`UID ${result.user.uid} logged in!`);
+    await this.userDataFetch.firestore_createUser(result.user.uid);
+    await this.signIn(result.user.uid);
+  }
+
   async handleThirdPartySignIn(thirdParty: ThirdParties) {
     let provider: firebase.auth.AuthProvider;
     switch (thirdParty) {

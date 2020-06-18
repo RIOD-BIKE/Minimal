@@ -42,6 +42,16 @@ export class SignUpTab2Page implements OnInit {
     }
   }
 
+  async signInAnonymously() {
+    try {
+      await this.authService.handleAnonymousSignIn();
+      this.router.navigate(['/sign-up-tab4']);
+    } catch (e) {
+      console.log(`Error signInAnoymously: ${e}`);
+      this.showLoginError('Google');
+    }
+  }
+
   async signInGoogle() {
     try {
       await this.authService.handleThirdPartySignIn(ThirdParties.Google);

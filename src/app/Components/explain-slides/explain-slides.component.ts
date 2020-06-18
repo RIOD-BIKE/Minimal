@@ -11,7 +11,9 @@ import { IonSlides} from '@ionic/angular';
 })
 export class ExplainSlidesComponent implements OnInit {
   @ViewChild('mySlider', { static: true }) slides: IonSlides;
-
+  hidePrev: boolean = false;
+  hideNext: boolean = true;
+  trenner:boolean = true;
   constructor(public modalController: ModalController, private router: Router) { }
 
   ngOnInit() {}
@@ -33,6 +35,40 @@ export class ExplainSlidesComponent implements OnInit {
   goToSignUp() {
     this.dismiss();
     this.router.navigate(['/sign-up-tab2']);
+  }
+
+  slideChanged() {
+    this.slides.isEnd().then((istrue) => {
+      if (istrue) {
+        this.hideNext = false;
+        this.trenner = false;
+      } else {
+        this.hideNext = true;
+        this.hidePrev = true;
+        this.trenner= true;
+      }
+    });
+
+    this.slides.isBeginning().then((istrue) => {
+      if (istrue) {
+        this.hidePrev = false;
+      } else {
+        if(this.trenner ==true) {
+          this.hideNext = true;
+        }       
+        this.hidePrev = true;
+      }
+    });
+
+   
+}
+
+  reachedStart() {
+      this.hidePrev = true;
+  }
+  
+  reachedEnd() {
+      this.hideNext = false;
   }
 
 }

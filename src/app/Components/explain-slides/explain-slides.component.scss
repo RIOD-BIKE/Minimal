@@ -8,6 +8,8 @@ ion-content {
 }
 
 
+
+
 ion-slides {
     height: 100%;
     stroke: white !important;
@@ -54,4 +56,27 @@ ion-slides {
   --background:white;
   padding-right: 8%;
   padding-bottom: 8%;
+}
+
+.footer1 {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+div.swiper-pagination {
+  top:5px;
+  bottom:inherit;
+  height: 500px;
+}
+
+.swiper-pagination {
+  top:5px;
+  bottom:inherit;
+  height: 500px;
+}
+
+
+swiper-pagination {
+  top:5px;
+  bottom:inherit;
+  height: 500px;
 }

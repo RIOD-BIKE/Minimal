@@ -1,44 +1,44 @@
-<div class="over">
-    <div class="wrap" >
-        <!-- <ion-input class="search" debounce=500   [(ngModel)]="selectedAddresses" (ionChange)="search($event)"  placeholder="Hier suchen.." ></ion-input> -->
-        <ion-input class="search" debounce=500 [(ngModel)]="searchBarInputV" type="text" (ngModelChange)="search($event)"  placeholder="Hier suchen.." ></ion-input>
-        <div style="position:absolute; width:100%; z-index:999;margin-top:7.5em ;left:0%">
-            <ion-list lines="none" *ngIf="addressesString.length > 0"> 
-                <ion-item button *ngFor="let address of addressesString" (click)="onSelect(address)">
-                    <ion-icon name ="pin"></ion-icon>
-                    {{address[1]}}
-                </ion-item>
-            </ion-list>
+<div class="over" >
+        <div class="wrap" >
+            <!-- <ion-input class="search" debounce=500   [(ngModel)]="selectedAddresses" (ionChange)="search($event)"  placeholder="Hier suchen.." ></ion-input> -->
+            <ion-input class="search" debounce=500 [(ngModel)]="searchBarInputV" type="text" (ngModelChange)="search($event)"  placeholder="Hier suchen.." ></ion-input>
+            <div style="position:absolute; width:100%; z-index:999;margin-top:7.5em ;left:0%">
+                <ion-list lines="none" *ngIf="addressesString.length > 0"> 
+                    <ion-item button *ngFor="let address of addressesString" (click)="onSelect(address)">
+                        <ion-icon name ="pin"></ion-icon>
+                        {{address[1]}}
+                    </ion-item>
+                </ion-list>
+            </div>
+            <button class="btn"><img src="'../../../assets/settings/profile-pic.jpg" alt="Avatar"></button>
         </div>
-        <button class="btn"><img src="'../../../assets/settings/profile-pic.jpg" alt="Avatar"></button>
-    </div>
-    <div class="container">
-        <div class="scroll" scrollX="true">
-            <span style="margin-left: 0px;">
-                <ion-button class="s-btn primary">
-                    <ion-icon name="home-outline"></ion-icon>
-                </ion-button>
-            </span>
-            <span style="margin-left: 10px;">
-                <ion-button class="s-btn primary">
-                    <ion-icon name="briefcase-outline"></ion-icon>
-                </ion-button>
-            </span>
-            <span style="margin-left: 10px;">
-                <ion-button class="s-btn primary">
-                    <ion-icon name="heart-outline"></ion-icon>
-                </ion-button>
-            </span>
-            <span style="margin-left: 10px;">
-                <ion-button class="s-btn primary">
-                    <ion-icon name="barbell-outline"></ion-icon>
-                </ion-button>
-            </span>
-            <span style="margin-left: 10px;">
-                <ion-button class="s-btn primary">
-                    <ion-icon name="restaurant-outline"></ion-icon>
-                </ion-button>
-            </span>
+        <div class="container">
+            <div class="scroll" scrollX="true">
+                <span style="margin-left: 0px;">
+                    <ion-button class="s-btn primary">
+                        <ion-icon name="home-outline"></ion-icon>
+                    </ion-button>
+                </span>
+                <span style="margin-left: 10px;">
+                    <ion-button class="s-btn primary">
+                        <ion-icon name="briefcase-outline"></ion-icon>
+                    </ion-button>
+                </span>
+                <span style="margin-left: 10px;">
+                    <ion-button class="s-btn primary">
+                        <ion-icon name="heart-outline"></ion-icon>
+                    </ion-button>
+                </span>
+                <span style="margin-left: 10px;">
+                    <ion-button class="s-btn primary">
+                        <ion-icon name="barbell-outline"></ion-icon>
+                    </ion-button>
+                </span>
+                <span style="margin-left: 10px;">
+                    <ion-button class="s-btn primary">
+                        <ion-icon name="restaurant-outline"></ion-icon>
+                    </ion-button>
+                </span>
+            </div>
         </div>
-    </div>
 </div>

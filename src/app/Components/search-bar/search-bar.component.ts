@@ -1,4 +1,5 @@
-import { Component, OnInit,Input, NgZone } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { Component, OnInit,Input, NgZone, HostListener } from '@angular/core';
 import { MapBoxComponent } from '../map-box/map-box.component';
 import { MapIntegrationService, Feature  } from 'src/app/services/map-integration/map-integration.service';
 import { RoutingUserService } from 'src/app/services/routing-user/routing-user.service';
@@ -12,7 +13,7 @@ import { RoutingUserService } from 'src/app/services/routing-user/routing-user.s
 export class SearchBarComponent implements OnInit {
   @Input() searchBarInputV = '';
   public addressesString: string[][] = [];
-  constructor(private routingUserService: RoutingUserService,
+  constructor(private routingUserService: RoutingUserService, private modalCtrl: ModalController,
               private mapIntegration: MapIntegrationService, private mapBox: MapBoxComponent, private change:NgZone) { }
 
   ngOnInit() {
@@ -28,7 +29,7 @@ export class SearchBarComponent implements OnInit {
     }
   }
 
-  onSelect(address: any){
+  onSelect(address: any) {
     this.routingUserService.setFinishPoint(address).then(() => {
       this.routingUserService.deleteAllPoints().then(() => {
         this.mapBox.removeRoute().then(() => {
@@ -44,18 +45,23 @@ export class SearchBarComponent implements OnInit {
         });
       });
     });
+    this.clear();
   }
 
 
 
-  reset() {
-    console.log('hup');
+  clear() {
     this.searchBarInputV = '';
-    console.log(this.searchBarInputV);
     this.change.run(() => {
       this.searchBarInputV = '';
     });
 
   }
+  // @HostListener('document:click', ['$event'])
+  // close() {
+  //   console.log('dismiss');
+  //   this.clear();
+  //   this.modalCtrl.dismiss();
+  // }
 
 }

@@ -48,7 +48,8 @@ import { RideIndicatorFreeComponent } from './Components/ride-indicator-free/rid
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    AppRoutingModule],
+    AppRoutingModule,
+  ],
 
   providers: [
     StatusBar,

@@ -33,7 +33,6 @@ export class RouterStartComponent implements OnInit {
     this.mapBox.disableAssemblyClick().then(() => {
     this.mapBox.updateAssemblyPoints();
     });
-    this.search.reset();
   }
 
   startRoute(){

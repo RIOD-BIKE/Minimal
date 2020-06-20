@@ -1,32 +1,71 @@
-ion-content {
+.over {
+    width: 100%;
+    height: 100%;
     font-family: effra;
-    --padding-top: 0vh;
-    --padding-bottom: 0vh;
-    --padding-start: 0vw;
-    --padding-end: 0vw;
-    --background: rgba(69, 69, 69, 0.3) !important;
+    background: rgba(69, 69, 69, 0.3) !important;
+    position: relative;
 }
 
+.navi-bar-bottom{
+  background: transparent;
+  position: fixed;
+  z-index: 100;
+  height: 10%;
+}
 
+.slide-page{
+  height: 80%;
+  stroke: white !important;  
+}
 
+.slide-point{
+  position: fixed;
+  bottom: 15vw;
+  left: 10vw;
+
+}
+
+.back-btn{
+    margin-top: 7px;
+    margin-left: 5vw;
+    width: 50px;
+    height: 50px;
+    float: left;
+    background: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.next-btn{
+  width: 15vw;
+  height: 15vw;
+  background-color: white;
+  position: fixed;
+  bottom: 10vw;
+  right: 10vw;
+  border-radius: 2vw;
+}
+.login-btn{
+  width: auto;
+  height: 15vw;
+  background-color: white;
+  position: fixed;
+  bottom: 10vw;
+  right: 10vw;
+  border-radius: 2vw;
+  padding-left: 10px;
+  padding-right: 10px;
+}
 
 ion-slides {
-    height: 100%;
-    stroke: white !important;
-  }
 
-  .swiper-slide {
-    display: block;
-    stroke: white !important;
+    height: 90%;
+    stroke: white !important;  
+}
 
-  }
-
-  .swiper-slide h2 {
-    margin-top: 2.8rem;
-    stroke: white !important;
-
-  }
-
+.swiper-slide {
+  display: block;
+  stroke: white !important;
+}
 
   .question {
     margin-top: 7px;
@@ -50,7 +89,7 @@ ion-slides {
         padding-right:10vw; 
   }
 
-  .pstyle2 {
+.pstyle2 {
     font-family: effra;
     font-size: 5vw;
     color:white;
@@ -91,29 +130,7 @@ ion-slides {
     margin-right: 5px;
     border-radius: 5px;
     background-color: black;
-    margin-top: 35px;
-}
-.footer1 {
-  background: rgba(69, 69, 69, 0.3) !important;
-}
 
-div.swiper-pagination {
-  top:5px;
-  bottom:inherit;
-  height: 500px;
-}
-
-.swiper-pagination {
-  top:5px;
-  bottom:inherit;
-  height: 500px;
-}
-
-
-swiper-pagination {
-  top:5px;
-  bottom:inherit;
-  height: 500px;
 }
 
 .name {

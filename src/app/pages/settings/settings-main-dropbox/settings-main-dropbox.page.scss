@@ -1,17 +1,26 @@
-ion-header {
+.header {
     padding-left: 30px;
     padding-right: 30px;
     padding-top: 20px;
+    background-color: #242323;
+    border-style: hidden;
 
 }
 ion-footer {
     padding-left: 30px;
     padding-right: 30px;
+    background-color: #242323;
+    border-style: hidden;
+
+  
 }
 ion-content {
     font-family: effra;
     --padding-start: 30px; 
     --padding-end: 30px;
+    --background: #242323;
+    border-style: hidden;
+
 }
 ion-range{
     padding: 0px;
@@ -21,6 +30,7 @@ ion-range{
     width: 50px;
     height: 50px;
     background: url('../../../../assets/settings/x-cancel.svg');
+    background-size: 20px;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -30,6 +40,7 @@ ion-range{
     width: 50px;
     height: 50px;
     background: url('../../../../assets/settings/edit.svg');
+    background-size: 22px;
     background-repeat: no-repeat;
     background-position: center;
 }
@@ -53,56 +64,65 @@ ion-range{
     margin-left: 5px;
 }
 
-.anonym{
-    width: 40px;
-    height: 40px;
-    background: url('../../../../assets/settings/anonym.svg');
-    background-size: 24px;
+.gps{
+    width: 45px;
+    height: 30px;
+    background: url('../../../../assets/settings/gps.svg');
+    background-size: 28px;
     background-repeat: no-repeat;
     background-position: center;
+    filter: invert(100%);
 }
 
-.gps{
-    width: 40px;
-    height: 40px;
-    background: url('../../../../assets/settings/gps.svg');
-    background-size: 26px;
-    background-repeat: no-repeat;
-    background-position: center;
-}
 .volume{
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 30px;
     background: url('../../../../assets/settings/volume.svg');
-    background-size: 26px;
+    background-size: 28px;
     background-repeat: no-repeat;
     background-position: center;
 }
 
 .vibra{
-    width: 40px;
-    height: 40px;
-    background: url('../../../../assets/settings/vibra.svg');
-    background-size: 26px;
+    width: 45px;
+    height: 45px;
+    background: url('../../../../assets/settings/vibrate_edited.png');
+    background-size: 32px;
     background-repeat: no-repeat;
     background-position: center;
+    //filter: invert(100%);
 }
 .display{
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     background: url('../../../../assets/settings/display.svg');
-    background-size: 26px;
+    background-size: 21px;
     background-repeat: no-repeat;
     background-position: center;
 }
+
+
+.anleitung{
+    width: 45px;
+    height: 30px;
+    background: url('../../../../assets/settings/anleitung.svg');
+    color: white;
+    background-size: 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+    filter: invert(100%);
+ 
+}
+
 .hilfe{
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
     background: url('../../../../assets/settings/hilfe.svg');
     background-size: 26px;
     background-repeat: no-repeat;
     background-position: center;
 }
+
 .accountDelete{
     float: left;
     width: 95%;
@@ -117,8 +137,8 @@ ion-range{
 
 .next{
     float: right;
-    width: 60px;
-    height: 30px;
+    width: 65px;
+    height: 33px;
     border-radius: 20px;
 
     background: url('../../../../assets/settings/next.svg');
@@ -127,6 +147,18 @@ ion-range{
     background-color: #4F4F4F;
     
     
+}
+
+.feedback{
+    float: right;
+    width: 65px;
+    height: 33px;
+    border-radius: 20px;
+
+    background: url('../../../../assets/settings/edit.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #4F4F4F;
 }
 
 a {
@@ -141,7 +173,7 @@ a {
 }
 
 h3{
-    font-size: 4vw;
+    font-size: 19px;
     float: left;
 }
 h5{

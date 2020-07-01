@@ -3,6 +3,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Platform } from '@ionic/angular';
+import { Storage } from '@ionic/storage';
 
 
 
@@ -12,7 +13,7 @@ import { Platform } from '@ionic/angular';
 })
 export class UserService {
 
-  constructor(private geolocation: Geolocation, private platform: Platform) { }
+  constructor(private storage:Storage,private geolocation: Geolocation, private platform: Platform) { }
 
   public behaviorMyOwnPosition = new BehaviorSubject(null);
   private firstTimeCalling = true;
@@ -35,14 +36,56 @@ export class UserService {
       });
     });
   }
+//Uncomplete -> Dependend on new UI System
+  public saveRoute(address,iconName,routeName?):Promise<any> {
+    return new Promise(resolve=>{
+      var i=0;
+      this.storage.length().then(length=>{
+        this.storage.forEach((value,key,index)=>{
+          let keySpliced = key.split('_');
+          if(keySpliced[0] == "SavedIcon"){
+            console.log(keySpliced[1]+" | "+iconName)
+            if(keySpliced[1]===iconName){  //iconName already saved -> override? Question
+              this.storage.set(key,{address:address})
+              resolve("Updated Address with icon");
+              return;
+            }
+          }
+          i++;
+          if(i==length){
+            this.storage.set("SavedIcon_"+iconName,{address:address});
+            resolve("New Address saved with icon");
+          }
+        })
+      })
+    })
+  }
 
-  public saveRoute(newRoute: string, points:RoutingGeoAssemblyPoint[]) {
-    console.log('Route Saved Adress: ' + newRoute);
-    let temp = 'Points: ';
-    points.forEach(x => {
-      temp += x.name + ', ';
+  public getRoute(iconName):Promise<any>{
+    return new Promise(resolve=>{
+      var i=0;
+      this.storage.length().then(length=>{
+        this.storage.forEach((value,key,index)=>{
+          let keySpliced = key.split('_');
+          if(keySpliced[0] == "SavedIcon"){
+            console.log(keySpliced[1]+" | "+iconName)
+            if(keySpliced[1]===iconName){  //iconName already saved -> override? Question
+              resolve(value);
+              return;
+            }
+          }
+          i++;
+          if(i==length ){
+            resolve("Route non existent");
+          }
+        })
+      })
     });
-    console.log(temp);
+  }
+  public getAllRoutes():Promise<any>{
+    return new Promise(resolve=>{
+      
+    });
   }
 
   public getfirstTimeCalling() {

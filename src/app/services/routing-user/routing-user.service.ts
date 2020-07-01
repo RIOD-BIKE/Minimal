@@ -12,10 +12,10 @@ import { RoutingGeoAssemblyPoint } from 'src/app/Classess/map/map';
 export class RoutingUserService {
 
 
-  private finishPoint: any = null;
-  private startPoint: any = null;
-  private duration: any = null;
-  private distance: any = null;
+  private finishPoint: RoutingGeoAssemblyPoint = null;
+  private startPoint: any= null;
+  private duration: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  private distance: BehaviorSubject<string> = new BehaviorSubject<string>(null);
   private points: RoutingGeoAssemblyPoint [] = [];
   private centerPoint: BehaviorSubject<RoutingGeoAssemblyPoint> = new BehaviorSubject<RoutingGeoAssemblyPoint>(null);
   private displayType: BehaviorSubject<string> = new BehaviorSubject<string>('MainView');
@@ -27,7 +27,7 @@ export class RoutingUserService {
     });
   }
 
-  setDisplayType(dataPoint): Promise<any> {
+  setDisplayType(dataPoint:string): Promise<any> {
     return new Promise(resolve => {
         this.displayType.next(dataPoint);
         resolve(this.displayType);
@@ -48,7 +48,7 @@ export class RoutingUserService {
 
   getfinishPoint(): Promise<any> {
     return new Promise(resolve => {
-      if (this.finishPoint != null) {
+      if (this.finishPoint != undefined || this.finishPoint != null) {
         resolve(this.finishPoint);
       }
       resolve(false);
@@ -56,17 +56,25 @@ export class RoutingUserService {
   }
   getDuration(): Promise<any> {
     return new Promise(resolve => {
-      console.log(this.duration);
       if (this.duration != null) {
-        resolve(this.duration);
+        resolve(this.duration.getValue());
       }
       resolve(false);
     });
   }
+
+
+  getDurationasSub(): Observable<string>{
+    return this.duration;
+  }
+  getDistanceasSub(): Observable<string>{
+    return this.distance;
+  }
+
   getDistance(): Promise<any> {
     return new Promise(resolve => {
       if (this.distance != null) {
-        resolve(this.distance);
+        resolve(this.distance.getValue());
       }
       resolve(false);
     });
@@ -80,24 +88,18 @@ export class RoutingUserService {
     });
   }
 
-  getstartPoint(): Promise<any>{
+  getstartPoint(): Promise<number[]>{
     return new Promise(resolve => {
-      if(this.startPoint !== undefined) {
-        resolve(this.startPoint);
-      } else{
         this.setStartPoint().then(() => {
           resolve(this.startPoint);
         });
-      }
     });
   }
 
   // SearchBar and Modifier in Routing-Detail-View use
-  setFinishPoint(dataPoint): Promise<any> {
+  setFinishPoint(dataPoint): Promise<boolean> {
     return new Promise(resolve => {
       this.finishPoint = dataPoint;
-
-      console.log('FinishPoint nexted: '+dataPoint);
       resolve(true);
     });
   }
@@ -108,13 +110,13 @@ export class RoutingUserService {
       try{
       if (dataPoint != null) {
         const temp = (Math.round(dataPoint * 100) / 100).toFixed(0);  //toFixed(2) = 2 decimal Places
-        this.duration=temp;
-        console.log('Duration set to: '+this.duration);
+        this.duration.next(temp);
+        console.log('Duration set to: '+this.duration.getValue());
         resolve(true);
       }
     } catch(e) {
-      console.log(e);
-      resolve(false);
+        console.log(e);
+        resolve(false);
     }
 
     });
@@ -124,18 +126,19 @@ export class RoutingUserService {
       try {
       if (dataPoint != null){
         const temp = (Math.round(dataPoint * 100) / 100).toFixed(2);
-        this.distance = temp;
-        console.log('Distance set to: '+this.distance);
+        this.distance.next(temp);
+        console.log('Distance set to: '+this.distance.getValue());
         resolve(true);
       }
     } catch(e) {
-      console.log(e);
-      resolve(false);
+        console.log(e);
+        resolve(false);
     }
 
     });
   }
-  setPoints(dataPoint?): Promise<any>{
+
+  setPoints(dataPoint?): Promise<boolean>{
     return new Promise(resolve => {
       try{
         if (dataPoint != null){
@@ -147,53 +150,49 @@ export class RoutingUserService {
             }
         }
       } catch(e) {
-      console.log(e);
-      resolve(false);
+          console.log(e);
+          resolve(false);
       }
     });
   }
 
-  deletePoints(pointNumber:number):Promise<any>{
+  deletePoints(pointNumber:number):Promise<boolean>{
     return new Promise(resolve => {
       try{
         if(pointNumber!=null){
           let t = this.points.length;
           for(let i=pointNumber;i<=t;i++){
-            //löschen aller Einträge bis PointNUmber-1
-            for(let k = 0;k<this.points.length;k++){
+            for(let k=0;k<this.points.length;k++){
               if(this.points[k].textField==i.toString()){
                 this.points.splice(k,1);
               }
             }
           }
-          resolve();
-
+          resolve(true);
         }
       }catch(e){
-      console.log(e);
-      resolve(false);
+        console.log(e);
+        resolve(false);
       }
     });
   }
 
-  deleteAllPoints(): Promise<any>{
+  deleteAllPoints(): Promise<boolean>{
     return new Promise(resolve => {
       this.points = [];
-      resolve();
+      resolve(true);
     });
   }
 
-  setStartPoint(dataPoint?): Promise<any> {
+  setStartPoint(dataPoint?): Promise<boolean> {
     return new Promise(resolve => {
-      if(dataPoint !== undefined){
+      if(dataPoint != undefined){
         this.startPoint = dataPoint;
-        console.log('Startpoint nexted: '+ this.startPoint);
-        resolve();
+        resolve(true);
       } else{
         const temp = this.userService.behaviorMyOwnPosition.getValue().coords;
         this.startPoint = [[temp.longitude,temp.latitude]];
-        console.log(`Startpoint Own GPS nexted: ${this.startPoint}`);
-        resolve();
+        resolve(true);
       }
     });
   }
@@ -203,15 +202,12 @@ export class RoutingUserService {
 
   addAssemblyPoint(dataPoint: RoutingGeoAssemblyPoint): Promise<any> {
     return new Promise(resolve => {
-    console.log("NewAssemblyPointAdded"+dataPoint);
-    this.centerPoint.next(dataPoint);
-    console.log(this.centerPoint.value);
-    resolve(this.centerPoint);
+      this.centerPoint.next(dataPoint);
+      resolve(this.centerPoint);
     });
   }
 
   getCenterPointObs(): Observable<RoutingGeoAssemblyPoint> {
-    console.log("getPointObs");
     return this.centerPoint.asObservable();
   }
 }

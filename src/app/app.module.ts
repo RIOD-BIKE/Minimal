@@ -38,7 +38,11 @@ import { RideIndicatorFreeComponent } from './Components/ride-indicator-free/rid
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    IonicStorageModule.forRoot(),
+    IonicStorageModule.forRoot({
+      name: '_localRoutesDB',
+      driverOrder: ['indexeddb', 'sqlite', 'websql'],
+
+    }),
     AppRoutingModule,
     AngularFirestoreModule,
     AngularFireModule.initializeApp(environment.firebase),

@@ -9,6 +9,7 @@ import { TutorialOverlay1Component } from '../../../Components/tutorial/tutorial
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { RouterInfoInBottomComponent } from 'src/app/Components/router-info-in-bottom/router-info-in-bottom.component';
 import { RouterStartComponent } from 'src/app/Components/router-start/router-start.component';
+import { SearchBarComponent } from 'src/app/Components/search-bar/search-bar.component';
 
 @Component({
   selector: 'app-map-start',
@@ -19,32 +20,23 @@ import { RouterStartComponent } from 'src/app/Components/router-start/router-sta
 
 export class MapStartPage implements OnInit {
 
-  /*
-  <ion-header>
-    <search-bar [hidden]="!showRidingToggle"></search-bar>
-    <main-menu [hidden]="!showMain" ></main-menu>
-  </ion-header>
-*/
-
   public showRidingToggle:boolean = true;
   public showMain:boolean = false;
   public showRouterInfo:boolean=false;
   private showRide:boolean= false;
  constructor(private routingUserService: RoutingUserService, private mapBox: MapBoxComponent,
              private statusBar: StatusBar, private mainMenu: MainMenuComponent, private modalController: ModalController,
-             private mapDataFetch: MapDataFetchService,private routerInfo:RouterInfoInBottomComponent,routerStart:RouterStartComponent) {
+             private mapDataFetch: MapDataFetchService,private routerInfo:RouterInfoInBottomComponent,routerStart:RouterStartComponent,private searchBar: SearchBarComponent) {
   this.init();
  }
  init() {
-  this.statusBar.overlaysWebView(true);
-  this.statusBar.backgroundColorByHexString('#44000000');
+  this.statusBar.overlaysWebView(false);
+  this.statusBar.backgroundColorByHexString('#383838');
   this.mapBox.setupMap();
   //this.presentModal();
   this.routingUserService.getDisplayTypeObs().subscribe(x=>{
-    console.log(x);
     if(x==='Start'){
       this.setShowStart();
-      
     }
     if(x==='Route_Info'){
       this.showMain=false;
@@ -60,12 +52,12 @@ export class MapStartPage implements OnInit {
   ngOnInit() {
 
   }
+  
   locateDevice() {
     this.mapBox.moveMapToCurrent();
   }
 
   setChildView(){
- 
     this.setShowMain();
   }
 
@@ -74,7 +66,7 @@ export class MapStartPage implements OnInit {
   setShowRouterInfoBottom():Promise<any>{
     return new Promise(resolve => {
       this.showRidingToggle=false;
-    this.showRouterInfo= !this.showRouterInfo;
+    this.showRouterInfo= true;
     resolve();
     });
   }

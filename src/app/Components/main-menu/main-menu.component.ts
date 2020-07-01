@@ -3,8 +3,8 @@ import { UserService } from 'src/app/services/user/user.service';
 import { RoutingUserService } from 'src/app/services/routing-user/routing-user.service';
 import { MapBoxComponent } from '../map-box/map-box.component';
 import { Subscription } from 'rxjs';
-import { RoutingGeoAssemblyPoint } from 'src/app/Classess/map/map';
-import { MapIntegrationService, Feature } from 'src/app/services/map-integration/map-integration.service';
+import { RoutingGeoAssemblyPoint,Feature } from 'src/app/Classess/map/map';
+import { MapIntegrationService } from 'src/app/services/map-integration/map-integration.service';
 
 @Component({
   selector: 'main-menu',
@@ -67,7 +67,7 @@ export class MainMenuComponent implements OnInit {
   }
 
   chooseAP(){
-    this.mapBox.toggleAssemblyPointLayerVisibility();
+
     // console.log('Choose AssemblyPoint');
   }
 

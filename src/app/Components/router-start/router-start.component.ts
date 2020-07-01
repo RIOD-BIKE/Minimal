@@ -7,6 +7,8 @@ import { UserService } from 'src/app/services/user/user.service';
 import { MapBoxComponent } from '../map-box/map-box.component';
 import { MainMenuComponent } from '../main-menu/main-menu.component';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
+import { MapIntegrationService } from 'src/app/services/map-integration/map-integration.service';
+import { distance } from '@turf/turf';
 
 
 @Component({
@@ -15,40 +17,40 @@ import { SearchBarComponent } from '../search-bar/search-bar.component';
   styleUrls: ['./router-start.component.scss'],
 })
 export class RouterStartComponent implements OnInit {
-  private duration: number;
-  private distance: number;
-  private infoArray = ['null1', 'null2'];
+  private duration:number;
+  private distance:number;
 
-  constructor(private mainMenu: MainMenuComponent, private mapBox: MapBoxComponent, private routingUserService: RoutingUserService,
-              private userService: UserService, private modalController: ModalController, private search: SearchBarComponent) { }
+  constructor(private mapIntegration:MapIntegrationService, private mainMenu:MainMenuComponent,private mapBox: MapBoxComponent, private routingUserService: RoutingUserService, private userService:UserService, private modalController :ModalController,private search:SearchBarComponent) { }
 
   ngOnInit() {
     this.routingUserService.getDistance();
   }
 
   closeView(){
-    this.mainMenu.closeView();
+    this.routingUserService.setDisplayType('Start');
     this.routingUserService.resetAll();
     this.mapBox.removeRoute();
-    // this.mapStart.setShowStart();
     this.mapBox.disableAssemblyClick().then(() => {
     this.mapBox.updateAssemblyPoints();
     });
-    this.search.clear();
   }
 
   startRoute(){
-    this.routingUserService.getPoints().then(x => {
+    this.routingUserService.getPoints().then(points => {
       let pointString = '';
-      for(let i =0; i<x.length;i++){
-        if (x[i].name !== ('+++')) {
-          pointString += (x[i].position.longitude + ',' + x[i].position.latitude + ';');
-        }
+      for(let i =0; i<points.length;i++){
+          pointString += (points[i].position.longitude + ',' + points[i].position.latitude + ';');
       }
       this.mapBox.drawRoute(pointString).then(() => {
-        this.routingUserService.getDuration().then(x => {
-          this.routingUserService.getDistance().then(y => {
-            this.infoArray = [x + ' Minuten' , '(' + y + ' km)'];
+        this.routingUserService.getDuration().then(duration => {
+          this.routingUserService.getDistance().then(dist => {
+            this.routingUserService.getfinishPoint().then(fin => {
+              this.routingUserService.getPoints().then(points => {
+                this.routingUserService.getstartPoint().then(start=>{
+
+                });
+              });
+            });
           });
         });
       });

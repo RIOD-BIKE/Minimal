@@ -1,85 +1,161 @@
-import { Position } from '../../Classess/map/map';
+import { RoutingGeoAssemblyPoint,MapboxOutput,Feature } from '../../Classess/map/map';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { MapDataFetchService } from '../map-data-fetch/map-data-fetch.service';
 import { Storage } from '@ionic/storage';
-import * as mapboxgl from 'mapbox-gl';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 const MAP_KEY = 'map-reload-token';
-
-export interface MapboxOutput{
-  attribution: string;
-  features: Feature[];
-  query: [];
-}
-export interface Feature {
-  place_name: string;
-  geometry: any;
-}
+import * as turf from '@turf/turf'
+import { RoutingUserService } from '../routing-user/routing-user.service';
 
 @Injectable({
   providedIn: 'root'
 })
 
-
 export class MapIntegrationService {
-
-
-  constructor(private storage: Storage, private http: HttpClient) {
-    // (mapboxgl as any).accessToken = environment.mapbox.accessToken;
-    // if (!(mapboxgl as any).supported()) {
-    //   alert('Not supported!');
-    // }
-
-
+  constructor(private storage:Storage,private routingUserService:RoutingUserService, private http: HttpClient) {
+  }
+  saveRouteOffline(startPosition:number[],endPosition:RoutingGeoAssemblyPoint,assemblyPoints:RoutingGeoAssemblyPoint[],duration:number,distance:number):Promise<any>{
+    return new Promise(resolve => {
+      let i=0;
+      this.checkifRouteExists().then(routeExists=>{
+        this.checkSavedRouteLength().then(rLength=>{
+          this.storage.forEach((value,key,index)=>{
+            let str = "Route_"+(rLength+1);
+            if(routeExists==false){
+              let str = "Route_"+(rLength+1);
+                 this.storage.set(str,{startPosition,endPosition,assemblyPoints,duration,distance})
+                resolve("New Route Saved"); 
+            }
+            else{
+              let endPosData=routeExists.value.endPosition[0];
+              let endPosParam=endPosition[0];
+              if(endPosData[0]==endPosParam[0] && endPosData[1]==endPosParam[1]){
+                this.storage.set(routeExists.key,{startPosition,endPosition,assemblyPoints,duration,distance});
+                resolve("Route Updated");
+              } 
+              if(endPosData[0]!=endPosParam[0] || endPosData[1]!=endPosParam[1]){
+                this.storage.set(str,{startPosition,endPosition,assemblyPoints,duration,distance});
+                resolve("New Route Saved");
+              }
+            }
+          })
+        })
+      })
+    });
   }
 
-//return Marker for User - Return to MapBox-Component
-  drawUserMarker() {
-
+  checkSavedRouteLength():Promise<number>{     
+    return new Promise(resolve => {
+      var rLength=0;
+      var i=0;
+      this.storage.length().then(length=>{
+        this.storage.forEach((value,key,index)=>{
+          let str = key.slice(0, -1); 
+          if(str === "Route_"){rLength+=1;}
+          i++;
+          if(i+1==length || i==length){resolve(rLength);}
+        });
+      });
+    });
   }
 
-
-  cacheMap(map: any) {
-    console.log(map);
-    //this.storage.set(MAP_KEY,map);
+  checkifRouteExists():Promise<any>{
+    return new Promise(resolve => {
+      this.routingUserService.getstartPoint().then(startPosition=>{
+        this.routingUserService.getfinishPoint().then(endPosition=>{
+          this.checkifRouteExistsHelper(startPosition,endPosition).then(x=>{
+            console.log(startPosition+" | "+ endPosition + " | "+x)
+            resolve(x);
+          })
+        })
+      })
+    })
   }
 
-
-
-  //generalised Method to draw Marker
-  drawMarker(x: number, y: number) {
-    return new mapboxgl.Marker().setLngLat([x,y]);
+  checkifRouteExistsHelper(startPosition,endPosition):Promise<any>{
+    return new Promise(resolve => {
+      let i=0;
+      let endPointExists;
+      let tempSaveResolveData;
+      endPointExists=false;
+      this.storage.length().then(length=>{
+        this.storage.forEach((value,key,index)=>{
+          let str = key.slice(0, -1); 
+          if(str == "Route_"){
+            let endPosData=value.endPosition[0];
+            let endPosParam=endPosition[0];
+            this.checkAddressProximity(endPosData,endPosParam).then(isEndNear=>{
+              if(isEndNear==true){
+                if(endPosData[0] ==endPosParam[0] && endPosParam[1]==endPosData[1]){
+                  endPointExists=true;
+                }
+                this.checkAddressProximity(value.startPosition[0],startPosition[0]).then(isStartNear=>{
+                  if(isStartNear==true){
+                    if(endPointExists==true){
+                      resolve({value:value,key:key,index:index});
+                    } else{
+                      i++
+                      tempSaveResolveData={value:value,key:key,index:index};
+                      if(length==i+1){
+                        resolve(tempSaveResolveData);
+                      }
+                    } 
+                  }else{
+                    i++;
+                  }
+                })
+              } else{
+                i++;
+              }
+            })             
+          }else{
+            i++; 
+          }
+          if(length==i+1||i==length){
+            if(tempSaveResolveData!=undefined && endPointExists==false){
+              resolve(tempSaveResolveData);
+            }else{
+              resolve(false); 
+            }
+          }
+        });
+      })
+    })
   }
 
-  //return Marker for End and Start using getEndStartCoordinates() - Return to MapBox-Component
-  drawEndStartMarker() {
-
+  checkAddressProximity(adress1,adress2):Promise<boolean>{
+    return new Promise(resolve => {
+      console.log
+      var pt = turf.point(adress2);
+      let polygon=[];
+      let dLatN=400;
+      let dLongN=-400;
+      for(let time=0;time<4;time++){
+        let R=6378137;
+        let dLat =dLatN/R;
+        let dLon =dLongN/(R*Math.cos(Math.PI*adress1[0]/180));
+        polygon.push([adress1[0]+dLat*180/Math.PI, adress1[1]+dLon*180/Math.PI]);
+        if(time==0){
+          dLongN=400;
+        }
+        if(time==1){
+          dLongN=400;
+          dLatN=-400;
+        }
+        if(time==2){
+          dLongN=-400;
+        }
+      }
+      var poly = turf.polygon([[polygon[0],polygon[1],polygon[2],polygon[3],polygon[0]]]);
+      resolve(turf.booleanPointInPolygon(pt,poly));
+    });
   }
-
-
-  //return Positions for End and Start Coordinates - API?
-  getEndStartCoordinates() {
-
-  }
-
-  //return Route to MapBox-Component using getRouteMapBox()
-  drawRoute() {
-
-  }
-
-  //Get MapBox route via Point A and C over Point B
-  getRouteMapBox() {
-
-  }
-
 
   searchAddress(query: string){
     const url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/';
     return this.http.get(url + query + '.json?autocomplete?types=address&country=de&access_token=' + environment.mapbox.accessToken)
       .pipe(map((res: MapboxOutput) => {
-        // console.log(res.query.values);
         return res.features;
     }));
   }

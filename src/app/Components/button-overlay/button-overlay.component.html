@@ -5,17 +5,15 @@
       <div (click)="dismiss()" style="margin-top: 118vh;"></div>
 
       <div class="circle" (click)="dismiss()">
-        <div class="tick"><ion-fab-button class ="small-button" size="small"><ion-icon  name="star-outline"></ion-icon></ion-fab-button></div>
-        <div class="tick"><ion-fab-button class ="small-button" size="small"><ion-icon name="pricetags-outline"></ion-icon></ion-fab-button></div>
-        <div class="tick"><ion-fab-button class ="small-button" size="small"><ion-icon name="briefcase-outline"></ion-icon></ion-fab-button></div>
-        <div class="tick"><ion-fab-button class ="small-button" size="small"><ion-icon name="heart-outline"></ion-icon></ion-fab-button></div>
-        <div class="tick"><ion-fab-button class ="small-button" size="small"><ion-icon name="home-outline"></ion-icon></ion-fab-button></div>
+        <div class="tick"><ion-fab-button class ="small-button" size="small" (click)="saveIconAddress('1')"><ion-icon name="star-outline"></ion-icon></ion-fab-button></div>
+        <div class="tick"><ion-fab-button class ="small-button" size="small" (click)="saveIconAddress('2')"><ion-icon name="pricetags-outline"></ion-icon></ion-fab-button></div>
+        <div class="tick"><ion-fab-button class ="small-button" size="small" (click)="saveIconAddress('3')"><ion-icon name="briefcase-outline"></ion-icon></ion-fab-button></div>
+        <div class="tick"><ion-fab-button class ="small-button" size="small" (click)="saveIconAddress('4')"><ion-icon name="heart-outline"></ion-icon></ion-fab-button></div>
+        <div class="tick"><ion-fab-button class ="small-button" size="small" (click)="saveIconAddress('5')"><ion-icon name="home-outline"></ion-icon></ion-fab-button></div>
         <ion-button class="test" shape="round">
           <ion-icon style="background-color:chartreuse;color:white "name="checkmark-outline"></ion-icon>
       </ion-button>
       </div>
-
     </ion-slide>
-
   </ion-slides>
 </ion-content>

@@ -8,6 +8,7 @@ import { MapBoxComponent } from '../map-box/map-box.component';
 import { MainMenuComponent } from '../main-menu/main-menu.component';
 import { EventEmitter } from '@angular/core';
 import { SearchBarComponent } from '../search-bar/search-bar.component';
+import { MapIntegrationService } from 'src/app/services/map-integration/map-integration.service';
 
 
 
@@ -22,10 +23,16 @@ export class RouterInfoInBottomComponent implements OnInit {
   public infoArray = [];
 
   constructor(private mainMenu: MainMenuComponent, private mapBox: MapBoxComponent, private routingUserService: RoutingUserService,
-              private userService: UserService, private modalController: ModalController) { }
+              private userService: UserService, private modalController: ModalController,private mapIntegration: MapIntegrationService) { }
 
   ngOnInit() {
-    this.routingUserService.getDistance();
+    this.routingUserService.getDurationasSub().subscribe(duration=>{
+      this.routingUserService.getDistanceasSub().subscribe(distance=>{
+        if(duration !=null && distance !=null){
+          this.infoArray=[duration.valueOf() + ' Minuten' , '(' + distance.valueOf() + ' km)'];
+        }
+      })
+    })
   }
 
   closeView(){
@@ -37,33 +44,36 @@ export class RouterInfoInBottomComponent implements OnInit {
     this.mapBox.updateAssemblyPoints();
     });
     this.routingUserService.setDisplayType('Start');
+    this.mapBox.moveMapToCurrent();
   }
 
   startRoute(){
-    this.routingUserService.getPoints().then(x => {
-      let pointString = '';
-      for(let i =0; i<x.length;i++){
-        if (x[i].name !== ('+++')){
-          pointString += (x[i].position.longitude + ',' + x[i].position.latitude + ';');
-        }
-      }
-      this.mapBox.drawRoute(pointString).then(() => {
-        this.routingUserService.getDuration().then(x => {
-          this.routingUserService.getDistance().then(y => {
-            this.infoArray = [ x + ' Minuten' , '(' + y + ' km)'];
+    this.routingUserService.getPoints().then(points => {
+      this.routingUserService.getDuration().then(duration => {
+        this.routingUserService.getDistance().then(dist => {
+          this.routingUserService.getfinishPoint().then(fin => {
+            this.routingUserService.getstartPoint().then(start=>{
+              let pointString = '';
+              for(let i =0; i<points.length;i++){
+                  pointString += (points[i].position.longitude + ',' + points[i].position.latitude + ';');
+              }
+              this.mapIntegration.saveRouteOffline(start,fin,points,duration,dist).then(returnMessage=>{
+                
+                console.log(returnMessage);
+              })
+              this.mapBox.drawRoute(pointString).then(()=>{
+                //MUST CHECK IF ROUTE THAT IS ALREADY DRAWN IS IDENTICAL TO NEW DRAWING ROUTE
+                console.log("new Route drawn")
+              })
+            });
           });
         });
       });
     });
-  }
+}
 
   saveRoute(){
     this.presentModal();
-    this.routingUserService.getfinishPoint().then(x => {
-      this.routingUserService.getPoints().then(y => {
-        this.userService.saveRoute(x,y);
-      });
-    });
   }
   async presentModal() {
     const modal = await this.modalController.create({

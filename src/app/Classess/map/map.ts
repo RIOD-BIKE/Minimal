@@ -18,19 +18,6 @@ export class PositionI {
     }
 }
 
-export class RouteCl {
-    position: Position;
-    name: string;
-    timestamp: Time;
-    //     ///             /// DATATYPE NOT FINAL! --> Maybe Firestore Timestamp to rxjs Timestamp conversion? | Feature Discussion
-    constructor( long: number, lat: number, name: string) {
-        this.position = {longitude: long, latitude: lat};
-        this.name = name;
-        // this.timestamp = timestamp;
-     }
-}
-
-
 export interface AssemblyPoint {
     position: Position;
     name: string;
@@ -43,9 +30,7 @@ export interface Cluster {
     bearing: number;
     name: string;
     memberCount: number;
-    // memberList: any;        // Need in for interface for Members <- Datatype for Members
 }
-
 
 export class User {
     private position: Position;
@@ -92,9 +77,7 @@ export interface IGeoPointMarker {
 
 }
 
-
 export class GeoCluster implements IGeoJsonCluster {
-    //Variable Definition for Cluster
   type = 'Feature';
   geometry: IGeometry;
   properties;
@@ -103,20 +86,17 @@ export class GeoCluster implements IGeoJsonCluster {
   constructor(coordinates,properties? ) {
     this.geometry = {
       type: 'Point',
-      // coordinates: coordinates
       coordinates,
     };
-    properties = properties;
+    this.properties = {count:properties[0]};
+    console.log(properties[0])
   }
 }
-
 
 export class GeoAssemblyPoint implements IGeoJsonAssemblyPoint {
     type = 'Feature';
     geometry: IGeometry;
     properties;
-
-
 
     constructor(coordinates,textField,iconName, properties?,available?) {
       this.geometry = {type: 'Point',coordinates,};
@@ -125,7 +105,6 @@ export class GeoAssemblyPoint implements IGeoJsonAssemblyPoint {
           for(let i=0;i<x.length;i++){    
            obj.push(x[i]);
         }
-
 
       switch(obj.length){
         case 0: {
@@ -162,7 +141,6 @@ export class GeoAssemblyPoint implements IGeoJsonAssemblyPoint {
         }
       }     
       })
-    
     }
   }
   export class GeoPointMarker implements IGeoPointMarker {
@@ -170,16 +148,12 @@ export class GeoAssemblyPoint implements IGeoJsonAssemblyPoint {
     geometry: IGeometry;
     properties;
 
-
     constructor(coordinates, properties? ) {
       this.geometry = {
         type: 'Point',
         coordinates,
       };
-
       this.properties = {};
-
-
     }
   }
 
@@ -212,6 +186,14 @@ export class RoutingGeoAssemblyPoint {
     this.textField=textField;
     this.iconName=iconName;
   }
-
+}
+export interface MapboxOutput{
+  attribution: string;
+  features: Feature[];
+  query: [];
+}
+export interface Feature {
+  place_name: string;
+  geometry: any;
 }
 

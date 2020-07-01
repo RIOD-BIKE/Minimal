@@ -34,6 +34,7 @@
     "@ionic/cli": "^6.9.2",
     "@ionic/storage": "^2.2.0",
     "@ngtools/webpack": "^9.1.9",
+    "@turf/turf": "^5.1.6",
     "cordova": "^9.0.0",
     "cordova-android": "8.1.0",
     "cordova-ios": "^5.1.1",

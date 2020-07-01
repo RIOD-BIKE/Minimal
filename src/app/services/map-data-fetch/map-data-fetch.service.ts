@@ -1,6 +1,6 @@
 import { UserService } from './../user/user.service';
 import { AngularFireDatabase } from '@angular/fire/database';
-import {  RouteCl, GeoCluster, GeoAssemblyPoint } from '../../Classess/map/map';
+import { GeoCluster, GeoAssemblyPoint } from '../../Classess/map/map';
 import { Injectable } from '@angular/core';
 import { Subscriber, Observable, BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference, DocumentSnapshot, DocumentData  } from '@angular/fire/firestore';

@@ -23,19 +23,19 @@ export class RouterInfoInBottomComponent implements OnInit {
   public infoArray = [];
 
   constructor(private mainMenu: MainMenuComponent, private mapBox: MapBoxComponent, private routingUserService: RoutingUserService,
-              private userService: UserService, private modalController: ModalController,private mapIntegration: MapIntegrationService) { }
+              private userService: UserService, private modalController: ModalController, private mapIntegration: MapIntegrationService) { }
 
   ngOnInit() {
-    this.routingUserService.getDurationasSub().subscribe(duration=>{
-      this.routingUserService.getDistanceasSub().subscribe(distance=>{
-        if(duration !=null && distance !=null){
-          this.infoArray=[duration.valueOf() + ' Minuten' , '(' + distance.valueOf() + ' km)'];
+    this.routingUserService.getDurationasSub().subscribe(duration => {
+      this.routingUserService.getDistanceasSub().subscribe(distance => {
+        if (duration != null && distance != null) {
+          this.infoArray = [duration.valueOf() + ' Minuten' , '(' + distance.valueOf() + ' km)'];
         }
-      })
-    })
+      });
+    });
   }
 
-  closeView(){
+  closeView() {
     this.routingUserService.isRouteFinished(true);
     this.mainMenu.closeView();
     this.infoArray = [];
@@ -48,23 +48,26 @@ export class RouterInfoInBottomComponent implements OnInit {
     this.mapBox.moveMapToCurrent();
   }
 
-  startRoute(){
+  startRoute() {
     this.routingUserService.getPoints().then(points => {
       this.routingUserService.getDuration().then(duration => {
         this.routingUserService.getDistance().then(dist => {
           this.routingUserService.getfinishPoint().then(fin => {
-            this.routingUserService.getstartPoint().then(start=>{
+            this.routingUserService.getstartPoint().then(start => {
               let pointString = '';
-              for(let i =0; i<points.length;i++){
-                  pointString += (points[i].position.longitude + ',' + points[i].position.latitude + ';');
+              // for(let i =0; i<points.length;i++){
+              //     pointString += (points[i].position.longitude + ',' + points[i].position.latitude + ';');
+              // }
+              for (const each of points) {
+                pointString += (each.position.longitude + ',' + each.position.latitude + ';');
               }
-              this.mapIntegration.saveRouteOffline(start,fin,points,duration,dist).then(returnMessage => {
+              this.mapIntegration.saveRouteOffline(start, fin, points, duration, dist).then(returnMessage => {
                 console.log(returnMessage);
-              })
-              this.mapBox.drawRoute(pointString).then(()=>{
-                //MUST CHECK IF ROUTE THAT IS ALREADY DRAWN IS IDENTICAL TO NEW DRAWING ROUTE
-                console.log("new Route drawn")
-              })
+              });
+              this.mapBox.drawRoute(pointString).then(() => {
+                // MUST CHECK IF ROUTE THAT IS ALREADY DRAWN IS IDENTICAL TO NEW DRAWING ROUTE
+                console.log('new Route drawn');
+              });
             });
           });
         });
@@ -72,7 +75,7 @@ export class RouterInfoInBottomComponent implements OnInit {
     });
 }
 
-  saveRoute(){
+  saveRoute() {
     this.presentModal();
   }
   async presentModal() {

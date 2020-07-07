@@ -1,9 +1,9 @@
-import { Component, OnInit,Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from 'src/app/services/user/user.service';
 import { RoutingUserService } from 'src/app/services/routing-user/routing-user.service';
 import { MapBoxComponent } from '../map-box/map-box.component';
 import { Subscription } from 'rxjs';
-import { RoutingGeoAssemblyPoint,Feature } from 'src/app/Classess/map/map';
+import { RoutingGeoAssemblyPoint, Feature } from 'src/app/Classess/map/map';
 import { MapIntegrationService } from 'src/app/services/map-integration/map-integration.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class MainMenuComponent implements OnInit {
 
   @Input() public selectedAddresses;
   @Input() public selectedStartAddresses;
-  
+
 
   public addressesString: any[] = [];
   public addressesStartString: any[] = [];
@@ -25,34 +25,34 @@ export class MainMenuComponent implements OnInit {
   private routingAddress;
   private routingStartAddress;
 
-  constructor(private mapIntegration:MapIntegrationService,private mapBox: MapBoxComponent,
+  constructor(private mapIntegration: MapIntegrationService, private mapBox: MapBoxComponent,
               private userService: UserService, private routingUserService: RoutingUserService) {
-    //this.init();
-    //this.points[0]= new RoutingGeoAssemblyPoint(0,0,"+++",null);
+    // this.init();
+    // this.points[0]= new RoutingGeoAssemblyPoint(0,0,"+++",null);
 
   }
 
-  setUpStart(){
+  setUpStart() {
     this.routingUserService.getfinishPoint().then(x => {
-      if(this.userService.getfirstTimeCalling() === true) {
+      if (this.userService.getfirstTimeCalling() === true) {
         this.userService.getUserPosition().then(() => {
           this.start = this.userService.behaviorMyOwnPosition.value;
         });
       } else {
         this.start = this.userService.behaviorMyOwnPosition.value;
       }
-    })
+    });
   }
 
-  init(){
+  init() {
     this.routingUserService.getCenterPointObs().subscribe((newAP) => {
-      for(let i = 0; i < this.points.length && i <= 2; i++) {
+      for (let i = 0; i < this.points.length && i <= 2; i++) {
         if (this.points[i].name === '+++') {
-          for(let y=0;y<this.points.length;y++) {
+          for (let y = 0; y < this.points.length; y++) {
             if (this.points[y].name === newAP.name) {
               console.log('CATCH - Dieser AP ist schon ausgewählt worden');
               return;
-              }else {
+              } else {
                 this.points[i] = newAP;
                 if (i < 2) {
                   // this.points[i+1]=new RoutingGeoAssemblyPoint(0,0,"+++",null);
@@ -66,7 +66,7 @@ export class MainMenuComponent implements OnInit {
     });
   }
 
-  chooseAP(){
+  chooseAP() {
 
     // console.log('Choose AssemblyPoint');
   }
@@ -74,14 +74,14 @@ export class MainMenuComponent implements OnInit {
   searchStart(event: any) {
     if (this.routingStartAddress !== this.selectedStartAddresses) {
     const searchTerm = event.target.value.toLowerCase();
-    if (searchTerm && searchTerm.length >0) {
+    if (searchTerm && searchTerm.length > 0) {
       this.mapIntegration.searchAddress(searchTerm).subscribe((features: Feature[]) => {
         console.log(features);
         this.addresses = features.map(feat => feat.place_name);
         this.addressesStartString = features.map(feat => [feat.geometry.coordinates, feat.place_name]);
         console.log(this.addressesStartString);
       });
-    } else{
+    } else {
       this.addresses = [];
     }
     }
@@ -93,16 +93,16 @@ export class MainMenuComponent implements OnInit {
       this.routingStartAddress = address[1];
 
       this.routingUserService.setStartPoint(address);
-      this.routingUserService.getstartPoint().then(x => {
-        console.log(x);
-      });
-      console.log('Selected StartPoint' + this.routingUserService.getstartPoint());
+      // this.routingUserService.getstartPoint().then(x => {
+      //   console.log(x);
+      // });
+      // console.log('Selected StartPoint' + this.routingUserService.getstartPoint());
       this.addresses = [];
       this.addressesStartString = [];
     });
   }
 
- 
+
 
   search(event: any) {
     if (this.routingAddress !== this.selectedAddresses) {
@@ -136,7 +136,7 @@ export class MainMenuComponent implements OnInit {
     this.points = [];
     this.routingStartAddress = null;
     this.routingAddress = null;
-    console.log('closed');
+    // console.log('closed');
 
   }
 

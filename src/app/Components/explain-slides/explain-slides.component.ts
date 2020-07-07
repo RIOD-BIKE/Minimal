@@ -115,12 +115,12 @@ export class ExplainSlidesComponent implements OnInit {
     try {
       // TODO: Spinner to show activity?
       await this.authService.handleAnonymousSignIn();
-      if (this.name) await this.userDataFetch.firestore_setName(await this.authService.getCurrentUID(), this.name);
-      if (this.contact) await this.userDataFetch.firestore_setContact(await this.authService.getCurrentUID(), this.contact);
+      if (this.name) { await this.userDataFetch.firestore_setName(await this.authService.getCurrentUID(), this.name); }
+      if (this.contact) { await this.userDataFetch.firestore_setContact(await this.authService.getCurrentUID(), this.contact); }
       this.modalController.dismiss();
       this.router.navigate(['map-start']);
     } catch (e) {
-      console.log("Error SignIn: ", e);
+      console.log('Error SignIn: ', e);
       const alert = await this.alertController.create({
         header: 'Fehler',
         message: 'Leider ist ein Fehler beim Anmelden aufgetreten.',

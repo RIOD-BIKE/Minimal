@@ -30,7 +30,7 @@ export class MapBoxComponent implements OnInit {
   private assemblyPointMarkers: any;
 
   constructor(private routingUserService: RoutingUserService, private userservice: UserService,
-    private mapDataFetchService: MapDataFetchService, private mapIntegration: MapIntegrationService) {
+              private mapDataFetchService: MapDataFetchService, private mapIntegration: MapIntegrationService) {
   }
 
   ngOnInit() { }
@@ -89,7 +89,7 @@ export class MapBoxComponent implements OnInit {
         container: 'map',
         style: 'mapbox://styles/mapbox/dark-v10?optimize=true',
         zoom: 13,
-        //maxZoom: 16,
+        // maxZoom: 16,
         center: [this.myPosition.position.longitude, this.myPosition.position.latitude],
         accessToken: environment.mapbox.accessToken
       });
@@ -124,7 +124,7 @@ export class MapBoxComponent implements OnInit {
             features: []
           }
         });
-        //setTimeout(() => {
+        // setTimeout(() => {
         this.clusterSource = this.map.getSource('clusters');
         const data = new ClusterCollection(this.clusterMarkers);
         this.clusterSource.setData(data);
@@ -134,9 +134,9 @@ export class MapBoxComponent implements OnInit {
         } else {
           this.map.loadImage('assets/icon/group_excl_me.png', (error, image) => {
             this.map.addImage('marker_GEM', image);
-            //const img = new Image(20, 20);
-            //img.onload = () => this.map.addImage('test', img);
-            //img.src = 'assets/icon/cancel.svg';
+            // const img = new Image(20, 20);
+            // img.onload = () => this.map.addImage('test', img);
+            // img.src = 'assets/icon/cancel.svg';
             this.mapDrawClusterHelper();
           });
         }
@@ -291,27 +291,42 @@ export class MapBoxComponent implements OnInit {
         const l = e.features[0].properties.title;
         const arr = [];
         const temp2 = this.assemblyPointMarkers;
-        this.routingUserService.deletePoints(parseInt(n)).then(() => {
+        this.routingUserService.deletePoints(parseInt(n, 10)).then(() => {
           this.routingUserService.getPoints().then(points => {
-            if (points.length != null && points.length != 0) {
-              let length = points.length;
+            if (points.length != null && points.length !== 0) {
+              const length = points.length;
               this.assemblyPointMarkers.forEach(x => {
-                if (x.properties.textField == length.toString()) {
+                if (x.properties.textField === length.toString()) {
                   for (let i = 0; i < x.properties.available_count; i++) {
                     arr.push(x.properties['available_' + (i + 1)]);
                   }
                 }
-                for (let i = 0; i < temp2.length; i++) {
-                  if (temp2[i].properties.iconName === 'marker_CAP') {
-                    if (temp2[i].properties.title === l || parseInt(temp2[i].properties.textField) > parseInt(n)) {
-                      temp2[i].properties.iconName = 'marker_DAP';
-                      temp2[i].properties.textField = '';
+                // for (let i = 0; i < temp2.length; i++) {
+                //   if (temp2[i].properties.iconName === 'marker_CAP') {
+                //     if (temp2[i].properties.title === l || parseInt(temp2[i].properties.textField) > parseInt(n)) {
+                //       temp2[i].properties.iconName = 'marker_DAP';
+                //       temp2[i].properties.textField = '';
+                //     }
+                //   } else {
+                //     temp2[i].properties.iconName = 'marker_UNAP';
+                //     for (let j = 0; j < arr.length; j++) {
+                //       if (arr[j] == temp2[i].properties.title) {
+                //         temp2[i].properties.iconName = 'marker_DAP';
+                //       }
+                //     }
+                //   }
+                // }
+                for (const each  of temp2) {
+                  if (each.properties.iconName === 'marker_CAP') {
+                    if (each.properties.title === l || parseInt((each.properties.textField), 10) > parseInt(n, 10)) {
+                      each.properties.iconName = 'marker_DAP';
+                      each.properties.textField = '';
                     }
                   } else {
-                    temp2[i].properties.iconName = 'marker_UNAP';
-                    for (let j = 0; j < arr.length; j++) {
-                      if (arr[j] == temp2[i].properties.title) {
-                        temp2[i].properties.iconName = 'marker_DAP';
+                    each.properties.iconName = 'marker_UNAP';
+                    for (const eachArr of arr) {
+                      if (eachArr === each.properties.title) {
+                        each.properties.iconName = 'marker_DAP';
                       }
                     }
                   }
@@ -319,9 +334,13 @@ export class MapBoxComponent implements OnInit {
                 this.drawUpdateChooseAssemblyPoints();
               })
             } else {
-              for (let i = 0; i < temp2.length; i++) {
-                temp2[i].properties.iconName = 'marker_DAP';
-                temp2[i].properties.textField = '';
+              // for (let i = 0; i < temp2.length; i++) {
+              //   temp2[i].properties.iconName = 'marker_DAP';
+              //   temp2[i].properties.textField = '';
+              // }
+              for (const each of temp2) {
+                each.properties.iconName = 'marker_DAP';
+                each.properties.textField = '';
               }
               this.drawUpdateChooseAssemblyPoints();
             }
@@ -334,7 +353,7 @@ export class MapBoxComponent implements OnInit {
         const n = e.features[0].properties.title;
         const m = e.features[0].properties.iconName;
         const count = e.features[0].properties.available_count;
-        let arr = [];
+        const arr = [];
         for (let i = 0; i < count; i++) {
           arr.push(e.features[0].properties['available_' + (i + 1)]);
         }
@@ -349,19 +368,35 @@ export class MapBoxComponent implements OnInit {
 
   drawChooseUpdateAssemblyPoints_Helper(arr: Array<any>, n: string): Promise<any> {
     return new Promise<any>(resolve => {
-      let temp2 = this.assemblyPointMarkers;
+      const temp2 = this.assemblyPointMarkers;
       this.routingUserService.getPoints().then(x => {
-        for (let i = 0; i < temp2.length; i++) {
-          if (x.some(e => (e.name === temp2[i].properties.title) && (temp2[i].properties.iconName == 'marker_CAP'))) {
+        // for (let i = 0; i < temp2.length; i++) {
+        //   if (x.some(e => (e.name === temp2[i].properties.title) && (temp2[i].properties.iconName == 'marker_CAP'))) {
+        //   } else {
+        //     if (temp2[i].properties.title == n) {
+        //       temp2[i].properties.iconName = 'marker_CAP';
+        //       temp2[i].properties.textField = x.length.toString();
+        //     } else {
+        //       temp2[i].properties.iconName = 'marker_UNAP';
+        //       for (let j = 0; j < arr.length; j++) {
+        //         if (arr[j] === temp2[i].properties.title) {
+        //           temp2[i].properties.iconName = 'marker_DAP';
+        //         }
+        //       }
+        //     }
+        //   }
+        // }
+        for (const each of temp2) {
+          if (x.some(e => (e.name === each.properties.title) && (each.properties.iconName === 'marker_CAP'))) {
           } else {
-            if (temp2[i].properties.title == n) {
-              temp2[i].properties.iconName = 'marker_CAP';
-              temp2[i].properties.textField = x.length.toString();
+            if (each.properties.title === n) {
+              each.properties.iconName = 'marker_CAP';
+              each.properties.textField = x.length.toString();
             } else {
-              temp2[i].properties.iconName = 'marker_UNAP';
-              for (let j = 0; j < arr.length; j++) {
-                if (arr[j] === temp2[i].properties.title) {
-                  temp2[i].properties.iconName = 'marker_DAP';
+              each.properties.iconName = 'marker_UNAP';
+              for (const eachArr of arr) {
+                if (eachArr === each.properties.title) {
+                  each.properties.iconName = 'marker_DAP';
                 }
               }
             }
@@ -376,13 +411,13 @@ export class MapBoxComponent implements OnInit {
     return new Promise(resolve => {
       this.routingUserService.getstartPoint().then(y => {
         this.routingUserService.getfinishPoint().then(x => {
-          const start = y[0]; //StartCoords
-          const end = x[0]; //FinishCoords
+          const start = y[0]; // StartCoords
+          const end = x[0]; // FinishCoords
           const bbox = [start, end];
           const completeDirectionString = start[0] + ',' + start[1] + ';' + pointString + end[0] + ',' + end[1];
           const url = 'https://api.mapbox.com/directions/v5/mapbox/cycling/' +
             completeDirectionString + '?steps=true&geometries=geojson&access_token=' + environment.mapbox.accessToken.toString();
-          //console.log(url);
+          // console.log(url);
           this.drawRouteHelpMethod(url, this.drawRouteFunctionMap, this.map, bbox).then(() => { resolve(); });
         });
       });
@@ -392,25 +427,23 @@ export class MapBoxComponent implements OnInit {
 
 
   drawRouteHelpMethod(url, cFunction, map, bbox): Promise<any> {
-    console.log("hey")
     return new Promise(resolve => {
-      // XMLHttpRequest is a bitch  
       const xhttp = new XMLHttpRequest();
       xhttp.responseType = 'json';
-      xhttp.open("GET", url, true);
+      xhttp.open('GET', url, true);
       xhttp.onreadystatechange = () => {
         xhttp.onload = () => {
           const jsonResponse = xhttp.response;
           const distance = jsonResponse.routes[0].distance * 0.001;
           const duration = jsonResponse.routes[0].duration / 60;
           const coords = jsonResponse.routes[0].geometry;
-          const routeCoords = { coordinates: [], type: 'LineString' }
+          const routeCoords = { coordinates: [], type: 'LineString' };
           jsonResponse.routes[0].legs.forEach(element => {
             element.steps.forEach(step => {
               step.geometry.coordinates.forEach(coordinate => {
                 routeCoords.coordinates.push(coordinate);
-              })
-            })
+              });
+            });
           });
           if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
             this.routingUserService.setDuration(duration);
@@ -420,21 +453,21 @@ export class MapBoxComponent implements OnInit {
             cFunction(routeCoords, map);
 
             this.routingUserService.getPoints().then(points => {
-              let arr = [];
+              const arr = [];
               points.forEach(p => {
                 arr.push([p.position.longitude, p.position.latitude]);
-              })
+              });
               arr.push(bbox[0]);
               arr.push(bbox[1]);
-              let line = turf.lineString(arr)
-              let bboxTurf = turf.bbox(line);
+              const line = turf.lineString(arr);
+              const bboxTurf = turf.bbox(line);
               map.fitBounds(bboxTurf, { padding: { top: 200, bottom: 130, left: 40, right: 40 } });
               this.drawThisFinishMarker(map, arr);
               resolve();
-            })
+            });
           }
         };
-      }
+      };
       xhttp.send();
     });
   }
@@ -466,59 +499,61 @@ export class MapBoxComponent implements OnInit {
   drawFinishMarker(): Promise<boolean> {
     return new Promise(resolve => {
       this.drawExistingAssemblyPointRoute().then(x => {
-        if (x != false && x.assemblyPoints != undefined && x.assemblyPoints.length > 0) {
+        if (x !== false && x.assemblyPoints !== undefined && x.assemblyPoints.length > 0) {
           let i = 0;
-          let apMarker = this.assemblyPointMarkers;
-          let length = x.assemblyPoints.length;
+          const apMarker = this.assemblyPointMarkers;
+          const length = x.assemblyPoints.length;
           x.assemblyPoints.forEach(apPoint => {
             apMarker.forEach(apM => {
-              if (apPoint.name == apM.properties.title && apPoint.position.longitude == apM.geometry.coordinates[0] && apPoint.position.latitude == apM.geometry.coordinates[1]) {
+              if (apPoint.name === apM.properties.title && apPoint.position.longitude === apM.geometry.coordinates[0] &&
+                apPoint.position.latitude === apM.geometry.coordinates[1]) {
                 apM.properties.iconName = apPoint.iconName;
                 apM.properties.textField = apPoint.textField;
-                this.routingUserService.setPoints(new RoutingGeoAssemblyPoint(apM.properties.latitude, apM.properties.longitude, apM.properties.title, apPoint.available, apM.properties.textField, apM.properties.iconName));
+                this.routingUserService.setPoints(new RoutingGeoAssemblyPoint(apM.properties.latitude, apM.properties.longitude,
+                  apM.properties.title, apPoint.available, apM.properties.textField, apM.properties.iconName));
                 i++;
               } else {
-                if (apM.properties.textField == "" && apM.properties.iconName != "marker_CAP") {
-                  apM.properties.iconName = "marker_UNAP";
+                if (apM.properties.textField === '' && apM.properties.iconName !== 'marker_CAP') {
+                  apM.properties.iconName = 'marker_UNAP';
                 }
               }
             })
-            if (length.toString() == apPoint.textField) {
+            if (length.toString() === apPoint.textField) {
               apPoint.available.forEach(x => {
                 this.routingUserService.getPoints().then(point => {
-                  if (x != point.name) {
+                  if (x !== point.name) {
                     apMarker.forEach(apM => {
-                      if (apM.properties.title == x && apM.properties.textField == "") {
-                        apM.properties.iconName = "marker_DAP"
+                      if (apM.properties.title === x && apM.properties.textField === '') {
+                        apM.properties.iconName = 'marker_DAP';
                       }
-                    })
+                    });
                   }
-                })
-              })
+                });
+              });
             }
-            if (i == length) {
+            if (i === length) {
               this.assemblyPointMarkers = apMarker;
               this.routingUserService.getPoints().then(x => {
                 this.drawUpdateChooseAssemblyPoints();
                 this.map.on('click', 'assemblyPoints', this.drawChooseAssemblyPoints);
                 this.drawThisFinishMarker(this.map);
                 resolve(true);
-              })
+              });
             }
-          })
+          });
         } else {
           this.map.on('click', 'assemblyPoints', this.drawChooseAssemblyPoints);
           this.drawThisFinishMarker(this.map);
           resolve(false);
         }
-      })
-    })
+      });
+    });
   }
 
   drawExistingAssemblyPointRoute(): Promise<any> {
     return new Promise(resolve => {
       this.mapIntegration.checkifRouteExists().then(x => {
-        if (x == false) {
+        if (x === false) {
           resolve(false);
         } else {
           resolve(x.value);
@@ -531,7 +566,7 @@ export class MapBoxComponent implements OnInit {
   drawThisFinishMarker(map, pointArray?) {
     this.routingUserService.getPoints().then(points => {
       this.routingUserService.getfinishPoint().then(finishPoint => {
-        if (map.getLayer('finishMarker') != undefined) {
+        if (map.getLayer('finishMarker') !== undefined) {
           let finishPointSource;
           let finishPointdata;
           finishPointSource = map.getSource('finishMarker') as mapboxgl.GeoJSONSource;
@@ -547,24 +582,24 @@ export class MapBoxComponent implements OnInit {
             let finishPointSource: mapboxgl.GeoJSONSource;
             let finishPointdata;
             finishPointSource = map.getSource('finishMarker') as mapboxgl.GeoJSONSource;
-            if (pointArray != undefined) {
+            if (pointArray !== undefined) {
               finishPointdata = new PointMarker(Array(new GeoPointMarker(pointArray)));
-              let arr = [startpoint[0], pointArray, finishPoint]
-              let line = turf.lineString(arr)
-              let bbox = turf.bbox(line);
+              const arr = [startpoint[0], pointArray, finishPoint];
+              const line = turf.lineString(arr);
+              const bbox = turf.bbox(line);
 
-              console.log("DrawThisFinishPointMarker" + bbox)
+              // console.log("DrawThisFinishPointMarker" + bbox)
               map.fitBounds(bbox, { padding: { top: 200, bottom: 130, left: 40, right: 40 } });
             } else {
               finishPointdata = new PointMarker(Array(new GeoPointMarker(finishPoint[0])));
-              let arr = [];
+              const arr = [];
               points.forEach(p => {
                 arr.push([p.position.longitude, p.position.latitude]);
-              })
+              });
               arr.push(finishPoint[0]);
               arr.push(startpoint[0]);
-              let line = turf.lineString(arr)
-              let bboxTurf = turf.bbox(line);
+              const line = turf.lineString(arr);
+              const bboxTurf = turf.bbox(line);
               map.fitBounds(bboxTurf, { padding: { top: 200, bottom: 130, left: 40, right: 40 } });
             }
             finishPointSource.setData(finishPointdata);
@@ -577,11 +612,10 @@ export class MapBoxComponent implements OnInit {
                 this.mapDrawFinishMarkerHelper(map);
               });
             }
-          })
-
+          });
         }
       });
-    })
+    });
 
   }
   mapDrawFinishMarkerHelper(map): Promise<any> {
@@ -597,7 +631,7 @@ export class MapBoxComponent implements OnInit {
           'icon-allow-overlap': true,
           'icon-offset': [0, -30]
         },
-      }))
+      }));
     });
   }
 

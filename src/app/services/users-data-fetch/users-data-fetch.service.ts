@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFirestore } from '@angular/fire/firestore';
+import * as firebase from 'firebase';
 
 
 
@@ -64,5 +65,13 @@ export class UsersDataFetchService {
   async firestore_getContact(uid: string) {
     const user = (await this.afs.collection('users').doc(uid).ref.get()).data();
     return user.contact as string;
+  }
+
+  async storage_getSpecialAvatarURL() {
+    try {
+      return await firebase.storage().ref('special-avatar.png').getDownloadURL() as string;
+    } catch (e) {
+      if (e.code !== 'storage/object-not-found') { throw e }
+    }
   }
 }

@@ -17,6 +17,7 @@ export class SettingsMainDropboxPage implements OnInit {
   public display = true;
   public gps = true;
   public vibration = true;
+  public specialAvatarURL = "../../../assets/settings/profile-pic.jpg";
 
   constructor(public platform: Platform, private userDataFetch: UsersDataFetchService, private authService: AuthService,
     private router: Router, private alertController: AlertController, private navController: NavController) {
@@ -29,6 +30,9 @@ export class SettingsMainDropboxPage implements OnInit {
     this.uid = await this.authService.getCurrentUID();
     this.name = await this.userDataFetch.firestore_getName(this.uid);
     this.contact = await this.userDataFetch.firestore_getContact(this.uid);
+    
+    const URL = await this.userDataFetch.storage_getSpecialAvatarURL();
+    if(URL) { this.specialAvatarURL = URL; }
   }
 
   async deleteAccount() {
@@ -39,6 +43,7 @@ export class SettingsMainDropboxPage implements OnInit {
         {
           text: 'Account löschen',
           handler: async () => {
+            // TODO: Spinner?
             const uid = await this.authService.getCurrentUID();
             await this.userDataFetch.rtdb_wipeUser(uid);
             await this.userDataFetch.firestore_wipeUser(uid);

@@ -1,3 +1,4 @@
+import { UsersDataFetchService } from 'src/app/services/users-data-fetch/users-data-fetch.service';
 import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { Component, OnInit,Input, NgZone, HostListener } from '@angular/core';
@@ -16,13 +17,16 @@ import * as firebase from 'firebase';
 export class SearchBarComponent implements OnInit {
   @Input() searchBarInputV = '';
   public addressesString: string[][] = [];
+  public specialAvatarURL = "../../../assets/settings/profile-pic.jpg";
+
   locArray = [
     { "name": "home", "street": "Wiesenbachstraße 20b", "city":"Osnabrück" },
     { "name": "work", "street": "Sutthauserstraße 52", "city":"Osnabrück"},
     { "name": "heart", "street": "Heinrichstraße 37", "city":"Osnabrück" }
   ];
   constructor(private routingUserService: RoutingUserService, private modalCtrl: ModalController,
-              private mapIntegration: MapIntegrationService, private mapBox: MapBoxComponent, private change:NgZone, private navCtrl: NavController) { }
+              private mapIntegration: MapIntegrationService, private mapBox: MapBoxComponent,
+              private change:NgZone, private navCtrl: NavController, private userDataFetch: UsersDataFetchService) { }
 
   async ngOnInit() {
     this.routingUserService.routeFinished.subscribe( value => {
@@ -53,12 +57,9 @@ export class SearchBarComponent implements OnInit {
       edit3.hidden = true;
     }
 
-    try {
-      const imageURL = await firebase.storage().ref('special-avatar.png').getDownloadURL();
-      document.getElementById('avatar').setAttribute('src', imageURL);
-    } catch(e) {
-      if(e.code !== 'storage/object-not-found') { throw e }
-    }
+    const URL = await this.userDataFetch.storage_getSpecialAvatarURL();
+    console.log(URL);
+    if(URL) { this.specialAvatarURL = URL; }
   }
 
   search(event) {

@@ -1,4 +1,5 @@
-import { ModalController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { ModalController, NavController } from '@ionic/angular';
 import { Component, OnInit,Input, NgZone, HostListener } from '@angular/core';
 import { MapBoxComponent } from '../map-box/map-box.component';
 import { MapIntegrationService  } from 'src/app/services/map-integration/map-integration.service';
@@ -20,7 +21,7 @@ export class SearchBarComponent implements OnInit {
     { "name": "heart", "street": "Heinrichstraße 37", "city":"Osnabrück" }
   ];
   constructor(private routingUserService: RoutingUserService, private modalCtrl: ModalController,
-              private mapIntegration: MapIntegrationService, private mapBox: MapBoxComponent, private change:NgZone) { }
+              private mapIntegration: MapIntegrationService, private mapBox: MapBoxComponent, private change:NgZone, private navCtrl: NavController) { }
 
   ngOnInit() {
     this.routingUserService.routeFinished.subscribe( value => {
@@ -151,5 +152,9 @@ export class SearchBarComponent implements OnInit {
 
   clear() {
     this.searchBarInputV = '';
+  }
+
+  openSettings() {
+    this.navCtrl.navigateForward('settings-main-dropbox');
   }
 }

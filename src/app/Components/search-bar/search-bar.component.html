@@ -9,8 +9,11 @@
     </div>
     <div class="wrap" id="wrap">
       <!-- <ion-input class="search" debounce=500   [(ngModel)]="selectedAddresses" (ionChange)="search($event)"  placeholder="Hier suchen.." ></ion-input> -->
-      <ion-input class="search" debounce=500 [(ngModel)]="searchBarInputV" type="text" (ngModelChange)="search($event)"
-        placeholder="Hier suchen..." (click)="onTouchSearch()">
+      <!-- FIXME: onTouchSearch() breaks search -->
+      <!-- <ion-input class="search" debounce=500 [(ngModel)]="searchBarInputV" type="text" (ngModelChange)="search($event)"
+        placeholder="Hier suchen..." (click)="onTouchSearch()"> -->
+        <ion-input class="search" debounce=500 [(ngModel)]="searchBarInputV" type="text" (ngModelChange)="search($event)"
+        placeholder="Hier suchen...">
       </ion-input>
       <div *ngIf="isSearchEmpty(searchBarInputV);"
         style="position:absolute; width:100%; z-index:999;margin-top:7.5em ;left:0%">
@@ -24,7 +27,7 @@
       <div *ngIf="searchBarInputV != ''; " style="margin-left: 275px; margin-top: 7px; position: absolute;">
         <ion-icon name="close-outline" (click)="clear()" style="font-size: 36px;"></ion-icon>
       </div>
-      <button class="ava">
+      <button class="ava" (click)="openSettings()">
         <img src="'../../../assets/settings/profile-pic.jpg" alt="Avatar" />
       </button>
     </div>

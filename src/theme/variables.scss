@@ -4,6 +4,10 @@
 /** Ionic CSS Variables **/
 :root {
 
+  :focus {
+    outline: none;
+    }
+
   :root,
   :root[mode="md"],
   :root[mode="ios"] {

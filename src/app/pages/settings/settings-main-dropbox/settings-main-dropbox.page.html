@@ -48,13 +48,13 @@
   <ion-grid style="display: flex; height: 100%; flex-flow: column;">
     <div class="mt10"></div>
     <ion-row style="flex-grow: 1;">
-      <ion-col size="2">
+      <ion-col class="col-adjust" size="2" >
         <ion-icon class="gps"></ion-icon>
       </ion-col>
-      <ion-col size="6">
+      <ion-col class="col-adjust" size="6" >
         <h3>GPS anschalten</h3>
       </ion-col>
-      <ion-col size="4">
+      <ion-col class="col-adjust" size="4" >
         <!-- <div class="button r" id="button-1">onclick='handleClick(this);'
                     <input type="checkbox" class="checkbox">
                     <div class="knobs"> </div>                      
@@ -65,17 +65,17 @@
     </ion-row>
     <!-- <div class="mt20"></div> -->
     <ion-row style="flex-grow: 1;">
-      <ion-col size="2">
+      <ion-col class="col-adjust" size="2">
         <ion-icon class="volume"></ion-icon>
       </ion-col>
-      <ion-col size="9">
+      <ion-col class="col-adjust" size="10">
         <ion-range
           style="margin-left: 10px; color: rgb(253, 223, 223);"
           [(ngModel)]="rangeVolume"
           pin="true"
           min="0"
           max="10"
-          color="light"
+          color="dark"
           snaps="true"
           ticks="false"
         ></ion-range>
@@ -83,13 +83,13 @@
     </ion-row>
     <!-- <div class="mt20"></div> -->
     <ion-row style="flex-grow: 1;">
-      <ion-col size="2">
+      <ion-col class="col-adjust" size="2">
         <ion-icon class="vibra"></ion-icon>
       </ion-col>
-      <ion-col size="6">
+      <ion-col class="col-adjust" size="6">
         <h3>Vibration zulassen</h3>
       </ion-col>
-      <ion-col size="4">
+      <ion-col class="col-adjust" size="4">
         <!-- <div class="button r" id="button-1">onclick='handleClick(this);'
                             <input type="checkbox" class="checkbox">
                             <div class="knobs"> </div>                      
@@ -100,13 +100,13 @@
     </ion-row>
     <!-- <div class="mt20"></div> -->
     <ion-row style="flex-grow: 1;">
-      <ion-col size="2">
+      <ion-col class="col-adjust" size="2">
         <ion-icon class="display"></ion-icon>
       </ion-col>
-      <ion-col size="6">
+      <ion-col class="col-adjust" size="6">
         <h3>Display anlassen</h3>
       </ion-col>
-      <ion-col size="4">
+      <ion-col class="col-adjust" size="4">
         <!-- <div class="button r" id="button-1">onclick='handleClick(this);' -->
         <!-- <input type="checkbox" class="checkbox"> -->
         <!-- <div class="knobs"> </div>                      
@@ -117,13 +117,13 @@
     </ion-row>
     <!-- <div class="mt20"></div> -->
     <ion-row style="flex-grow: 1;">
-      <ion-col size="2">
+      <ion-col class="col-adjust" size="2" >
         <ion-icon class="anleitung"></ion-icon>
       </ion-col>
-      <ion-col size="6">
+      <ion-col class="col-adjust" size="6">
         <h3>Anleitung</h3>
       </ion-col>
-      <ion-col size="4">
+      <ion-col class="col-adjust" size="4">
         <!-- <div class="button r" id="button-1">onclick='handleClick(this);' -->
         <button ion-button (click)="goToManualPage()" class="next"></button>
         <!-- </div>  -->
@@ -131,13 +131,13 @@
     </ion-row>
     <!-- <div class="mt20"></div> -->
     <ion-row style="flex-grow: 1;">
-      <ion-col size="2">
+      <ion-col class="col-adjust" size="2">
         <ion-icon class="hilfe"></ion-icon>
       </ion-col>
-      <ion-col size="6">
+      <ion-col class="col-adjust" size="6">
         <h3>Hilfe und Feedback</h3>
       </ion-col>
-      <ion-col size="4">
+      <ion-col class="col-adjust" size="4">
         <!-- <div class="button r" id="button-1">onclick='handleClick(this);' -->
         <button ion-button class="feedback"></button>
 
@@ -146,7 +146,7 @@
     </ion-row>
     <!-- <div class="mt20"></div> -->
     <ion-row style="flex-grow: 1;">
-      <ion-col size="6">
+      <ion-col  size="6">
         <button ion-button class="accountDelete" (click)="deleteAccount()">
           Account löschen
         </button>
@@ -162,7 +162,7 @@
   </ion-grid>
   <ion-grid>
     <ion-row>
-      <ion-col size="6">
+      <ion-col  size="6">
         <h5 style="float: right; margin-right: 10px;">
           <a link="https://..">Datenschutzerklärung</a>
         </h5>

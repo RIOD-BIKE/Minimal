@@ -1,3 +1,11 @@
+.col-adjust{
+    align-self: center;
+}
+
+
+
+
+
 .header {
     padding-left: 30px;
     padding-right: 30px;
@@ -89,7 +97,7 @@ ion-range{
     border-radius: 50%;
     // background: url('../../../../assets/settings/profile-pic.jpg');
     // background-repeat: no-repeat;
-    // background-position: center;
+    // background-position: bottom;
     // background-size: 70px;
     margin-top: 5px;
     // margin-left: 7px;
@@ -101,17 +109,17 @@ ion-range{
     background: url('../../../../assets/settings/gps.svg');
     background-size: 37px;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: bottom;
 }
 
 .volume{
     width: 48px;
     height: 48px;
     background: url('../../../../assets/settings/volume.svg');
-    background-size: 32px;
+    background-size: 37px;
     background-repeat: no-repeat;
-    background-position: center;
-    background-position-y: 25%;
+    background-position: bottom;
+
 }
 
 .vibra{
@@ -120,7 +128,7 @@ ion-range{
     background: url('../../../../assets/settings/vibration.svg');
     background-size: 37px;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: bottom;
 }
 .display{
     margin-top: 2px;
@@ -129,7 +137,7 @@ ion-range{
     background: url('../../../../assets/settings/display.svg');
     background-size: 35px;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: bottom;
 }
 
 
@@ -140,7 +148,7 @@ ion-range{
     color: white;
     background-size: 35px;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: bottom;
  
 }
 
@@ -150,7 +158,7 @@ ion-range{
     background: url('../../../../assets/settings/hilfe.svg');
     background-size: 35px;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: bottom;
 }
 
 .accountDelete{
@@ -213,7 +221,7 @@ a {
 h3{
     font-size: 4vw;
     float: left;
-    margin-top: 15px;
+    margin-top: 12px;
     margin-left: 5px;
 }
 h5{
@@ -255,17 +263,18 @@ ion-toggle {
     --background-checked:  #4F4F4F;
     --background-checked:  #4F4F4F;
     --handle-background: #242323;
-    --handle-background-checked: #00ff62;
+    --handle-background-checked: #242323;
 
+    padding:0px;
     float: right;
     width: 80px;
     height: 40px;
     --border-radius: 30px;
-    margin-left: 5px;
-    margin-top: 5px;
+   // margin-left: 5px;
+  //  margin-top: 5px;
     
-    --handle-spacing: 4px;
-    --handle-width: 40px;
+    --handle-spacing: 2px;
+    --handle-width: 43px;
     --handle-height: 35.5px;
     --handle-border-radius: 40px;
     --handle-box-shadow: 0px;
@@ -278,14 +287,15 @@ ion-toggle.toggle-checked::before {
     position: absolute;
 
     top: 14px;
-    left: 10px;
+    left: 7px;
   
     content: "Nein";
   
     color: #242323;
     font-size: 3vw;
     font-weight: 800;
-  
+    line-height: 1.3;
+
     z-index: 1;
 }
 
@@ -297,10 +307,11 @@ ion-toggle.toggle-checked::after {
   
    content: "Ja";
   
-    color: white;
+    color: #00ff62;
     font-size: 3vw;
     font-weight: 800;
-  
+    line-height: 1.3;
+
     z-index: 1;
 }
 
@@ -315,7 +326,8 @@ ion-toggle::before {
     color: white;
     font-size: 3vw;
     font-weight: 800;
-  
+    line-height: 1.3;
+
     z-index: 1;
 }
 
@@ -323,14 +335,15 @@ ion-toggle::after {
     position: absolute;
 
     top: 14px;
-    right: 18px;
+    right: 15px;
   
     content: "Ja";
   
     color: #242323;
     font-size: 3vw;
     font-weight: 800;
-  
+    line-height: 1.3;
+
     z-index: 1;
 }
 

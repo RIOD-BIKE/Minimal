@@ -180,6 +180,7 @@ export class MapIntegrationService {
   }
 
   // Earth radius at a given latitude, according to the WGS-84 ellipsoid [m]
+  // http://en.wikipedia.org/wiki/Earth_radius
   WGS84EarthRadius(lati: number): number {
     const WGS84A = 6378137.0;
     const WGS84B = 6356752.3;

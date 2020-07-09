@@ -67,6 +67,6 @@ export class SettingsMainDropboxPage implements OnInit {
   }
 
   cancel() {
-    this.navController.back();
+    this.router.navigate(['/map-start']);
   }
 }

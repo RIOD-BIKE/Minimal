@@ -6,6 +6,7 @@ import { MapIntegrationService  } from 'src/app/services/map-integration/map-int
 import { RoutingUserService } from 'src/app/services/routing-user/routing-user.service';
 import { Feature } from '../../Classess/map/map'
 import { feature } from '@turf/turf';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'search-bar',
@@ -23,7 +24,7 @@ export class SearchBarComponent implements OnInit {
   constructor(private routingUserService: RoutingUserService, private modalCtrl: ModalController,
               private mapIntegration: MapIntegrationService, private mapBox: MapBoxComponent, private change:NgZone, private navCtrl: NavController) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.routingUserService.routeFinished.subscribe( value => {
       console.log(value);
       if (value === true) {
@@ -50,6 +51,13 @@ export class SearchBarComponent implements OnInit {
       b.hidden = false;
       c.hidden = true;
       edit3.hidden = true;
+    }
+
+    try {
+      const imageURL = await firebase.storage().ref('special-avatar.png').getDownloadURL();
+      document.getElementById('avatar').setAttribute('src', imageURL);
+    } catch(e) {
+      if(e.code !== 'storage/object-not-found') { throw e }
     }
   }
 

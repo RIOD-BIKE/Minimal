@@ -7,22 +7,34 @@ import { Router } from '@angular/router';
   styleUrls: ['./settings-main-dropbox.page.scss'],
 })
 export class SettingsMainDropboxPage implements OnInit {
-  rangeVolume:string;
-  constructor(public platform:Platform, private router: Router) { 
-  	this.platform.ready().then(()=>{
-  		this.rangeVolume = "5";
-  	})
+  rangeVolume: string;
+  public display: boolean;
+  public gps: boolean;
+  public vibration: boolean;
+
+  constructor(public platform: Platform, private router: Router) {
+    this.platform.ready().then(() => {
+      this.rangeVolume = '5';
+    });
   }
 
   ngOnInit() {
+    this.display = true;
+    this.gps = true;
+    this.vibration = true;
   }
 
-  goToManualPage(){
+  goToManualPage() {
     this.router.navigate(['/settings-manual']);
   }
 
   goToSettingsMain() {
     this.router.navigate(['/settings-main']);
+  }
+
+  test(){
+    console.log(this.display);
+    
   }
 
 }

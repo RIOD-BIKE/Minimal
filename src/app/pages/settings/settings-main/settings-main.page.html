@@ -14,7 +14,7 @@
         <ion-row>
             <ion-col size="12">
                 <div style="text-align: center">
-                    <h1>ID#30907dfe59</h1>
+                    <h1>ID#{{ uid | slice: 0:8 }}</h1>
                 </div>
             </ion-col>
         </ion-row>
@@ -22,7 +22,7 @@
             <input ion-input class="name mt60" placeholder="NAME*" [(ngModel)]="name" />
         </ion-row>
         <ion-row>
-            <input ion-input class="name mt20" placeholder="E-MAIL/HANDYNUMMER*" />
+            <input ion-input class="name mt20" placeholder="E-MAIL/HANDYNUMMER*" [(ngModel)]="contact"/>
         </ion-row>
         <div class="mt40"></div>
         <p>*FREIWILLIG:</p>

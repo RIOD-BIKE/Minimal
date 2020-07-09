@@ -11,13 +11,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsMainPage implements OnInit {
 
+  uid: string;
   name: string;
-  phone: string;
+  contact: string;
 
   constructor(private router: Router, private userDateFetch: UsersDataFetchService, private authService: AuthService, private navController: NavController) { }
 
   async ngOnInit() {
-    this.name = await this.userDateFetch.firestore_getName(await this.authService.getCurrentUID());
+    this.uid = await this.authService.getCurrentUID();
+    this.name = await this.userDateFetch.firestore_getName(this.uid);
+    this.contact = await this.userDateFetch.firestore_getContact(this.uid);
   }
 
   cancel() {
@@ -26,6 +29,7 @@ export class SettingsMainPage implements OnInit {
 
   async save() {
     await this.userDateFetch.firestore_setName(await this.authService.getCurrentUID(), this.name);
+    await this.userDateFetch.firestore_setContact(await this.authService.getCurrentUID(), this.contact);
     this.cancel();
   }
 }

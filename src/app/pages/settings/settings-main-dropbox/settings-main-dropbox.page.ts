@@ -11,7 +11,9 @@ import { Platform, AlertController, NavController } from '@ionic/angular';
 export class SettingsMainDropboxPage implements OnInit {
 
   public rangeVolume: string;
+  public uid: string;
   public name: string;
+  public contact: string;
   public display = true;
   public gps = true;
   public vibration = true;
@@ -24,7 +26,9 @@ export class SettingsMainDropboxPage implements OnInit {
   }
 
   async ngOnInit() {
-    this.name = await this.userDataFetch.firestore_getName(await this.authService.getCurrentUID());
+    this.uid = await this.authService.getCurrentUID();
+    this.name = await this.userDataFetch.firestore_getName(this.uid);
+    this.contact = await this.userDataFetch.firestore_getContact(this.uid);
   }
 
   async deleteAccount() {

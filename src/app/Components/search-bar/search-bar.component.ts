@@ -98,6 +98,23 @@ export class SearchBarComponent implements OnInit {
   }
 
   onTouchSearch() {
+    this.mapIntegration.getAllSavedRoutes().then(allSavedRoutes => {
+      const temp = [];
+      for (const route of allSavedRoutes) {
+        const checkArray = this.shortcuts.filter(e => e['address'] === route.endPosition[1]);
+        const splitString = route.endPosition[1].split(',');
+        const splitPLz = splitString[1].toString().split(' ');
+        const city = splitPLz[2];
+        const street = splitString[0];
+        if (checkArray.length >= 1) {
+          temp.push(new recentShortcut((checkArray[0].iconName), street, city, route.endPosition[1], route.endPosition[0]));
+        } else {
+          temp.push(new recentShortcut('null', street, city, route.endPosition[1], route.endPosition[0]));
+        }
+      }
+      temp.reverse();
+      this.recentRoutes = temp.slice(0, 8);
+    });
     this.searchBarOpen = true;
     if (this.searchBarInputV.length > 0) {
       if (this.addressesString.length == 0) {

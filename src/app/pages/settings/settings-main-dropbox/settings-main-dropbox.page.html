@@ -7,26 +7,34 @@
         <!-- <div> -->
         <!-- <button class="avatar"></button> -->
         <!-- FIXME: @Frontend-Team Make this pretty -->
-        <img class="avatar" id="avatar" src="{{ specialAvatarURL }}" alt="Avatar" />
+        <img
+          class="avatar"
+          id="avatar"
+          src="{{ specialAvatarURL }}"
+          alt="Avatar"
+        />
         <!-- </div> -->
       </ion-col>
       <ion-col size="5">
         <!-- <div style="padding-left: 10px; padding-top: 10px;"> -->
-          <!-- FIXME: @Frontend-Team Make this pretty -->
-          <div [hidden]="name || contact">ID#{{ uid | slice: 0:8 }}</div>
-          <ion-row class="profile-text">
-            <h3 style="margin: 0px; line-height: 1.5; align-self: flex-end;">
-              {{ name }}
-            </h3>
-            <br />
-          </ion-row>  
-          <ion-row  class="profile-text">
-            <p
-            style="margin: 0px; line-height: 1.5; "
-            >
-              {{ contact | slice : 0:16 }}
+        <!-- FIXME: @Frontend-Team Make this pretty -->
+     
+         
+  
+        <ion-row class="profile-text">
+          <h3 style="margin: 0px; line-height: 1.5; align-self: flex-end;">
+            {{ name }}
+          </h3>
+          <br />
+        </ion-row>
+        <ion-row class="profile-text" [hidden]="name || contact">
+          <h3 style="margin-top: -9px; line-height: 1.5;">ID#{{ uid | slice: 0:8 }}</h3>
+        </ion-row>
+        <ion-row class="profile-text">
+          <p style="margin: 0px; line-height: 1.5;">
+            {{ contact | slice : 0:16 }}
           </p>
-          </ion-row>
+        </ion-row>
         <!-- </div> -->
       </ion-col>
       <ion-col class="col-adjust" size="1">
@@ -43,13 +51,13 @@
   <ion-grid style="display: flex; height: 100%; flex-flow: column;">
     <div class="mt10"></div>
     <ion-row style="flex-grow: 1;">
-      <ion-col class="col-adjust" size="2" >
+      <ion-col class="col-adjust" size="2">
         <ion-icon class="gps"></ion-icon>
       </ion-col>
-      <ion-col class="col-adjust" size="6" >
+      <ion-col class="col-adjust" size="6">
         <h3>GPS anschalten</h3>
       </ion-col>
-      <ion-col class="col-adjust" size="4" >
+      <ion-col class="col-adjust" size="4">
         <!-- <div class="button r" id="button-1">onclick='handleClick(this);'
                     <input type="checkbox" class="checkbox">
                     <div class="knobs"> </div>                      
@@ -70,7 +78,7 @@
           pin="true"
           min="0"
           max="10"
-          color="dark"
+          color="light"
           snaps="true"
           ticks="false"
         ></ion-range>
@@ -112,7 +120,7 @@
     </ion-row>
     <!-- <div class="mt20"></div> -->
     <ion-row style="flex-grow: 1;">
-      <ion-col class="col-adjust" size="2" >
+      <ion-col class="col-adjust" size="2">
         <ion-icon class="anleitung"></ion-icon>
       </ion-col>
       <ion-col class="col-adjust" size="6">
@@ -141,7 +149,7 @@
     </ion-row>
     <!-- <div class="mt20"></div> -->
     <ion-row style="flex-grow: 1;">
-      <ion-col  size="6">
+      <ion-col size="6">
         <button ion-button class="accountDelete" (click)="deleteAccount()">
           Account löschen
         </button>
@@ -157,7 +165,7 @@
   </ion-grid>
   <ion-grid>
     <ion-row>
-      <ion-col  size="6">
+      <ion-col size="6">
         <h5 style="float: right; margin-right: 10px;">
           <a link="https://..">Datenschutzerklärung</a>
         </h5>

@@ -5,6 +5,7 @@ import { MapIntegrationService } from 'src/app/services/map-integration/map-inte
 import { Feature, iconShortcut, recentShortcut } from '../../Classess/map/map';
 import { UserService } from 'src/app/services/user/user.service';
 import { NavController } from '@ionic/angular';
+import { UsersDataFetchService } from 'src/app/services/users-data-fetch/users-data-fetch.service';
 
 @Component({
   selector: 'search-bar',
@@ -22,9 +23,9 @@ export class SearchBarComponent implements OnInit {
   searchBarOpen = false;
 
   constructor(private navCtrl: NavController, private userService: UserService, private routingUserService: RoutingUserService,
-              private mapBox: MapBoxComponent, private mapIntegration: MapIntegrationService) {}
+              private mapBox: MapBoxComponent, private mapIntegration: MapIntegrationService, private userDataFetch: UsersDataFetchService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.routingUserService.routeFinished.subscribe( value => {
       if (value == true) {
         this.clear();
@@ -66,6 +67,10 @@ export class SearchBarComponent implements OnInit {
       this.recentRoutes = temp.slice(0, 8);
     });
     document.getElementById('recents-results').hidden = true;
+
+    this.userDataFetch.storage_getSpecialAvatarURL().then(url => {
+      this.specialAvatarURL = url;
+    });
   }
 
   back() {

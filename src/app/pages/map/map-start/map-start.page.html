@@ -3,43 +3,51 @@
 </ion-header>
 <map-box></map-box>
 
-<app-riding-info>
-  <!-- <ion-list lines="none">
-    <ion-list-header>
-      <ion-label>Resources</ion-label>
-    </ion-list-header>
-    <ion-item *ngFor="let item of [0,0]">
-      <ion-icon slot="start" color="medium" name="book"></ion-icon>
-      <ion-label>Item</ion-label>
-    </ion-item>
-  </ion-list> -->
-</app-riding-info>
+<!-- <riding-toggle></riding-toggle> -->
+<app-riding-info></app-riding-info>
 
-
-
-  <ion-row id="ONLY FOR TESTING" style="position: absolute; bottom: 50px;">
-    <ion-button color="tertiary" shape="round" style="height: 60px; width: 60px;" (click)="locateDevice()">
-      <div>
-        <ion-icon icon="locate-outline"></ion-icon>
-      </div>
-    </ion-button>
-    <ion-button color="primary" shape="round" style="height: 60px; width: 60px;" (click)="setShowChange()">
-      <div>
-        <ion-icon icon="book"></ion-icon>
-      </div>
-    </ion-button>
-    <ion-button color="primary" shape="round" style="height: 60px; width: 60px;" (click)="presentModal()">
-      <div>
-        <ion-icon icon="help"></ion-icon>
-      </div>
-    </ion-button>
-    <ion-button color="primary" shape="round" style="height: 60px; width: 60px;" (click)="DEMOsendToRTDB()">
-      <div>
-        <ion-icon icon="server"></ion-icon>
-      </div>
-    </ion-button>
-
-  </ion-row>
+<ion-row id="ONLY FOR TESTING" style="position: absolute; bottom: 50px;">
+  <ion-button
+    color="tertiary"
+    shape="round"
+    style="height: 60px; width: 60px;"
+    (click)="locateDevice()"
+  >
+    <div>
+      <ion-icon icon="locate-outline"></ion-icon>
+    </div>
+  </ion-button>
+  <ion-button
+    color="primary"
+    shape="round"
+    style="height: 60px; width: 60px;"
+    (click)="setShowChange()"
+  >
+    <div>
+      <ion-icon icon="book"></ion-icon>
+    </div>
+  </ion-button>
+  <ion-button
+    color="primary"
+    shape="round"
+    style="height: 60px; width: 60px;"
+    (click)="presentModal()"
+  >
+    <div>
+      <ion-icon icon="help"></ion-icon>
+    </div>
+  </ion-button>
+  <ion-button
+    color="primary"
+    shape="round"
+    style="height: 60px; width: 60px;"
+    (click)="DEMOsendToRTDB()"
+  >
+    <div>
+      <ion-icon icon="server"></ion-icon>
+    </div>
+  </ion-button>
+</ion-row>
 
 <!-- <ion-footer [ngSwitch]="showType">
   <riding-toggle *ngSwitchCase="''"></riding-toggle>

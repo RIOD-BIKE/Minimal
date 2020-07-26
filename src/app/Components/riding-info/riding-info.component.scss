@@ -3,31 +3,50 @@
     height: 100%;
     position: absolute;
     top: calc(100vh - 144px);
-    z-index: 9999;
+    z-index: 100;
 }
 
-.text-row{
+.text-row {
     height: 50%;
 }
-.top{
+.top {
     align-items: flex-end;
-    opacity: 0.50;
-    
+    opacity: 0.5;
 }
-
-
 
 .icon-align {
-  text-align: right;
-  }
-  
-
-
-
-.text{
-    margin:0 !important;
+    text-align: right;
 }
 
-.toptext{
-    font-size: 12px ;
+.text {
+    margin: 0 !important;
 }
+
+.toptext {
+    font-size: 12px;
+}
+
+.padding-top{
+    padding-top: 0px;
+}
+
+.margin-row{
+    margin-top: -14px;
+}
+#timeRect {
+    border-radius: 25px;
+    text-align: center;
+    background: #4f4f4f;
+    padding: 1.5vh;
+    padding-bottom: 1vh;
+    //margin-top: 2.5vh;
+}
+
+.swipe-indicator {
+    background-color: #4f4f4f;
+    border-radius: 15px;
+    height: 6px;
+    width: 100%;
+}
+
+

@@ -2,6 +2,7 @@ import { Component, AfterViewInit, ElementRef, Renderer2, Input } from '@angular
 import { GestureController } from '@ionic/angular';
 import { Gesture, GestureConfig } from '@ionic/core';
 
+
 @Component({
   selector: 'app-riding-info',
   templateUrl: './riding-info.component.html',
@@ -9,11 +10,12 @@ import { Gesture, GestureConfig } from '@ionic/core';
 })
 export class RidingInfoComponent implements AfterViewInit {
   state: string = 'bottom';
-  @Input() handleHeight: number = 100;
+  @Input() handleHeight: number = 80; //initial 100 -> bestimmt höhe im runtergefahrenen zustand
 
   timeToTarget: string = "3MIN";
   lastLeg:boolean = true;
-  sammelpunktLeg: boolean = false;
+  atSammelpunkt: boolean = true;
+  toSammelpunktLeg: boolean = false;
 
   constructor(
     private gestureCtrl: GestureController,
@@ -28,6 +30,10 @@ export class RidingInfoComponent implements AfterViewInit {
     // const drawerHeight = windowHeight - 118; 
     this.renderer.setStyle(this.element.nativeElement, 'top', windowHeight - this.handleHeight + 'px')  
 
+
+
+
+    //moving Stuff
     const options: GestureConfig = {
       el: document.querySelector('#header'),
       direction: 'y',

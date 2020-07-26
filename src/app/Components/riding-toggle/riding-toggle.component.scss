@@ -1,4 +1,9 @@
-  *:before,
+:host{
+    z-index: 200;
+}
+
+
+*:before,
   *:after {
       box-sizing: border-box;
       padding: 0;

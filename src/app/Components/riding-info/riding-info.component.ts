@@ -10,7 +10,7 @@ import { Gesture, GestureConfig } from '@ionic/core';
 })
 export class RidingInfoComponent implements AfterViewInit {
   state: string = 'bottom';
-  @Input() handleHeight: number = 80; //initial 100 -> bestimmt höhe im runtergefahrenen zustand
+  @Input() handleHeight: number = 90; //initial 100 -> bestimmt höhe im runtergefahrenen zustand
 
   timeToTarget: string = "3MIN";
   lastLeg:boolean = true;
@@ -72,6 +72,7 @@ export class RidingInfoComponent implements AfterViewInit {
     };
     const gesture: Gesture = await this.gestureCtrl.create(options);
     gesture.enable();
+    
   }
 
 }

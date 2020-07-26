@@ -10,16 +10,17 @@
       margin: 0;
   }
   .item {
+      /*
+      //replaced with positioning ob the component itself
       align-self: stretch;
       padding-top: 1rem;
       padding-right: 20px;
       padding-bottom: 1rem;
       padding-left: 0px;
-      /*
       margin-right: 1rem;
-      */
+     
       text-align: right;
-
+ */
       &:not(:last-of-type) {
           border-bottom: 1px solid #ccc;
       }

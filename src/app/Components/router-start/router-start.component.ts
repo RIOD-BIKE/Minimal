@@ -97,6 +97,7 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
 
   slideUp() {
     const text = document.getElementById('infoText');
+    
     text.hidden = true;
   }
 

@@ -3,8 +3,6 @@
 </ion-header>
 <map-box></map-box>
 
-<riding-toggle style="width: fit-content; align-self: flex-end; margin-bottom: 2.8vh; margin-right: 7vw;"></riding-toggle>
-<app-riding-info></app-riding-info>
 
 <ion-row id="ONLY FOR TESTING" style="position: absolute; bottom: 50px;">
   <ion-button
@@ -49,9 +47,13 @@
   </ion-button>
 </ion-row>
 
-<!-- <ion-footer [ngSwitch]="showType">
-  <riding-toggle *ngSwitchCase="''"></riding-toggle>
+
+<riding-toggle  style="width: fit-content; align-self: flex-end; margin-bottom: -35.2vh; margin-right: 7vw;"></riding-toggle> 
+
+<div [ngSwitch]="showType">
+
   <router-start  *ngSwitchCase="'showMain'"></router-start>
-  <router-info-in-bottom  *ngSwitchCase="'showRouterInfo'" ></router-info-in-bottom>
+  <app-riding-info  *ngSwitchCase="'showRouterInfo'" ></app-riding-info>
+  <!-- DONT USE THIS! LINE 52 WORKS AS WELL <riding-toggle *ngSwitchCase="''" style="width: fit-content; align-self: flex-end; margin-bottom: 2.8vh; margin-right: 7vw;"></riding-toggle>  -->
   <ride-map-assembly *ngSwitchCase="'routeStarted'" ></ride-map-assembly>
-</ion-footer> -->
+</div>

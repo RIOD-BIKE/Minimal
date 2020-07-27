@@ -26,9 +26,9 @@
 
   </ion-row>
 
-<ion-footer [ngSwitch]="showType">
+<div [ngSwitch]="showType">
   <riding-toggle *ngSwitchCase="''"></riding-toggle>
   <router-start  *ngSwitchCase="'showMain'"></router-start>
   <router-info-in-bottom  *ngSwitchCase="'showRouterInfo'" ></router-info-in-bottom>
   <ride-map-assembly *ngSwitchCase="'routeStarted'" ></ride-map-assembly>
-</ion-footer>
+</div>

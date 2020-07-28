@@ -1,3 +1,5 @@
+import { MapStartPage } from 'src/app/pages/map/map-start/map-start.page';
+import { RideIndicatorComponent } from './../ride-indicator/ride-indicator.component';
 import { ModalController } from '@ionic/angular';
 import { Component, OnInit } from '@angular/core';
 import { RideIndicatorFinalComponent } from '../ride-indicator-final/ride-indicator-final.component';
@@ -11,16 +13,11 @@ import { RideIndicatorAssemblyComponent } from './../ride-indicator-assembly/rid
 })
 export class RidingToggleComponent implements OnInit {
 
-  constructor(private modalController: ModalController) { }
+  constructor(private modalController: ModalController, private mapStart: MapStartPage) { }
 
   ngOnInit() {}
 
   async showIndicatorScreen() {
-      const modal = await this.modalController.create({
-        // component: RideIndicatorFinalComponent
-        // component: RideIndicatorAssemblyComponent
-        component: RideIndicatorFreeComponent
-      });
-      return await modal.present();
+    this.mapStart.toggleShowIndicatorScreen();
   }
 }

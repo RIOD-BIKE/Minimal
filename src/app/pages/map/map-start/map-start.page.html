@@ -50,6 +50,10 @@
 
 <riding-toggle  style="width: fit-content; align-self: flex-end; margin-bottom: -35.2vh; margin-right: 7vw;"></riding-toggle> 
 
+<!-- @Frontend FIXME: This DIV is slightly moved up, may be related to riding-toggle margin-bottom -->
+<div #indicatorScreen style="z-index: 10; transform: translateY(100%);">
+  <app-ride-indicator></app-ride-indicator>
+</div>
 <div [ngSwitch]="showType">
 
   <router-start  *ngSwitchCase="'showMain'"></router-start>

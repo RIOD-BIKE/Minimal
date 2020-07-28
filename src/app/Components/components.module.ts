@@ -1,3 +1,5 @@
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RideIndicatorComponent } from './ride-indicator/ride-indicator.component';
 import { MapBoxComponent } from './map-box/map-box.component';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import { RouterInfoInBottomComponent } from './router-info-in-bottom/router-info-in-bottom.component';
@@ -19,13 +21,13 @@ import { RidingInfoComponent } from './riding-info/riding-info.component';
 @NgModule({
   declarations: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent, RidingInfoComponent],
+    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent, RidingInfoComponent, RideIndicatorComponent],
   imports: [IonicModule, CommonModule, FormsModule],
   exports: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent, RidingInfoComponent],
+    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent, RidingInfoComponent, RideIndicatorComponent],
   providers: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent, RouterStartComponent]
+    RideMapAssemblyComponent, RideMapFinalComponent, RouterStartComponent, RideIndicatorComponent]
 })
 export class ComponentsModule { }

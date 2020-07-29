@@ -8,6 +8,7 @@ import { Feature, iconShortcut, recentShortcut } from "../../Classess/map/map";
 import { UserService } from "src/app/services/user/user.service";
 import { NavController } from "@ionic/angular";
 import { UsersDataFetchService } from "src/app/services/users-data-fetch/users-data-fetch.service";
+import { EditFavoriteComponent } from '../edit-favorite/edit-favorite.component';
 
 @Component({
   selector: "search-bar",
@@ -413,6 +414,16 @@ export class SearchBarComponent implements OnInit {
       component: ButtonOverlayComponent,
     });
     return await modal.present();
+  }
+  editFavor(){
+    this.editModal();
+  }
+
+  async editModal(){
+    const modal2 = await this.modalController.create({
+      component: EditFavoriteComponent,
+    });
+    return await modal2.present();
   }
 
   openSettings() {

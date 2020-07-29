@@ -116,9 +116,7 @@ export class SearchBarComponent implements OnInit {
     });
     document.getElementById("recents-results").hidden = true;
 
-    this.userDataFetch.storage_getSpecialAvatarURL().then((url) => {
-      this.specialAvatarURL = url;
-    });
+    this.specialAvatarURL = await this.userDataFetch.storage_getSpecialAvatar();
   }
 
   back() {

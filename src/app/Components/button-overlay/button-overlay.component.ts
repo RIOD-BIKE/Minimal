@@ -44,10 +44,12 @@ export class ButtonOverlayComponent implements OnInit {
   }
   saveFavor(){ 
     console.log(this.saveAddress + " " + this.favorite);
-    this.userService.saveShortcut(this.saveAddress, this.favorite, this.plz );
-    this.userService.updateFavor.next(true);
-    this.modalController.dismiss({
-      dismissed: true,
+    this.userService.saveShortcut(this.saveAddress, this.favorite, this.plz ).then(x=>{
+      console.log("hfdhf");
+      this.userService.updateFavor.next(true);
+      this.modalController.dismiss({
+        dismissed: true,
+      });
     });
   }
 }

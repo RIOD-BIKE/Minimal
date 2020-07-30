@@ -60,7 +60,6 @@ export class UserService {
             if(value.iconName===iconName){  //iconName already saved -> override? Question
               this.storage.set(key,{address:address,plz:plz,iconName:iconName})
               resolve("Updated Address with icon");
-              return;
             }
           }
           i++;
@@ -82,7 +81,9 @@ export class UserService {
       this.storage.length().then(length=>{
         this.storage.forEach((value,key,index)=>{
           let keySpliced = key.split('_');
+          
           if(keySpliced[0] == "SavedIcon"){
+              console.log(keySpliced);
               tempArray.push(new iconShortcut(value.iconName,i,value.address,value.plz));
           }
           i++;

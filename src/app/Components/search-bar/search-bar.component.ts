@@ -1,6 +1,6 @@
 import { ModalController } from "@ionic/angular";
 import { ButtonOverlayComponent } from "./../button-overlay/button-overlay.component";
-import { Component, OnInit, Input, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ViewChild, SystemJsNgModuleLoader } from "@angular/core";
 import { RoutingUserService } from "src/app/services/routing-user/routing-user.service";
 import { MapBoxComponent } from "../map-box/map-box.component";
 import { MapIntegrationService } from "src/app/services/map-integration/map-integration.service";
@@ -9,6 +9,7 @@ import { UserService } from "src/app/services/user/user.service";
 import { NavController } from "@ionic/angular";
 import { UsersDataFetchService } from "src/app/services/users-data-fetch/users-data-fetch.service";
 import { EditFavoriteComponent } from "../edit-favorite/edit-favorite.component";
+import { resolve } from 'url';
 
 @Component({
   selector: "search-bar",
@@ -38,12 +39,16 @@ export class SearchBarComponent implements OnInit {
     this.favorUpdate();
     this.userService.updateFavor.subscribe((a) => {
       if (a) {
-        this.favorUpdate();
+        console.log("hey");
+        this.favorUpdate().then(l=>{
+          console.log("hey2");
+        })
       }
     });
   }
 
-  async favorUpdate() {
+   favorUpdate():Promise<any> {
+    return new Promise<any>(resolve => {
     // Temp before saving and edit components are available
 
     //Abhängig in welcher Reihenfolge die eingelesen / gespeichert werden, werden die in der UI-Horizontale Liste auch in unterschiedlicher
@@ -111,8 +116,11 @@ export class SearchBarComponent implements OnInit {
   });
   document.getElementById("recents-results").hidden = true;
 
-  this.specialAvatarURL = await this.userDataFetch.storage_getSpecialAvatar();
-    
+    this.userDataFetch.storage_getSpecialAvatar().then(x=>{
+      this.specialAvatarURL = x;
+    })
+    resolve;
+  });
   }
 
   back() {

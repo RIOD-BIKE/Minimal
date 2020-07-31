@@ -18,17 +18,15 @@ export class SettingsMainDropboxPage implements OnInit {
   public contact: string;
 
   public gps: boolean;
-  public volume: string;
+  public volume: number;
   public vibration: boolean;
   public display: boolean;
 
   public specialAvatarURL: string;
 
   constructor(public platform: Platform, private userDataFetch: UsersDataFetchService, private authService: AuthService,
-    private router: Router, private alertController: AlertController, private navController: NavController, private settingsService: SettingsService) {
-    this.platform.ready().then(() => {
-      this.rangeVolume = "5";
-    });
+    private router: Router, private alertController: AlertController, private navController: NavController,
+    private settingsService: SettingsService) {
   }
 
   async ngOnInit() {
@@ -88,7 +86,7 @@ export class SettingsMainDropboxPage implements OnInit {
     this.settingsService.setGPS(this.gps);
   }
   onVolumeChange() {
-    this.settingsService.setVolume(Number.parseInt(this.volume));
+    this.settingsService.setVolume(this.volume);
   }
 
   onVibrationChange() {

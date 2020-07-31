@@ -13,7 +13,7 @@ export class SettingsService {
 
 
   private gps: boolean;
-  private volume: boolean;
+  private volume: number;
   private vibration: boolean;
   private display: boolean;
 
@@ -33,19 +33,19 @@ export class SettingsService {
   }
 
   async getGPS(): Promise<boolean> {
-    return this.gps ?? await this.storage.get(this.KEY_GPS);
+    return this.gps ?? await this.storage.get(this.KEY_GPS) ?? true;
   }
 
-  async getVolume(): Promise<string> {
-    return this.volume ?? await this.storage.get(this.KEY_VOLUME);
+  async getVolume(): Promise<number> {
+    return this.volume ?? await this.storage.get(this.KEY_VOLUME) ?? 1.0;
   }
 
   async getVibration(): Promise<boolean> {
-    return this.vibration ?? await this.storage.get(this.KEY_VIBRATION);
+    return this.vibration ?? await this.storage.get(this.KEY_VIBRATION) ?? true;
   }
 
   async getDisplay(): Promise<boolean> {
-    return this.display ?? await this.storage.get(this.KEY_DISPLAY);
+    return this.display ?? await this.storage.get(this.KEY_DISPLAY) ?? true;
   }
 
   setGPS(isOn: boolean) {

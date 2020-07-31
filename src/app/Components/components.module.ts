@@ -1,3 +1,4 @@
+import { EditFavoriteComponent } from './edit-favorite/edit-favorite.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RideIndicatorComponent } from './ride-indicator/ride-indicator.component';
 import { MapBoxComponent } from './map-box/map-box.component';
@@ -18,16 +19,17 @@ import { WaitingAtAsSmallComponent } from './waiting-at-as-small/waiting-at-as-s
 import { RouterStartComponent } from './router-start/router-start.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { RidingInfoComponent } from './riding-info/riding-info.component';
+  import { from } from 'rxjs';
 @NgModule({
   declarations: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent, RidingInfoComponent, RideIndicatorComponent],
+    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent, RidingInfoComponent, RideIndicatorComponent, EditFavoriteComponent],
   imports: [IonicModule, CommonModule, FormsModule],
   exports: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent, RidingInfoComponent, RideIndicatorComponent],
+    RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent, RidingInfoComponent, RideIndicatorComponent, EditFavoriteComponent],
   providers: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
     RidingToggleComponent,
-    RideMapAssemblyComponent, RideMapFinalComponent, RouterStartComponent, RideIndicatorComponent]
+    RideMapAssemblyComponent, RideMapFinalComponent, RouterStartComponent, RideIndicatorComponent, EditFavoriteComponent]
 })
 export class ComponentsModule { }

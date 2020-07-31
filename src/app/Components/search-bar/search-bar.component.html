@@ -19,6 +19,12 @@
       </button>
       <button class="ava" id="saveBtn" hidden (click)=saveRoute()>
       </button>
+      <button class="ava" id="favor">
+        <ion-icon name={{iconNew}} style=" width: 25px;
+            height: 25px;
+            color: white;">
+        </ion-icon>
+      </button>
     </div>
   </div>
 
@@ -68,11 +74,11 @@
           </svg>
         </ion-button>
         <ion-button class="s-btn primary" style="margin-left: 10px;" *ngIf="shortcut.orderNumber!=1"
-          (click)="onSelect(shortcut.coords,shortcut.address)">
+          (click)="onSelect(shortcut.coords,shortcut.address,'','', shortcut.iconName)">
           <ion-icon name={{shortcut.iconName}}></ion-icon>
         </ion-button>
         <ion-button class="s-btn primary" style="margin-left: 10px;" *ngIf="shortcut.orderNumber==1"
-          (click)="onSelect(shortcut.coords,shortcut.address)">
+          (click)="onSelect(shortcut.coords,shortcut.address,'','', shortcut.iconName)">
           <ion-icon name={{shortcut.iconName}}></ion-icon>
         </ion-button>
       </span>
@@ -110,14 +116,14 @@
               {{address.city}}
             </h5>
           </div>
-          
+
           <div style="width:20%;float: left; ">
             <button class="ava" style=" width: 100%;
             height: 50px;
             border-top: thin solid white;
             margin-top: 5px;
             padding-top: 10px; opacity: 0.87; background-color: transparent;" (click)=saveRoute()>
-            <ion-icon name="" style=" width: 25px;
+              <ion-icon name="home-outline" style=" width: 25px;
             height: 25px;
             color: white;"></ion-icon>
             </button>
@@ -126,14 +132,16 @@
       </div>
     </div>
   </div>
-  <div class="container" id="recents-results" hidden>
-    <div id="list-addresses">
-      <div style="width:100%;float: left; background-color: transparent;">
-        <h5
-          style="text-align: left;padding-top:10px;padding-bottom: 10px; padding-left: 15px; color: white; font-weight: 400;font-size: 11px;">
-          ZULETZT GESUCHT</h5>
-        <div class="listElement" *ngFor="let route of recentRoutes; index as i" [style.--animation-order]="i"
-          (click)="onSelect(route.coords,route.address)">
+</div>
+<div class="container" id="recents-results" hidden>
+  <div id="list-addresses">
+    <div style="width:100%;float: left; background-color: transparent;">
+      <h5
+        style="text-align: left;padding-top:10px;padding-bottom: 10px; padding-left: 15px; color: white; font-weight: 400;font-size: 11px;">
+        ZULETZT GESUCHT</h5>
+      <div class="listElement" *ngFor="let route of recentRoutes; index as i" [style.--animation-order]="i"
+        (click)="onSelect(route.coords,route.address)">
+        <div style="width:80%;float: left">
           <h5
             style="margin-left: 15px;margin-right: 15px;border-top:thin solid white; text-align: left;margin-top:5px;padding-top:10px; margin-bottom:0px;padding-bottom:1px; color: white; font-weight: 500; font-size: 16px;">
             {{route.street}}
@@ -143,11 +151,20 @@
             style=" text-align: left;padding-top:0px;margin-top:5px;margin-bottom: 0px; padding-left: 15px; color: white; font-weight: 300;font-size: 15px;">
             {{route.city}}
           </h5>
-          <button class="ava" id="saveBtn" (click)=saveRoute()>
+        </div>
+        <div style="width:20%;float: left; ">
+          <button class="ava" style=" width: 100%;
+            height: 50px;
+            border-top: thin solid white;
+            margin-top: 5px;
+            padding-top: 10px; opacity: 0.87; background-color: transparent;" (click)=saveRoute()>
+            <ion-icon name="" style=" width: 25px;
+            height: 25px;
+            color: white;"></ion-icon>
           </button>
         </div>
       </div>
-
     </div>
+
   </div>
 </div>

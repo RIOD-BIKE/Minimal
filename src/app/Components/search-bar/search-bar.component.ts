@@ -22,6 +22,7 @@ export class SearchBarComponent implements OnInit {
   @Input() recentRoutes: recentShortcut[] = [];
   public specialAvatarURL = "../../../assets/settings/profile-pic.jpg";
   @Input() searchBarInputV = "";
+  private iconNew: any ="";
   @ViewChild("inputField") inputField;
   searchBarOpen = false;
   private selectedRoute: string[];
@@ -144,7 +145,7 @@ export class SearchBarComponent implements OnInit {
     over.style.borderBottomRightRadius = "10px";
     if (this.shortcuts.length == 0) {
       document.getElementById("no-content").hidden = false;
-      document.getElementById("edit-no-content").hidden = false;
+      document.getElementById("edit-no-content").hidden = true;
     } else {
       document.getElementById("no-content").hidden = true;
       document.getElementById("edit-no-content").hidden = true;
@@ -152,6 +153,8 @@ export class SearchBarComponent implements OnInit {
   }
 
   onTouchSearch() {
+    this.iconNew ="";
+
     document.getElementById("saveBtn").hidden = true;
     this.mapIntegration.getAllSavedRoutes().then((allSavedRoutes) => {
       const temp = [];
@@ -225,7 +228,7 @@ export class SearchBarComponent implements OnInit {
     arrow.style.visibility = "visible";
 
     document.getElementById("avaBtn").hidden = true;
-
+    document.getElementById("favor").hidden = true;
     document.getElementById("back").style.display = "block";
 
     const over = document.getElementById("over");
@@ -354,8 +357,25 @@ export class SearchBarComponent implements OnInit {
     return weight * 100;
   }
 
-  onSelect(coords, address, street, city) {
-    document.getElementById("saveBtn").hidden = false;
+  onSelect(coords, address, street, city, icon) {
+    document.getElementById("cross").hidden = true;
+    this.back();
+    this.iconNew = icon;
+    console.log(icon);
+    
+    if(icon != null){
+      document.getElementById("favor").hidden = false;
+      document.getElementById("saveBtn").hidden = true;
+      document.getElementById("cross").hidden = true;
+      document.getElementById("avaBtn").hidden = true;
+  
+    } else {
+      document.getElementById("saveBtn").hidden = false;
+      document.getElementById("favor").hidden = true;
+      this.iconNew ="";
+      
+    }
+ 
     this.routingUserService.setFinishPoint([coords, address]).then(() => {
       this.routingUserService.deleteAllPoints().then(() => {
         this.mapBox.removeRoute().then(() => {
@@ -373,12 +393,12 @@ export class SearchBarComponent implements OnInit {
                       ";";
                   }
                   this.mapBox.drawRoute(pointString).then(() => {
-                    this.back();
+                    
                     this.routingUserService.setDisplayType("Route_Info");
                   });
                 });
               } else {
-                this.back();
+                
                 this.routingUserService.setDisplayType("Main");
                 this.searchBarOpen = false;
               }
@@ -404,6 +424,7 @@ export class SearchBarComponent implements OnInit {
   }
 
   clear() {
+    
     this.searchBarInputV = "";
     this.addressesString = [];
     if (this.searchBarOpen == true) {
@@ -421,6 +442,7 @@ export class SearchBarComponent implements OnInit {
       document.getElementById("recents-results").hidden = true;
     }
     document.getElementById("search-results").hidden = true;
+    this.back();
   }
 
   saveRoute() {

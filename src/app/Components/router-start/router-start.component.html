@@ -16,16 +16,6 @@
         </div>
       </ion-col>
     </ion-row>
-    <!-- <ion-row >
-      <ion-col>
-        <div class="wrap" id="infoTextOUT">
-          <p>Sammelpunkte anzeigen</p>
-        </div>
-        <div class="wrap" id="infoTextIN">
-          <p>Sammelpunkte anzeigen</p>
-        </div>
-      </ion-col>
-    </ion-row> -->
     <ion-row id="selectAP" >
       <ion-col>
         <button ion-button id="createRouteButton" (click)="startRoute()" [disabled]="disableCreateButton">
@@ -41,12 +31,13 @@
         </button>
         <button ion-button id="trash" (click)="deleteAPPoints()" hidden>
           <ion-icon
-            name="trash"
+            name="trash-outline"
             style="font-size: 30px; color: white; --ionicon-stroke-width: 20px;"
           ></ion-icon>
         </button>
       </ion-col>
     </ion-row>
+    <!-- Other view -->
     <ion-row id="startRoute" hidden>
       <ion-col>
         <button ion-button id="startButton" (click)="startNavi()">
@@ -55,16 +46,16 @@
       </ion-col>
       <ion-col>
         <ion-row>
-          <p>Minuten</p>
+          <h2>{{infoArray[0]}}</h2>
         </ion-row>
         <ion-row>
-          <p>strecke</p>
+          <h3>{{infoArray[1]}}</h3>
         </ion-row>
       </ion-col>
       <ion-col size="3">
-        <button ion-button id="edit" (click)="deleteAPPoints()" hidden>
+        <button ion-button id="edit" (click)="goBackToCreateRoute()">
           <ion-icon
-            name="create"
+            name="create-outline"
             style="font-size: 30px; color: white; --ionicon-stroke-width: 20px;"
           ></ion-icon>
         </button>
@@ -75,20 +66,35 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row style="height: 2%;">
-<!-- spacing  -->
-    </ion-row>
+  <ion-grid  style="padding: 0px;">
     <ion-row>
-      <ion-col size="3">
+      <ion-col size="2" style="padding: 0px;">
         <ion-icon id="userPosition"></ion-icon>
       </ion-col>
 
-      <ion-col>
-
+      <ion-col style="padding: 0px;">
+        <ion-row style="height: 37%;" [hidden]="hidePlaceholder">
+          <ion-col style="height: 36px; width:30px; padding: 0px;" *ngFor="let a of placeholder">
+            <ion-icon id="unselectedAP"></ion-icon>
+          </ion-col>
+        </ion-row>
+        <!-- TODO make me pretty -->
+        <ion-row style="height: 55%;" [hidden]="hideselectedAp" >
+          <ion-col style="height: 36px; width:30px; padding: 0px;" *ngFor="let a of seletectedAPs">
+              <ion-icon id="selectedAP"></ion-icon>
+              <p style="font-weight: 700;">{{a.textField}}</p>
+              <p>{{a.name}}</p>
+          </ion-col> 
+        </ion-row>
+        <ion-row style="height: 6%;">
+          <ion-icon id="line"></ion-icon>
+        </ion-row>
+        <ion-row id="infoText" style="height: 8%;">
+          <p>Wähle die Sammelpunkte auf der Karte zwischen dem Standort und dem Ziel aus.</p>
+        </ion-row>
       </ion-col>
 
-      <ion-col size="3">
+      <ion-col size="2" style="padding: 0px">
         <ion-icon id="destination"></ion-icon>
       </ion-col>
     </ion-row>

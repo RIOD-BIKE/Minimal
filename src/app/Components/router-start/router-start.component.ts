@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { element } from 'protractor';
 import { RoutingGeoAssemblyPoint } from 'src/app/Classess/map/map';
 import { VibrationService } from './../../services/vibration-service/vibration.service';
@@ -15,8 +16,8 @@ import { MapIntegrationService } from 'src/app/services/map-integration/map-inte
 import { distance } from '@turf/turf';
 import { GestureController } from '@ionic/angular';
 import { Gesture, GestureConfig } from '@ionic/core';
-import { addIcons } from 'ionicons';
-import { trash, create } from 'ionicons/icons';
+// import { addIcons } from 'ionicons';
+// import { trash, create } from 'ionicons/icons';
 
 
 
@@ -33,32 +34,33 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
     private statusAudio: StatusAudioService, private vibrationService: VibrationService,
     private gestureCtrl: GestureController, private element: ElementRef, private renderer: Renderer2) { }
 
-  // private duration: number;
-  // private distance: number;
-  // private count: any;
-  // private moveOn: any = true;
   private state = 'bottom';
   @Input() handleHeight = 100;
   public infoArray = [];
   public disableCreateButton = true;
+  public hidePlaceholder = false;
+  public hideselectedAp = true;
 
-  private seletectedAPs: RoutingGeoAssemblyPoint[];
+  public seletectedAPs: RoutingGeoAssemblyPoint[];
+  public placeholder = [1, 2, 3, 4];
 
 
   // TODO: move statusAudio & vibrationService somewhere else?
 
   ngOnInit() {
 
-    addIcons({
-      'ios-trash-outline': trash,
-      'ios-create-outline': create
+    this.routingUserService.getPoints().then(() => {
+      this.routingUserService.pointsBehaviorSubject.subscribe( value => {
+        this.seletectedAPs = value;
+        this.hideComponents();
+      });
     });
 
     // get routing info
     this.routingUserService.getDurationasSub().subscribe(duration => {
       this.routingUserService.getDistanceasSub().subscribe(distance => {
         if (duration != null && distance != null) {
-          this.infoArray = [duration.valueOf() + ' Minuten' , '(' + distance.valueOf() + ' km)'];
+          this.infoArray = [duration.valueOf() + ' Minuten' , distance.valueOf() + ' KM' ];
         }
       });
     });
@@ -71,11 +73,17 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
       }
     });
 
-    // TODO subscribe this.routingUserService.getPoints() >= 2
-    // this.changeButtons(true);
-    //else
-    // this.changeButtons(false);
-
+  }
+ 
+  // if more than 2 AP selected then change buttons
+  hideComponents() {
+    if (this.seletectedAPs === undefined) {
+      this.changeButtons(false);
+    } else if (this.seletectedAPs.length >= 2) {
+      this.changeButtons(true);
+    } else {
+      this.changeButtons(false);
+    }
   }
 
 // close the view & reset
@@ -144,24 +152,24 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
 
   // change buttons if more than 2 APs selected
   changeButtons(twoAP: boolean) {
-    const createButton = document.getElementById('createRouteButton');
     const cancel = document.getElementById('cancel');
     const trashy = document.getElementById('trash');
-    // const placeholderDiv
-    // const selectedAPs
+    const infoText = document.getElementById('infoText');
 
     if (twoAP) {
       this.disableCreateButton = false;
       cancel.hidden = true;
       trashy.hidden = false;
-      // placeholderDiv hidden true
-      // selectedAPs hidden false
+      this.hidePlaceholder = true;
+      this.hideselectedAp = false;
+      infoText.hidden = true;
     } else {
       this.disableCreateButton = true;
       cancel.hidden = false;
       trashy.hidden = true;
-      // placeholderDiv hidden false
-      // selectedAPs hidden true
+      this.hidePlaceholder = false;
+      this.hideselectedAp = true;
+      infoText.hidden = false;
     }
   }
 
@@ -186,7 +194,14 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
 
   // delete all selected APs
   deleteAPPoints() {
-    // delete all selected AP Points
+    // TODO not working
+    this.seletectedAPs = [];
+    this.routingUserService.deleteAllPoints();
+  }
+
+  // delete the route and go back to create route
+  goBackToCreateRoute() {
+
   }
 
   slideUp() {

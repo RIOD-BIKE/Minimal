@@ -3,6 +3,12 @@ ion-grid {
   width: 100%;
 }
 
+ion-header {
+  padding-left: 18.75px;
+  padding-right: 18.75px;
+}
+
+
 .btn1 {
   position: relative;
   width: 100%;
@@ -13,15 +19,26 @@ ion-grid {
 }
 
 p {
-  font-size: 3.5vw;
+  font-size: 3vw;
   margin: 0px;
-  line-height: 25px;
+  line-height: 12px;
+  text-align: center;
 }
 
 h2 {
   font-size: 5.5vw;
   margin: 0px;
-  line-height: 36px;
+  line-height: 20px;
+  font-weight: 700;
+  text-align: center;
+}
+
+h3 {
+  font-size: 4vw;
+  margin: 0px;
+  line-height: 20px;
+  font-weight: 400;
+  text-align: center;
 }
 
 #createRouteButton {
@@ -31,45 +48,38 @@ h2 {
   font-family: effra;
   font-size: 75%;
   font-weight: 700;
-  margin-left: 20px;
-  margin-top: 10px;
 }
 
 #startButton {
-    width: 50%;
+    width: 85%;
     height: 35px;
     border-radius: 30px;
     font-family: effra;
     font-size: 75%;
     font-weight: 700;
-    margin-left: 15px;
-    margin-top: 10px;
 }
 
 #cancel {
-  width: 70%;
+  width: 90%;
   border-radius: 30px;
   background-color: #4f4f4f;
-  margin-right: 15px;
-  margin-top: 10px;
+  float: right;
 }
 
 #trash {
   z-index: 2;
-  width: 70%;
+  width: 90%;
   border-radius: 30px;
   background-color: #4f4f4f;
-  margin-right: 15px;
-  margin-top: 10px;
+  float: right;
 }
 
 #edit {
     z-index: 3;
-    width: 70%;
+    width: 90%;
     border-radius: 30px;
     background-color: #4f4f4f;
-    margin-right: 15px;
-    margin-top: 10px;
+    float: right;
   }
 
 .wrap1 {
@@ -79,7 +89,6 @@ h2 {
 
 .wrap {
   width: 100%;
-//   height: 20px;
   position: relative;
   text-align: center;
 }
@@ -93,34 +102,52 @@ h2 {
 }
 
 #userPosition {
-    float: left;
+    float: right;
     width: 40px;
     height: 40px;
     background: url('../../../assets/icon/standort.svg');
     background-size: 30px;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: right;
+    margin-top: 20px;
 }
 
 #destination {
-    float: right;
+    float: left;
     width: 40px;
     height: 40px;
     background: url('../../../assets/icon/ziel.svg');
     background-size: 30px;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: left;
 }
 
-// #infoTextIN {
-//     visibility: visible;
-//     opacity: 1;
-//     transition: visibility 0s linear 0s, opacity 1000ms;
-// }
+#line {
+  width: 100%;
+  background: url('../../../assets/icon/line.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
 
-// #infoTextOUT {
-//     visibility: hidden;
-//     opacity: 0;
-//     transition: visibility 0s linear 300ms, opacity 1000ms;
-// }
+#infoText {
+  padding-top: 15px;
+}
+
+#unselectedAP {
+  width: 30px;
+  height: 36px;
+  background: url('../../../assets/icon/platzhalter.svg');
+  background-repeat: no-repeat;
+  background-size: 30px;
+  background-position: center;
+}
+
+#selectedAP {
+  width: 40px;
+  height: 45px;
+  background: url('../../../assets/icon/ausgewählt.svg');
+  background-repeat: no-repeat;
+  background-size: 45px;
+  background-position: center;
+}
 

@@ -60,9 +60,9 @@ export class MapStartPage implements OnInit {
     if(x=='Start'){
      this.showType="";
     }
-    if(x=='Route_Info'){
-      this.showType="showRouterInfo";
-    }
+    // if(x=='Route_Info'){
+    //   this.showType="showRouterInfo";
+    // }
     if(x=='Main'){
       this.showType="showMain";
     }
@@ -73,10 +73,18 @@ export class MapStartPage implements OnInit {
  }
 
   ngOnInit() {
-    // TODO subscribe this.routingUserService if length >= 2
-    // this.hideSearchbar(true, false);
-    // else
-    // this.hideSearchbar(false, true);
+    // when more than 1 AP selected hide searchbar and show cancel button
+    this.routingUserService.getPoints().then( () => {
+      this.routingUserService.pointsBehaviorSubject.subscribe( value => {
+          if ( value === undefined) {
+            this.hideSearchbar(false, true);
+          } else if (value.length >= 2) {
+            this.hideSearchbar(true, false);
+          } else {
+            this.hideSearchbar(false, true);
+          }
+      });
+    });
   }
 
   closeView() {

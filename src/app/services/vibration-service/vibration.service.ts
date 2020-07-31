@@ -1,3 +1,4 @@
+import { SettingsService } from './../settings/settings.service';
 import { MapDataFetchService } from './../map-data-fetch/map-data-fetch.service';
 import { Injectable } from '@angular/core';
 import { Vibration } from '@ionic-native/vibration/ngx';
@@ -9,13 +10,13 @@ export class VibrationService {
 
   private isFirstPlayback = true;
 
-  constructor(private vibration: Vibration,  private mapDataFetch: MapDataFetchService) {
+  constructor(private vibration: Vibration, private mapDataFetch: MapDataFetchService, private settingsService: SettingsService) {
     this.mapDataFetch.activeCluster.subscribe(async (activeCluster) => {
-      // TODO: check settings, if vibration is even active!
-      if(this.isFirstPlayback) {
+      if (this.isFirstPlayback) {
         this.isFirstPlayback = false;
         return;
       }
+      if (!await this.settingsService.getVibration()) { return; }
       if (!activeCluster) {
         console.log('Vibrating ALONE...');
         this.vibration.vibrate(1000);

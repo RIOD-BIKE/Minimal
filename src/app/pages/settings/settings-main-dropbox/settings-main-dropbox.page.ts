@@ -88,7 +88,6 @@ export class SettingsMainDropboxPage implements OnInit {
   onVolumeChange() {
     this.settingsService.setVolume(this.volume);
   }
-
   onVibrationChange() {
     this.settingsService.setVibration(this.vibration);
   }

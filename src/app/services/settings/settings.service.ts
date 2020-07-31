@@ -18,49 +18,50 @@ export class SettingsService {
   private display: boolean;
 
   constructor(private storage: Storage) {
-    this.storage.get(this.KEY_GPS).then(gps => {
-      this.gps = gps;
-    });
-    this.storage.get(this.KEY_VOLUME).then(volume => {
-      this.volume = volume;
-    });
-    this.storage.get(this.KEY_VIBRATION).then(vibration => {
-      this.vibration = vibration;
-    });
-    this.storage.get(this.KEY_DISPLAY).then(display => {
-      this.display = display;
-    });
   }
 
-  async getGPS(): Promise<boolean> {
-    return this.gps ?? await this.storage.get(this.KEY_GPS) ?? true;
+  async getGPS() {
+    return this.gps ?? await this.storageGet(this.KEY_GPS) as boolean ?? true;
   }
 
-  async getVolume(): Promise<number> {
-    return this.volume ?? await this.storage.get(this.KEY_VOLUME) ?? 1.0;
+  async getVolume() {
+    return this.volume ?? await (this.storageGet(this.KEY_VOLUME)) as number ?? 1.0;
   }
 
-  async getVibration(): Promise<boolean> {
-    return this.vibration ?? await this.storage.get(this.KEY_VIBRATION) ?? true;
+  async getVibration() {
+    return this.vibration ?? await this.storageGet(this.KEY_VIBRATION) as boolean ?? true;
   }
 
-  async getDisplay(): Promise<boolean> {
-    return this.display ?? await this.storage.get(this.KEY_DISPLAY) ?? true;
+  async getDisplay() {
+    return this.display ?? await this.storageGet(this.KEY_DISPLAY) as boolean ?? true;
   }
 
   setGPS(isOn: boolean) {
-    this.storage.set(this.KEY_GPS, JSON.stringify(isOn));
+    this.gps = isOn;
+    this.storageSet(this.KEY_GPS, isOn);
   }
 
   setVolume(level: number) {
-    this.storage.set(this.KEY_VOLUME, JSON.stringify(level));
+    if (isNaN(level)) { return; }
+    this.volume = level;
+    this.storageSet(this.KEY_VOLUME, level);
   }
 
   setVibration(isOn: boolean) {
-    this.storage.set(this.KEY_VIBRATION, JSON.stringify(isOn));
+    this.vibration = isOn;
+    this.storageSet(this.KEY_VIBRATION, isOn);
   }
 
   setDisplay(keepOn: boolean) {
-    this.storage.set(this.KEY_DISPLAY, JSON.stringify(keepOn));
+    this.display = keepOn;
+    this.storageSet(this.KEY_DISPLAY, keepOn);
+  }
+
+  private async storageGet(key: string) {
+    return await this.storage.get(key);
+  }
+
+  private async storageSet(key: string, value: any) {
+    await this.storage.set(key, value);
   }
 }

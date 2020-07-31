@@ -64,7 +64,7 @@ export class SearchBarComponent implements OnInit {
       this.routingUserService.setRouteFinished();
     }
   });
-  this.search();
+
   this.userService.getAllShortcuts().then((allShortcuts) => {
     console.log(allShortcuts);
     this.shortcuts = allShortcuts;
@@ -149,6 +149,16 @@ export class SearchBarComponent implements OnInit {
     } else {
       document.getElementById("no-content").hidden = true;
       document.getElementById("edit-no-content").hidden = true;
+    }
+    if(this.iconNew != null && this.searchBarInputV.length != 0){
+      document.getElementById("favor").hidden = false;
+      document.getElementById("saveBtn").hidden = true;
+      document.getElementById("cross").hidden = true;
+      document.getElementById("avaBtn").hidden = true;
+  
+    } else {
+      document.getElementById("saveBtn").hidden = false;
+      document.getElementById("favor").hidden = true; 
     }
   }
 
@@ -361,7 +371,6 @@ export class SearchBarComponent implements OnInit {
     document.getElementById("cross").hidden = true;
     this.back();
     this.iconNew = icon;
-    console.log(icon);
     
     if(icon != null){
       document.getElementById("favor").hidden = false;

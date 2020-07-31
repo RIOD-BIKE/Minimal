@@ -12,25 +12,9 @@
   position: relative;
   
   .rand {
-    &:focus-within {
     
-      .wrap { 
-        width: calc(90% - 10px) !important;
-        margin-left: 10px;
-        float: right;
-        transition: 0.2s;
-      }
-  
-      .arrow {
-        position: fixed;
-        float: left;
-        width: 10%;
-        display: block !important;
-        visibility: visible;
-        transition: all 0.5s;
-      }
       
-    }
+    
     
     .arrow {
       display: none;

@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { RideIndicatorFinalComponent } from '../ride-indicator-final/ride-indicator-final.component';
 import { RideIndicatorFreeComponent } from '../ride-indicator-free/ride-indicator-free.component';
 import { RideIndicatorAssemblyComponent } from './../ride-indicator-assembly/ride-indicator-assembly.component';
+import { RoutingUserService } from 'src/app/services/routing-user/routing-user.service';
 
 @Component({
   selector: 'riding-toggle',
@@ -13,11 +14,25 @@ import { RideIndicatorAssemblyComponent } from './../ride-indicator-assembly/rid
 })
 export class RidingToggleComponent implements OnInit {
 
-  constructor(private modalController: ModalController, private mapStart: MapStartPage) { }
+  constructor(private mapStart: MapStartPage, private routingUserService: RoutingUserService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.routingUserService.getDisplaySwitchCase().subscribe(x=>{
+    if(x==true){
+      this.toggleVisibility(false);
+    } else{
+      this.toggleVisibility(true);
+    }
+    
+  });
+  }
 
   async showIndicatorScreen() {
     this.mapStart.toggleShowIndicatorScreen();
+  }
+
+
+  toggleVisibility(switchCase:boolean){
+    document.getElementById("toggle").hidden = switchCase;
   }
 }

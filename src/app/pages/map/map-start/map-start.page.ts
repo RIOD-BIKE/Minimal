@@ -40,6 +40,7 @@ export class MapStartPage implements OnInit {
   public showMain: boolean = false;
   public showRouterInfo: boolean=false;
   private showRide: boolean= false;
+  @Input() private zIndexRT: number=1;
   @Input() public showType: string = '';
   private showIndicatorScreen = false;
   @ViewChild('indicatorScreen') indicatorScreen: ElementRef;
@@ -108,6 +109,10 @@ export class MapStartPage implements OnInit {
 
   }
 
+  switchIndicatorIcon(switchCase: boolean){
+    document.getElementById("toggleIndicator").hidden = switchCase;
+  }
+
 
   locateDevice() {
     this.mapBox.moveMapToCurrent();
@@ -148,11 +153,13 @@ export class MapStartPage implements OnInit {
   }
 
   public toggleShowIndicatorScreen() {
+    this.zIndexRT=11;
     const animation = this.animationController.create()
       .addElement(this.indicatorScreen.nativeElement)
       .duration(250)
       .easing('ease-in-out');
     if (this.showIndicatorScreen) {
+      
       animation.fromTo('transform', 'translateY(0%)', 'translateY(100%)')
     } else {
       animation.fromTo('transform', 'translateY(100%)', 'translateY(0%)')

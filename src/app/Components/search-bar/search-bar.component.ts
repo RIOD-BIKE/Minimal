@@ -11,6 +11,7 @@ import { UsersDataFetchService } from "src/app/services/users-data-fetch/users-d
 import { EditFavoriteComponent } from "../edit-favorite/edit-favorite.component";
 import { resolve } from 'url';
 
+
 @Component({
   selector: "search-bar",
   templateUrl: "./search-bar.component.html",
@@ -113,7 +114,7 @@ export class SearchBarComponent implements OnInit {
   }
 
   back() {
-
+    
     this.searchBarOpen = false;
     document.getElementById("no-recent-content").hidden = true;
     document.getElementById("recent-results").hidden = true;
@@ -159,9 +160,11 @@ export class SearchBarComponent implements OnInit {
         document.getElementById("avaBtn").hidden = true;
       }
     }
+    this.routingUserService.setDisplaySwitchCase(true);
   }
 
   onTouchSearch() {
+    this.routingUserService.setDisplaySwitchCase(false);
     document.getElementById("saveBtn").hidden = true;
     this.mapIntegration.getAllSavedRoutes().then((allSavedRoutes) => {
       const temp = [];
@@ -250,7 +253,6 @@ export class SearchBarComponent implements OnInit {
   }
 
   search() {
-    // SearchString is again empty
     if (this.searchBarInputV == "") {
       this.addressesString = [];
       this.searchBarInputV = "";
@@ -379,7 +381,7 @@ export class SearchBarComponent implements OnInit {
       this.iconNew ="";
       
     }
- 
+    this.routingUserService.setDisplaySwitchCase(true);
     this.routingUserService.setFinishPoint([coords, address]).then(() => {
       this.routingUserService.deleteAllPoints().then(() => {
         this.mapBox.removeRoute().then(() => {

@@ -1,5 +1,5 @@
 <ion-header style="z-index: 5; position: fixed;">
-  <search-bar id="searchbar"></search-bar>
+  <search-bar  id="searchbar"></search-bar>
   <button ion-button id="closeWindow" (click)="closeView()" hidden style=" margin-top:1.5em; margin-right:1.5em">
     <ion-icon name="close-outline"
     style="font-size: 33.25px; color: white; --ionicon-stroke-width: 25px;">
@@ -51,12 +51,13 @@
   </ion-button>
 </ion-row>
 
-<riding-toggle
+<riding-toggle id="toggleInidicator"
   style="
     /* width: fit-content; align-self: flex-end; margin-bottom: -35.2vh; margin-right: 7vw; */
     position: absolute;
     bottom: 2.6vh;
     right: 3vh;
+    z-index: 11;
   "
 ></riding-toggle>
 

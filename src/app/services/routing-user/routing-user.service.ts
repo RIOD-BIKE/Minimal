@@ -20,6 +20,7 @@ export class RoutingUserService {
   private points: RoutingGeoAssemblyPoint[] = [];
   private centerPoint: BehaviorSubject<RoutingGeoAssemblyPoint> = new BehaviorSubject<RoutingGeoAssemblyPoint>(null);
   private displayType: BehaviorSubject<string> = new BehaviorSubject<string>('MainView');
+  private displaySwitchCase: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
   private boundingArray: PolygonAssemblyPoint[]=[];
   private pointsDetailed: any=null;
   public routeFinished: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -284,4 +285,14 @@ export class RoutingUserService {
   getCenterPointObs(): Observable<RoutingGeoAssemblyPoint> {
     return this.centerPoint.asObservable();
   }
+
+  getDisplaySwitchCase(): Observable<boolean>{
+    return this.displaySwitchCase.asObservable();
+  }
+  setDisplaySwitchCase(switchCase:boolean){
+    this.displaySwitchCase.next(switchCase);
+  }
+
+
+
 }

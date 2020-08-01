@@ -1,3 +1,4 @@
+import { Insomnia } from '@ionic-native/insomnia/ngx';
 import { Vibration } from '@ionic-native/vibration/ngx';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
 import { RideIndicatorAssemblyComponent } from './Components/ride-indicator-assembly/ride-indicator-assembly.component';
@@ -68,7 +69,8 @@ import { CommonModule } from '@angular/common';
     NativeAudio,
     Vibration,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    FirebaseAuthentication
+    FirebaseAuthentication,
+    Insomnia
   ],
   bootstrap: [AppComponent]
 })

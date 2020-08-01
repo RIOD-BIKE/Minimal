@@ -1,3 +1,5 @@
+import { BehaviorSubject } from 'rxjs';
+import { DisplayService } from './../../../services/display/display.service';
 import { RoutingGeoAssemblyPoint } from 'src/app/Classess/map/map';
 import { MapDataFetchService } from './../../../services/map-data-fetch/map-data-fetch.service';
 import { Component, OnInit, Directive, ViewChild, Input, ElementRef } from '@angular/core';
@@ -48,7 +50,7 @@ export class MapStartPage implements OnInit {
  constructor(private popoverController:PopoverController, private routingUserService: RoutingUserService, private mapBox: MapBoxComponent,
              private statusBar: StatusBar, private mainMenu: MainMenuComponent, private modalController: ModalController,
              private mapDataFetch: MapDataFetchService,private routerInfo:RouterInfoInBottomComponent,routerStart:RouterStartComponent,private searchBar: SearchBarComponent,
-             private animationController: AnimationController) {
+             private animationController: AnimationController, private displayService: DisplayService) {
   this.init();
  }
  init() {
@@ -165,6 +167,7 @@ export class MapStartPage implements OnInit {
       animation.fromTo('transform', 'translateY(100%)', 'translateY(0%)')
     }
     this.showIndicatorScreen = !this.showIndicatorScreen;
+    this.displayService.setIsIndicatorScreenVisible(this.showIndicatorScreen);
     animation.play();
   }
   async presentModal() {

@@ -1,3 +1,4 @@
+import { DisplayService } from './../display/display.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { UserService } from '../user/user.service';
@@ -27,7 +28,7 @@ export class RoutingUserService {
   // TODO maybe replace points with pointsBehaviorSubject
   public pointsBehaviorSubject: BehaviorSubject<RoutingGeoAssemblyPoint[]> = new BehaviorSubject<RoutingGeoAssemblyPoint[]>(null);
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private displayService: DisplayService) { }
 
   getBoundingArray():Promise<any>{
       this.boundingArray=[];
@@ -101,6 +102,7 @@ export class RoutingUserService {
   }
 
   setDisplayType(dataPoint:string): Promise<any> {
+    if (dataPoint === 'routeStarted') { this.displayService.setIsRouting(true); }
     return new Promise(resolve => {
         this.displayType.next(dataPoint);
         resolve(this.displayType);
@@ -118,6 +120,7 @@ export class RoutingUserService {
     this.setStartPoint([]);
     this.deleteAllPoints();
     this.boundingArray = [];
+    this.displayService.setIsRouting(false);
   }
 
   getfinishPoint(): Promise<any> {

@@ -23,7 +23,7 @@
         </button>
       </ion-col>
       <ion-col size="3">
-        <button ion-button id="cancel" (click)="closeView()">
+        <button ion-button id="cancel" (click)="closeView()" hidden>
           <ion-icon
             name="close-outline"
             style="font-size: 30px; color: white; --ionicon-stroke-width: 30px;"
@@ -65,8 +65,8 @@
   </ion-grid>
 </ion-header>
 
-<ion-content>
-  <ion-grid  style="padding: 0px;">
+<ion-content style="--background:#383838 !important; padding-top:1em" >
+  <ion-grid  style="padding: 0px;" >
     <ion-row>
       <ion-col size="2" style="padding: 0px;">
         <ion-icon id="userPosition"></ion-icon>
@@ -82,14 +82,14 @@
         <ion-row style="height: 55%;" [hidden]="hideselectedAp" >
           <ion-col style="height: 36px; width:30px; padding: 0px;" *ngFor="let a of seletectedAPs">
               <ion-icon id="selectedAP"></ion-icon>
-              <p style="font-weight: 700;">{{a.textField}}</p>
-              <p>{{a.name}}</p>
+              <p style="font-weight: 700; color:white">{{a.textField}}</p>
+              <p style="color:white">{{a.name}}</p>
           </ion-col> 
         </ion-row>
         <ion-row style="height: 6%;">
           <ion-icon id="line"></ion-icon>
         </ion-row>
-        <ion-row id="infoText" style="height: 8%;">
+        <ion-row id="infoText" style="height: 8%; color: white;">
           <p>Wähle die Sammelpunkte auf der Karte zwischen dem Standort und dem Ziel aus.</p>
         </ion-row>
       </ion-col>

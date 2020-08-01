@@ -121,7 +121,6 @@ export class SearchBarComponent implements OnInit {
     document.getElementById("search-results").hidden = true;
     document.getElementById("back").style.display = "none";
     document.getElementById("cross").hidden = true;
-    //document.getElementById("no-recent-content").hidden = true;
     document.getElementById("with-content").hidden = false;
     document.getElementById("wrap").style.width = "100%";
     if (this.searchBarInputV.length > 0) {
@@ -401,6 +400,7 @@ export class SearchBarComponent implements OnInit {
                   this.mapBox.drawRoute(pointString).then(() => {
                     
                     this.routingUserService.setDisplayType("Route_Info");
+                    this.searchBarOpen = false;
                   });
                 });
               } else {
@@ -433,29 +433,18 @@ export class SearchBarComponent implements OnInit {
     
     this.searchBarInputV = "";
     this.addressesString = [];
-    this.search();
-    // clear all Navigation if accessed from Frontend
-    
-    
-    
-    /*
-    if (this.searchBarOpen == true) {
-      if (this.recentRoutes.length > 0) {
-        document.getElementById("recent-results").hidden = false;
-      } else {
-        document.getElementById("recent-results").hidden = true;
-        //document.getElementById("no-recent-content").hidden = false;
-      }
-      document.getElementById("cross").hidden = true;
-
-      this.inputField.setFocus();
-      document.getElementById("no-address").hidden = true;
-    } else {
-      document.getElementById("recent-results").hidden = true;
+    console.log(this.searchBarOpen)
+    if(this.searchBarOpen==true){
+      this.search;
+    } else{
+      this.iconNew="";
+      this.searchBarInputV="";
+      this.back;
+      
+      document.getElementById("avaBtn").hidden = false;
+      document.getElementById("favor").hidden = true;
+      
     }
-    document.getElementById("search-results").hidden = true;
-    this.back();
-    */
   }
 
   saveRoute() {

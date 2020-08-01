@@ -132,13 +132,13 @@ export class MapBoxComponent implements OnInit {
         if (this.map.hasImage('marker_GEM')) {
           this.mapDrawClusterHelper();
         } else {
-          this.map.loadImage('assets/icon/group_excl_me.png', (error, image) => {
-            this.map.addImage('marker_GEM', image);
-            //const img = new Image(20, 20);
-            //img.onload = () => this.map.addImage('test', img);
-            //img.src = 'assets/icon/cancel.svg';
+    
+            const img = new Image(80, 80);
+            img.src = 'assets/icon/Verband_2.svg';
+            img.onload = () => this.map.addImage('marker_GEM', img);
+            
             this.mapDrawClusterHelper();
-          });
+          
         }
         // }, 2000);
       } else {

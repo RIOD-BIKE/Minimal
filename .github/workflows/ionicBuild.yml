@@ -40,11 +40,11 @@ jobs:
       run: cp google-services.json platforms/android/app/
     - name: Cordova Build Android
       run: npx ionic cordova build android
-    - name: Upload Debug APK
-      uses: actions/upload-artifact@v1
-      with:
-        name: RIOD
-        path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
+    # - name: Upload Debug APK
+    #   uses: actions/upload-artifact@v1
+    #   with:
+    #     name: RIOD
+    #     path: platforms/android/app/build/outputs/apk/debug/app-debug.apk
 
   ios:
     name: Cordova Build iOS

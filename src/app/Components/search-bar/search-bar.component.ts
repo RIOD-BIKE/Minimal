@@ -48,15 +48,6 @@ export class SearchBarComponent implements OnInit {
 
    favorUpdate():Promise<any> {
     return new Promise<any>(resolve => {
-    // Temp before saving and edit components are available
-
-    //Abhängig in welcher Reihenfolge die eingelesen / gespeichert werden, werden die in der UI-Horizontale Liste auch in unterschiedlicher
-    //Reihenfolge dargestellt
-    /*
-    this.userService.saveShortcut("Klingensberg 9, 49074 Osnabrück, Germany","home-outline",[8.04098, 52.279913]);
-    this.userService.saveShortcut("Jakobstraße, 49074 Osnabrück, Germany","heart-outline",[8.0425307, 52.2787108]);
-    this.userService.saveShortcut("Barbarastraße 20, 49076 Osnabrück, Germany","briefcase-outline",[8.022824, 52.284357]);
-    */
    this.routingUserService.routeFinished.subscribe((value) => {
     if (value) {
       document.getElementById("saveBtn").hidden = true;
@@ -66,11 +57,9 @@ export class SearchBarComponent implements OnInit {
   });
 
   this.userService.getAllShortcuts().then((allShortcuts) => {
-    console.log(allShortcuts);
+
     this.shortcuts = allShortcuts;
-    if (allShortcuts.length > 0) {
-      // this.shortcuts=allRoutes; //override temporary
-    }
+    console.log(this.shortcuts.length);
     if (this.shortcuts.length == 0) {
       document.getElementById("with-content").hidden = true;
       document.getElementById("edit-no-content").hidden = false;
@@ -114,7 +103,7 @@ export class SearchBarComponent implements OnInit {
     temp.reverse();
     this.recentRoutes = temp.slice(0, 8);
   });
-  document.getElementById("recents-results").hidden = true;
+  document.getElementById("recent-results").hidden = true;
 
     this.userDataFetch.storage_getSpecialAvatar().then(x=>{
       this.specialAvatarURL = x;
@@ -124,15 +113,17 @@ export class SearchBarComponent implements OnInit {
   }
 
   back() {
+
     this.searchBarOpen = false;
-    document.getElementById("recents-results").hidden = true;
+    document.getElementById("no-recent-content").hidden = true;
+    document.getElementById("recent-results").hidden = true;
     document.getElementById("search-results").hidden = true;
     document.getElementById("back").style.display = "none";
     document.getElementById("cross").hidden = true;
-    document.getElementById("no-recent-content").hidden = true;
+    //document.getElementById("no-recent-content").hidden = true;
     document.getElementById("with-content").hidden = false;
     document.getElementById("wrap").style.width = "100%";
-    if (this.searchBarInputV.length != 0) {
+    if (this.searchBarInputV.length > 0) {
       document.getElementById("saveBtn").hidden = false;
       document.getElementById("avaBtn").hidden = true;
     } else {
@@ -144,27 +135,33 @@ export class SearchBarComponent implements OnInit {
     over.style.borderBottomLeftRadius = "10px";
     over.style.borderBottomRightRadius = "10px";
     if (this.shortcuts.length == 0) {
-      document.getElementById("no-content").hidden = false;
-      document.getElementById("edit-no-content").hidden = true;
+      //document.getElementById("no-content").hidden = false;
+      //document.getElementById("edit-no-content").hidden = true;
     } else {
-      document.getElementById("no-content").hidden = true;
-      document.getElementById("edit-no-content").hidden = true;
+      //document.getElementById("no-content").hidden = true;
+      //document.getElementById("edit-no-content").hidden = false;
     }
-    if(this.iconNew != null && this.searchBarInputV.length != 0){
+    if(this.iconNew != "" && this.searchBarInputV.length > 0){
       document.getElementById("favor").hidden = false;
       document.getElementById("saveBtn").hidden = true;
       document.getElementById("cross").hidden = true;
       document.getElementById("avaBtn").hidden = true;
   
     } else {
-      document.getElementById("saveBtn").hidden = false;
-      document.getElementById("favor").hidden = true; 
+      if(this.searchBarInputV.length<1){
+        this.iconNew="";
+        document.getElementById("saveBtn").hidden = true;
+        document.getElementById("favor").hidden = true; 
+        document.getElementById("avaBtn").hidden = false;
+      } else{
+        document.getElementById("saveBtn").hidden = false;
+        document.getElementById("favor").hidden = true; 
+        document.getElementById("avaBtn").hidden = true;
+      }
     }
   }
 
   onTouchSearch() {
-    this.iconNew ="";
-
     document.getElementById("saveBtn").hidden = true;
     this.mapIntegration.getAllSavedRoutes().then((allSavedRoutes) => {
       const temp = [];
@@ -202,30 +199,26 @@ export class SearchBarComponent implements OnInit {
       this.recentRoutes = temp.slice(0, 8);
     });
     this.searchBarOpen = true;
-    if (this.searchBarInputV.length > 0) {
-      
-      if (this.addressesString.length == 0) {
-        document.getElementById("search-results").hidden = true;
-      } else {
-        document.getElementById("search-results").hidden = false;
-      }
-      document.getElementById("no-recent-content").hidden = true;
-      document.getElementById("cross").hidden = false;
-    } else {
-      document.getElementById("saveBtn").hidden = true;
-      if (this.recentRoutes.length > 0) {
-        document.getElementById("recents-results").hidden = false;
-        document.getElementById("no-recent-content").hidden = true;
-      } else {
-        if (this.addressesString.length == 0) {
-          document.getElementById("recents-results").hidden = true;
-        }
-        document.getElementById("no-recent-content").hidden = false;
-      }
-    }
-    if (this.addressesString.length == 0) {
+
+    document.getElementById("saveBtn").hidden = true;
+    if (this.addressesString.length == 0 && this.searchBarInputV.length==0) {
+      document.getElementById("recent-results").hidden = true;
       document.getElementById("search-results").hidden = true;
+      document.getElementById("cross").hidden = true;
+    } else {
+      if (this.recentRoutes.length > 0) {
+        document.getElementById("recent-results").hidden = false;
+      }
+      document.getElementById("search-results").hidden = false;
+      document.getElementById("cross").hidden = false;
     }
+
+    if(this.searchBarInputV.length<=2 && this.recentRoutes.length==0){
+      document.getElementById("no-recent-content").hidden = false;
+    } else{
+      document.getElementById("no-recent-content").hidden = true;
+    }
+
     const wrap = document.getElementById("wrap");
     wrap.style.width = "85%";
     wrap.style.marginLeft = "10px";
@@ -247,12 +240,12 @@ export class SearchBarComponent implements OnInit {
     over.style.borderBottomRightRadius = "0px";
     over.style.transition = "2s !important";
     if (this.shortcuts.length == 0) {
-      document.getElementById("no-content").hidden = true;
-      document.getElementById("edit-no-content").hidden = false;
-      document.getElementById("with-content").hidden = true;
+      //document.getElementById("no-content").hidden = true;
+      //document.getElementById("edit-no-content").hidden = false;
+      //document.getElementById("with-content").hidden = true;
     } else {
-      document.getElementById("edit-no-content").hidden = true;
-      document.getElementById("with-content").hidden = false;
+      //document.getElementById("edit-no-content").hidden = true;
+      //document.getElementById("with-content").hidden = false;
     }
   }
 
@@ -262,9 +255,11 @@ export class SearchBarComponent implements OnInit {
       this.addressesString = [];
       this.searchBarInputV = "";
       if (this.recentRoutes.length > 0) {
-        document.getElementById("recents-results").hidden = false;
+        document.getElementById("recent-results").hidden = false;
+        document.getElementById("no-recent-content").hidden = true;
       } else {
-        document.getElementById("recents-results").hidden = true;
+        document.getElementById("recent-results").hidden = true;
+        document.getElementById("no-recent-content").hidden = false;
       }
       document.getElementById("no-address").hidden = true;
     }
@@ -277,11 +272,11 @@ export class SearchBarComponent implements OnInit {
     }
     // Searchterm valid for GeoSearch-MapBox
     if (searchTerm.length > 2) {
-      if (this.searchBarInputV != "") {
-        document.getElementById("no-recent-content").hidden = true;
-        document.getElementById("recents-results").hidden = true;
-        document.getElementById("search-results").hidden = false;
-      }
+
+      document.getElementById("no-recent-content").hidden = true;
+      document.getElementById("recent-results").hidden = true;
+      document.getElementById("search-results").hidden = false;
+      
       this.mapIntegration
         .searchAddress(searchTerm)
         .subscribe((features: Feature[]) => {
@@ -436,22 +431,29 @@ export class SearchBarComponent implements OnInit {
     
     this.searchBarInputV = "";
     this.addressesString = [];
+    this.search();
+    // clear all Navigation if accessed from Frontend
+    
+    
+    
+    /*
     if (this.searchBarOpen == true) {
       if (this.recentRoutes.length > 0) {
-        document.getElementById("recents-results").hidden = false;
+        document.getElementById("recent-results").hidden = false;
       } else {
-        document.getElementById("recents-results").hidden = true;
-        document.getElementById("no-recent-content").hidden = false;
+        document.getElementById("recent-results").hidden = true;
+        //document.getElementById("no-recent-content").hidden = false;
       }
       document.getElementById("cross").hidden = true;
 
       this.inputField.setFocus();
       document.getElementById("no-address").hidden = true;
     } else {
-      document.getElementById("recents-results").hidden = true;
+      document.getElementById("recent-results").hidden = true;
     }
     document.getElementById("search-results").hidden = true;
     this.back();
+    */
   }
 
   saveRoute() {

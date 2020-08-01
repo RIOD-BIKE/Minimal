@@ -3,8 +3,7 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
 import { BehaviorSubject } from 'rxjs';
-import { resolve } from 'url';
-
+import { Storage } from '@ionic/storage';
 
 
 @Injectable({
@@ -15,8 +14,9 @@ export class UsersDataFetchService {
   private dataAPRef: BehaviorSubject<Array<string>>
   private specialAvatarCached: string;
 
-  constructor(private rtdb: AngularFireDatabase, private afs: AngularFirestore) {
-  this.usersRef = rtdb.list('/users');
+  constructor(private rtdb: AngularFireDatabase, private afs: AngularFirestore, private storage: Storage) {
+    this.usersRef = rtdb.list('/users');
+    this.refreshCurrentSpecialAvatar();
   }
 
 
@@ -99,12 +99,7 @@ export class UsersDataFetchService {
     }
   }
 
-  private async storage_getSpecialAvatarHelper(): Promise<string> {
-    const url = await this.storage_getSpecialAvatarURL();
-    if(!url) {
-      this.specialAvatarCached = '../../../assets/settings/profile-pic.jpg';
-      return this.specialAvatarCached;
-    }
+  private async urlToBase64Blob(url: string) {
     const blob = await (await fetch(url)).blob();
     const reader = new FileReader();
     return new Promise((resolve, reject) => {
@@ -116,7 +111,29 @@ export class UsersDataFetchService {
     });
   }
 
+  private async refreshCurrentSpecialAvatar() {
+    try {
+      var metadata = await firebase.storage().ref('special-avatar.png').getMetadata();
+    } catch(e) {
+      if (e.code !== 'storage/object-not-found') {
+        throw e;
+      } else {
+        await this.storage.set('special_avatar_hash', null);
+        await this.storage.set('special_avatar', null);
+        return;
+      }
+    }
+    const hash = metadata.md5Hash;
+    const currentHash = await this.storage.get('special_avatar_hash');
+    if (hash !== currentHash) {
+      const url = await firebase.storage().ref('special-avatar.png').getDownloadURL();
+      const dataUrl = await this.urlToBase64Blob(url);
+      await this.storage.set('special_avatar_hash', hash);
+      await this.storage.set('special_avatar', dataUrl);
+    }
+  }
+
   async storage_getSpecialAvatar() {
-    return this.specialAvatarCached ?? await this.storage_getSpecialAvatarHelper();
+    return await this.storage.get('special_avatar') ?? '../../../assets/settings/profile-pic.jpg';
   }
 }

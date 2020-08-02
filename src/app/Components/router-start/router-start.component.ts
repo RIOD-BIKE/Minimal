@@ -36,13 +36,18 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
   private state = 'bottom';
   @Input() handleHeight = 100;
   public infoArray = [];
-  public disableCreateButton = true;
-  public hidePlaceholder = false;
-  public hideselectedAp = true;
 
   public seletectedAPs: RoutingGeoAssemblyPoint[];
   public placeholder = [1, 2, 3, 4];
 
+  public disableCreateButton = true;
+  public hidePlaceholder = false;
+  public hideselectedAp = true;
+  public cancel = false;
+  public trash = true;
+  public infoText = false;
+  public selectAPView = false;
+  public startRouteView = true;
 
   // TODO: move statusAudio & vibrationService somewhere else?
 
@@ -143,8 +148,13 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
 
   // change view of slider component creating route or start navigation
   changeViewCreateStart(createR: boolean, startN: boolean) {
-    document.getElementById('selectAP').hidden = createR;
-    document.getElementById('startRoute').hidden = startN;
+    if(createR) {
+      this.selectAPView = createR;
+      this.changeButtons(false);
+    }
+
+    this.startRouteView = startN;
+  
   }
 
   // change buttons if more than 2 APs selected
@@ -152,21 +162,21 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
 
     if (twoAP) {
       this.disableCreateButton = false;
-      document.getElementById('cancel').hidden = true;
-      document.getElementById('trash').hidden = false;
-      document.getElementById('infoText').hidden = true;
+      this.cancel = true;
+      this.trash = false;
+      this.infoText = true;
       this.hidePlaceholder = true;
       this.hideselectedAp = false;
 
     } else {
       this.disableCreateButton = true;
 
-      document.getElementById('cancel').hidden = false;
-      document.getElementById('trash').hidden = true;
-      document.getElementById('infoText').hidden = false;
+      this.cancel = false;
+      this.trash = true;
+      this.infoText = false;
       this.hidePlaceholder = false;
       this.hideselectedAp = true;
-      
+
     }
   }
 

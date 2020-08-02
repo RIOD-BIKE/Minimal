@@ -16,20 +16,20 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row id="selectAP" >
+    <ion-row [hidden]="selectAPView" >
       <ion-col>
         <button ion-button id="createRouteButton" (click)="startRoute()" [disabled]="disableCreateButton">
           ROUTE ERSTELLEN
         </button>
       </ion-col>
       <ion-col size="3">
-        <button ion-button name="cancel" id="cancel" (click)="closeView()" hidden>
+        <button ion-button name="cancel" id="cancel" (click)="closeView()" [hidden]="cancel">
           <ion-icon
             name="close-outline"
             style="font-size: 30px; color: white; --ionicon-stroke-width: 30px;"
           ></ion-icon>
         </button>
-        <button ion-button name="trash" id="trash" (click)="deleteAPPoints()" hidden>
+        <button ion-button name="trash" id="trash" (click)="deleteAPPoints()" [hidden]="trash">
           <ion-icon
             name="trash-outline"
             style="font-size: 30px; color: white; --ionicon-stroke-width: 20px;"
@@ -38,7 +38,7 @@
       </ion-col>
     </ion-row>
     <!-- Other view -->
-    <ion-row id="startRoute" hidden>
+    <ion-row [hidden]="startRouteView">
       <ion-col>
         <button ion-button id="startButton" (click)="startNavi()">
           START
@@ -89,7 +89,7 @@
         <ion-row style="height: 6%;">
           <ion-icon id="line"></ion-icon>
         </ion-row>
-        <ion-row id="infoText" style="height: 8%; color: white;">
+        <ion-row id="infoText" style="height: 8%; color: white;" [hidden]="infoText">
           <p>Wähle die Sammelpunkte auf der Karte zwischen dem Standort und dem Ziel aus.</p>
         </ion-row>
       </ion-col>

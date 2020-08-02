@@ -151,13 +151,9 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
 
   // change view of slider component creating route or start navigation
   changeViewCreateStart(createR: boolean, startN: boolean) {
-    if(createR) {
-      this.selectAPView = createR;
-      this.changeButtons(false);
-    }
 
+    this.selectAPView = createR;
     this.startRouteView = startN;
-  
   }
 
   // change buttons if more than 2 APs selected
@@ -204,7 +200,6 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
 
   // delete all selected APs
   deleteAPPoints() {
-    // TODO not working
     this.seletectedAPs = [];
     this.routingUserService.deleteAllPoints();
     this.mapBox.removeAllPoints();

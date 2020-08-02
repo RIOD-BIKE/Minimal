@@ -47,6 +47,9 @@ export class MapStartPage implements OnInit {
   private showIndicatorScreen = false;
   @ViewChild('indicatorScreen') indicatorScreen: ElementRef;
 
+  public searchbar = false;
+  public closeWindow = true;
+
  constructor(private popoverController:PopoverController, private routingUserService: RoutingUserService, private mapBox: MapBoxComponent,
              private statusBar: StatusBar, private mainMenu: MainMenuComponent, private modalController: ModalController,
              private mapDataFetch: MapDataFetchService,private routerInfo:RouterInfoInBottomComponent,routerStart:RouterStartComponent,private searchBar: SearchBarComponent,
@@ -103,11 +106,8 @@ export class MapStartPage implements OnInit {
   }
 
   hideSearchbar(searchbar: boolean, closeWindow: boolean) {
-    const search = document.getElementById('searchbar');
-    const cancel = document.getElementById('closeWindow');
-
-    search.hidden = searchbar;
-    cancel.hidden = closeWindow;
+    this.searchbar = searchbar;
+    this.closeWindow = closeWindow;
 
   }
 

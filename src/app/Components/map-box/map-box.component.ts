@@ -132,13 +132,15 @@ export class MapBoxComponent implements OnInit {
         if (this.map.hasImage('marker_GEM')) {
           this.mapDrawClusterHelper();
         } else {
-    
-            const img = new Image(80, 80);
+            const img = new Image(78, 78);
+
             img.src = 'assets/icon/Verband_2.svg';
-            img.onload = () => this.map.addImage('marker_GEM', img);
-            
-            this.mapDrawClusterHelper();
-          
+            img.onload = () => {this.map.addImage('marker_GEM', img); 
+              if (this.map.hasImage('marker_GEM')) {
+                this.mapDrawClusterHelper();
+              } 
+            }
+
         }
         // }, 2000);
       } else {
@@ -161,7 +163,7 @@ export class MapBoxComponent implements OnInit {
           'icon-size': 0.5,
           'icon-allow-overlap': true,
           'icon-offset': [0, -30],
-          'text-offset': [0.916, -2.43]
+          'text-offset': [0.865, -2.46]
         },
       }))
     });
@@ -235,22 +237,25 @@ export class MapBoxComponent implements OnInit {
           this.mapDrawAssemblyPointsHelper();
         }
       } else {
-        this.map.loadImage('assets/icon/default_meetingpoint_whiteborder.png', (error, image) => {
-          this.map.addImage('marker_DAP', image);
-          this.map.loadImage('assets/icon/choosen_meetingpoint.png', (error, image) => {
-            this.map.addImage('marker_CAP', image);
-            this.map.loadImage('assets/icon/default_meetingpoint_whiteborder_alpha.png', (error, image) => {
-              this.map.addImage('marker_UNAP', image);
-              // let img = new Image(20,20);
-              // img.onload=()=>this.map.addImage('test',img);
-              // img.src='assets/icon/cancel.svg';
+        const img2 = new Image(66.7, 79.38);
+        img2.src = 'assets/icon/Sammelpunkt.svg';
+        img2.onload = () => {
+          this.map.addImage('marker_DAP', img2);
+          const img3 = new Image(66.7, 79.38);
+          img3.src = 'assets/icon/Sammelpunkt_empty.svg';
+          img3.onload = () => {
+            this.map.addImage('marker_CAP', img3);
+            const img4 = new Image(66.7, 79.38);
+            img4.src = 'assets/icon/Sammelpunkt.svg';
+            img4.style.opacity="0.6";
+            img4.onload = () => {
+              this.map.addImage('marker_UNAP', img4);
               if (this.map.getLayer('assemblyPoints') === undefined) {
                 this.mapDrawAssemblyPointsHelper();
               }
-            });
-          });
-        });
-
+            }
+          }
+        }
       }
       //    }, 2000);
     });

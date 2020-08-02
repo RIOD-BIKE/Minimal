@@ -211,30 +211,6 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
     this.changeViewCreateStart(false, true);
   }
 
-  slideUp() {
-    // const textIN = document.getElementById('infoTextIN');
-    // textIN.hidden = true;
-    // const textOUT = document.getElementById('infoTextOUT');
-    // textOUT.hidden = false;
-
-    // const trashy = document.getElementById('trash');
-    // trashy.hidden = false;
-    // const cancel = document.getElementById('cancel');
-    // cancel.hidden = true;
-  }
-
-  slideDown() {
-    // const textIN = document.getElementById('infoTextIN');
-    // textIN.hidden = false;
-    // const textOUT = document.getElementById('infoTextOUT');
-    // textOUT.hidden = true;
-
-    // const trashy = document.getElementById('trash');
-    // trashy.hidden = true;
-    // const cancel = document.getElementById('cancel');
-    // cancel.hidden = false;
-  }
-
   // slider logic
   async ngAfterViewInit() {
     const windowHeight = window.innerHeight;
@@ -267,19 +243,15 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
         if (ev.deltaY < -(windowHeight / 20) && this.state === 'bottom') {
           this.renderer.setStyle(this.element.nativeElement, 'transform', `translateY(-${windowHeight - drawerHeight}px)`);
           this.state = 'top';
-          this.slideUp();
         } else if (ev.deltaY < (windowHeight / 20) && this.state === 'top') {
           this.renderer.setStyle(this.element.nativeElement, 'transform', `translateY(-${windowHeight - drawerHeight}px)`);
           this.state = 'top';
-          this.slideUp();
         } else if (ev.deltaY > (windowHeight / 20) && this.state === 'top') {
           this.renderer.setStyle(this.element.nativeElement, 'transform', 'translateY(0px)');
           this.state = 'bottom';
-          this.slideDown();
         } else {
           this.renderer.setStyle(this.element.nativeElement, 'transform', 'translateY(0px)');
           this.state = 'bottom';
-          this.slideDown();
         }
       }
     };

@@ -3,13 +3,10 @@ import { environment } from './../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { MapIntegrationService } from '../../services/map-integration/map-integration.service';
-import { PositionI, ClusterCollection, AssemblyPointCollection, RoutingGeoAssemblyPoint, PointMarker, GeoPointMarker, GeoAssemblyPoint } from '../../Classess/map/map';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { PositionI, ClusterCollection, AssemblyPointCollection, RoutingGeoAssemblyPoint, PointMarker, GeoPointMarker } from '../../Classess/map/map';
 import { UserService } from './../../services/user/user.service';
-import { Storage } from '@ionic/storage';
 import { RoutingUserService } from 'src/app/services/routing-user/routing-user.service';
-import * as turf from '@turf/turf'
-const MAP_KEY = 'map-reload-token';
+import * as turf from '@turf/turf';
 
 
 
@@ -30,7 +27,7 @@ export class MapBoxComponent implements OnInit {
   private assemblyPointMarkers: any;
 
   constructor(private routingUserService: RoutingUserService, private userservice: UserService,
-    private mapDataFetchService: MapDataFetchService, private mapIntegration: MapIntegrationService) {
+              private mapDataFetchService: MapDataFetchService, private mapIntegration: MapIntegrationService) {
   }
 
   ngOnInit() { }
@@ -57,21 +54,21 @@ export class MapBoxComponent implements OnInit {
         this.mapDataFetchService.clusterValueChange.subscribe(newClusterFetched => {
           this.clusterMarkers = newClusterFetched;
           this.updateCluster();
-        })
+        });
       });
       this.mapDataFetchService.retrieveAssemblyPoints().subscribe((value) => {
         this.assemblyPointMarkers = value;
         this.mapDataFetchService.apsValueChange.subscribe(y => {
           this.assemblyPointMarkers = y;
           this.updateAssemblyPoints();
-        })
+        });
       });
       resolve();
     });
   }
 
   private async inizializeMap() {
-    await this.buildMap().then(x => {
+    await this.buildMap().then(() => {
       // setTimeout(() => {
       this.pointFetch().then(() => {
         this.drawAssemblyPoints();
@@ -89,7 +86,7 @@ export class MapBoxComponent implements OnInit {
         container: 'map',
         style: 'mapbox://styles/mapbox/dark-v10?optimize=true',
         zoom: 13,
-        //maxZoom: 16,
+        // maxZoom: 16,
         center: [this.myPosition.position.longitude, this.myPosition.position.latitude],
         accessToken: environment.mapbox.accessToken
       });
@@ -124,7 +121,7 @@ export class MapBoxComponent implements OnInit {
             features: []
           }
         });
-        //setTimeout(() => {
+        // setTimeout(() => {
         this.clusterSource = this.map.getSource('clusters');
         const data = new ClusterCollection(this.clusterMarkers);
         this.clusterSource.setData(data);
@@ -135,11 +132,11 @@ export class MapBoxComponent implements OnInit {
             const img = new Image(78, 78);
 
             img.src = 'assets/icon/Verband_2.svg';
-            img.onload = () => {this.map.addImage('marker_GEM', img); 
-              if (this.map.hasImage('marker_GEM')) {
-                this.mapDrawClusterHelper();
-              } 
-            }
+            img.onload = () => {this.map.addImage('marker_GEM', img);
+                                if (this.map.hasImage('marker_GEM')) {
+                                this.mapDrawClusterHelper();
+                                }
+            };
 
         }
         // }, 2000);
@@ -165,7 +162,7 @@ export class MapBoxComponent implements OnInit {
           'icon-offset': [0, -30],
           'text-offset': [0.865, -2.46]
         },
-      }))
+      }));
     });
   }
 
@@ -186,7 +183,7 @@ export class MapBoxComponent implements OnInit {
           'icon-offset': [0, -30],
           'text-offset': [0, -0.8]
         },
-      })
+      });
       resolve(this.map.moveLayer('assemblyPoints', 'clusters'));
     });
   }
@@ -246,15 +243,15 @@ export class MapBoxComponent implements OnInit {
             this.map.addImage('marker_CAP', img3);
             const img4 = new Image(66.7, 79.38);
             img4.src = 'assets/icon/Sammelpunkt_UNAC.svg';
-            
+
             img4.onload = () => {
               this.map.addImage('marker_UNAP', img4);
               if (this.map.getLayer('assemblyPoints') === undefined) {
                 this.mapDrawAssemblyPointsHelper();
               }
-            }
-          }
-        }
+            };
+          };
+        };
       }
     });
   }
@@ -294,19 +291,19 @@ export class MapBoxComponent implements OnInit {
         const l = e.features[0].properties.title;
         const arr = [];
         const temp2 = this.assemblyPointMarkers;
-        this.routingUserService.deletePoints(parseInt(n)).then(() => {
+        this.routingUserService.deletePoints(parseInt(n, 10)).then(() => {
           this.routingUserService.getPoints().then(points => {
-            if (points.length != null && points.length != 0) {
-              let length = points.length;
+            if (points.length != null && points.length !== 0) {
+              const length = points.length;
               this.assemblyPointMarkers.forEach(x => {
-                if (x.properties.textField == length.toString()) {
+                if (x.properties.textField === length.toString()) {
                   for (let i = 0; i < x.properties.available_count; i++) {
                     arr.push(x.properties['available_' + (i + 1)]);
                   }
                 }
                 for (let i = 0; i < temp2.length; i++) {
                   if (temp2[i].properties.iconName === 'marker_CAP') {
-                    if (temp2[i].properties.title === l || parseInt(temp2[i].properties.textField) > parseInt(n)) {
+                    if (temp2[i].properties.title === l || parseInt(temp2[i].properties.textField, 10) > parseInt(n, 10)) {
                       temp2[i].properties.iconName = 'marker_DAP';
                       temp2[i].properties.textField = '';
                     }
@@ -320,7 +317,7 @@ export class MapBoxComponent implements OnInit {
                   }
                 }
                 this.drawUpdateChooseAssemblyPoints();
-              })
+              });
             } else {
               for (let i = 0; i < temp2.length; i++) {
                 temp2[i].properties.iconName = 'marker_DAP';
@@ -337,7 +334,7 @@ export class MapBoxComponent implements OnInit {
         const n = e.features[0].properties.title;
         const m = e.features[0].properties.iconName;
         const count = e.features[0].properties.available_count;
-        let arr = [];
+        const arr = [];
         for (let i = 0; i < count; i++) {
           arr.push(e.features[0].properties['available_' + (i + 1)]);
         }
@@ -352,10 +349,10 @@ export class MapBoxComponent implements OnInit {
 
   drawChooseUpdateAssemblyPoints_Helper(arr: Array<any>, n: string): Promise<any> {
     return new Promise<any>(resolve => {
-      let temp2 = this.assemblyPointMarkers;
+      const temp2 = this.assemblyPointMarkers;
       this.routingUserService.getPoints().then(x => {
         for (let i = 0; i < temp2.length; i++) {
-          if (x.some(e => (e.name === temp2[i].properties.title) && (temp2[i].properties.iconName == 'marker_CAP'))) {
+          if (x.some(e => (e.name === temp2[i].properties.title) && (temp2[i].properties.iconName === 'marker_CAP'))) {
           } else {
             if (temp2[i].properties.title == n) {
               temp2[i].properties.iconName = 'marker_CAP';
@@ -379,8 +376,8 @@ export class MapBoxComponent implements OnInit {
     return new Promise(resolve => {
       this.routingUserService.getstartPoint().then(y => {
         this.routingUserService.getfinishPoint().then(x => {
-          const start = y[0]; //StartCoords
-          const end = x[0]; //FinishCoords
+          const start = y[0]; // StartCoords
+          const end = x[0]; // FinishCoords
           const bbox = [start, end];
           const completeDirectionString = start[0] + ',' + start[1] + ';' + pointString + end[0] + ',' + end[1];
           const url = 'https://api.mapbox.com/directions/v5/mapbox/cycling/' +
@@ -394,52 +391,50 @@ export class MapBoxComponent implements OnInit {
 
 
   drawRouteHelpMethod(url, cFunction, map, bbox): Promise<any> {
-    console.log("hey")
+    // console.log('hey');
     return new Promise(resolve => {
-      // XMLHttpRequest is a bitch  
+      // XMLHttpRequest is a bitch
       const xhttp = new XMLHttpRequest();
       xhttp.responseType = 'json';
-      xhttp.open("GET", url, true);
+      xhttp.open('GET', url, true);
       xhttp.onreadystatechange = () => {
         xhttp.onload = () => {
           const jsonResponse = xhttp.response;
-          this.routingUserService.setPointsDetailed(jsonResponse.routes[0].legs).then(()=>{
+          this.routingUserService.setPointsDetailed(jsonResponse.routes[0].legs).then(() => {
             const distance = jsonResponse.routes[0].distance * 0.001;
             const duration = jsonResponse.routes[0].duration / 60;
             const coords = jsonResponse.routes[0].geometry;
-            const routeCoords = { coordinates: [], type: 'LineString' }
+            const routeCoords = { coordinates: [], type: 'LineString' };
             jsonResponse.routes[0].legs.forEach(element => {
               element.steps.forEach(step => {
                 step.geometry.coordinates.forEach(coordinate => {
                   routeCoords.coordinates.push(coordinate);
-                })
-              })
+                });
+              });
             });
             if ((xhttp.readyState === 4) && (xhttp.status === 200)) {
               this.routingUserService.setDuration(duration);
               this.routingUserService.setDistance(distance);
-              const first = coords.coordinates[0];
-              const last = coords.coordinates[coords.coordinates.length - 1];
               cFunction(routeCoords, map);
-  
+
               this.routingUserService.getPoints().then(points => {
-                let arr = [];
+                const arr = [];
                 points.forEach(p => {
                   arr.push([p.position.longitude, p.position.latitude]);
-                })
+                });
                 arr.push(bbox[0]);
                 arr.push(bbox[1]);
-                let line = turf.lineString(arr)
-                let bboxTurf = turf.bbox(line);
-                console.log(bboxTurf)
+                const line = turf.lineString(arr);
+                const bboxTurf = turf.bbox(line);
+                console.log(bboxTurf);
                 map.fitBounds(bboxTurf, { padding: { top: 200, bottom: 130, left: 40, right: 40 } });
                 this.drawThisFinishMarker(map, arr);
                 resolve();
-              })
+              });
             }
-          })
+          });
         };
-      }
+      };
       xhttp.send();
     });
   }
@@ -465,70 +460,72 @@ export class MapBoxComponent implements OnInit {
       }
     });
     map.moveLayer('route', 'assemblyPoints');
-  };
+  }
 
 
   drawFinishMarker(): Promise<boolean> {
     return new Promise(resolve => {
       this.drawExistingAssemblyPointRoute().then(x => {
-        if (x != false && x.assemblyPoints != undefined && x.assemblyPoints.length > 0) {
+        if (x !== false && x.assemblyPoints !== undefined && x.assemblyPoints.length > 0) {
           let i = 0;
-          let apMarker = this.assemblyPointMarkers;
-          let length = x.assemblyPoints.length;
+          const apMarker = this.assemblyPointMarkers;
+          const length = x.assemblyPoints.length;
           x.assemblyPoints.forEach(apPoint => {
             apMarker.forEach(apM => {
-              if (apPoint.name == apM.properties.title && apPoint.position.longitude == apM.geometry.coordinates[0] && apPoint.position.latitude == apM.geometry.coordinates[1]) {
+              if (apPoint.name === apM.properties.title && apPoint.position.longitude === apM.geometry.coordinates[0]
+                && apPoint.position.latitude === apM.geometry.coordinates[1]) {
                 apM.properties.iconName = apPoint.iconName;
                 apM.properties.textField = apPoint.textField;
-                this.routingUserService.setPoints(new RoutingGeoAssemblyPoint(apM.properties.latitude, apM.properties.longitude, apM.properties.title, apPoint.available, apM.properties.textField, apM.properties.iconName));
+                this.routingUserService.setPoints(new RoutingGeoAssemblyPoint(apM.properties.latitude, apM.properties.longitude,
+                  apM.properties.title, apPoint.available, apM.properties.textField, apM.properties.iconName));
                 i++;
               } else {
-                if (apM.properties.textField == "" && apM.properties.iconName != "marker_CAP") {
-                  apM.properties.iconName = "marker_UNAP";
+                if (apM.properties.textField === '' && apM.properties.iconName !== 'marker_CAP') {
+                  apM.properties.iconName = 'marker_UNAP';
                 }
               }
-            })
-            if (length.toString() == apPoint.textField) {
+            });
+            if (length.toString() === apPoint.textField) {
               apPoint.available.forEach(x => {
                 this.routingUserService.getPoints().then(point => {
-                  if (x != point.name) {
+                  if (x !== point.name) {
                     apMarker.forEach(apM => {
-                      if (apM.properties.title == x && apM.properties.textField == "") {
-                        apM.properties.iconName = "marker_DAP"
+                      if (apM.properties.title === x && apM.properties.textField === '') {
+                        apM.properties.iconName = 'marker_DAP';
                       }
-                    })
+                    });
                   }
-                })
-              })
+                });
+              });
             }
-            if (i == length) {
+            if (i === length) {
               this.assemblyPointMarkers = apMarker;
-              this.routingUserService.getPoints().then(x => {
+              this.routingUserService.getPoints().then(() => {
                 this.drawUpdateChooseAssemblyPoints();
                 this.map.on('click', 'assemblyPoints', this.drawChooseAssemblyPoints);
                 this.drawThisFinishMarker(this.map);
                 resolve(true);
-              })
+              });
             }
-          })
+          });
         } else {
           this.map.on('click', 'assemblyPoints', this.drawChooseAssemblyPoints);
           this.drawThisFinishMarker(this.map);
           resolve(false);
         }
-      })
-    })
+      });
+    });
   }
 
   drawExistingAssemblyPointRoute(): Promise<any> {
     return new Promise(resolve => {
       this.mapIntegration.checkifRouteExists().then(x => {
-        if (x == false) {
+        if (x === false) {
           resolve(false);
         } else {
           resolve(x.value);
         }
-      })
+      });
     });
   }
 
@@ -536,7 +533,7 @@ export class MapBoxComponent implements OnInit {
   drawThisFinishMarker(map, pointArray?) {
     this.routingUserService.getPoints().then(points => {
       this.routingUserService.getfinishPoint().then(finishPoint => {
-        if (map.getLayer('finishMarker') != undefined) {
+        if (map.getLayer('finishMarker') !== undefined) {
           let finishPointSource;
           let finishPointdata;
           finishPointSource = map.getSource('finishMarker') as mapboxgl.GeoJSONSource;
@@ -545,89 +542,88 @@ export class MapBoxComponent implements OnInit {
           finishPointSource.setData(finishPointdata);
         } else {
           this.routingUserService.getstartPoint().then(startpoint => {
-            if(map.getSource('finishMarker')!=undefined){
-              this.map.removeSource("finishMarker");
+            if (map.getSource('finishMarker') !== undefined) {
+              this.map.removeSource('finishMarker');
             }
-              map.addSource('finishMarker', {
+            map.addSource('finishMarker', {
                 type: 'geojson',
                 data: { type: 'FeatureCollection', features: [] }
               });
-            
+
             let finishPointSource: mapboxgl.GeoJSONSource;
             let finishPointdata;
             finishPointSource = map.getSource('finishMarker') as mapboxgl.GeoJSONSource;
-            if (pointArray != undefined) {
+            if (pointArray !== undefined) {
               finishPointdata = new PointMarker(Array(new GeoPointMarker(pointArray)));
-              let arr = [startpoint[0], pointArray, finishPoint]
-              let line = turf.lineString(arr)
-              let bbox = turf.bbox(line);
+              const arr = [startpoint[0], pointArray, finishPoint];
+              const line = turf.lineString(arr);
+              const bbox = turf.bbox(line);
 
-              console.log("DrawThisFinishPointMarker" + bbox)
+              console.log('DrawThisFinishPointMarker' + bbox);
               map.fitBounds(bbox, { padding: { top: 200, bottom: 130, left: 40, right: 40 } });
             } else {
               finishPointdata = new PointMarker(Array(new GeoPointMarker(finishPoint[0])));
-              let arr = [];
+              const arr = [];
               points.forEach(p => {
                 arr.push([p.position.longitude, p.position.latitude]);
-              })
+              });
               arr.push(finishPoint[0]);
               arr.push(startpoint[0]);
-              let line = turf.lineString(arr)
-              let bboxTurf = turf.bbox(line);
+              const line = turf.lineString(arr);
+              const bboxTurf = turf.bbox(line);
               map.fitBounds(bboxTurf, { padding: { top: 200, bottom: 130, left: 40, right: 40 } });
             }
             finishPointSource.setData(finishPointdata);
-            console.log(this.map.hasImage("target"));
-            if (this.map.hasImage('target')==true) {
+            console.log(this.map.hasImage('target'));
+            if (this.map.hasImage('target') === true) {
               this.mapDrawFinishMarkerHelper();
             } else {
               const img = new Image(62.7, 75);
               img.src = 'assets/icon/ziel.svg';
               img.onload = () => {
-                if(this.map.hasImage("target")==true){
-                  this.map.removeImage("target");
-                } 
+                if (this.map.hasImage('target') === true) {
+                  this.map.removeImage('target');
+                }
                 this.map.addImage('target', img);
                 this.mapDrawFinishMarkerHelper();
               };
             }
-          })
+          });
 
         }
       });
-    })
+    });
 
   }
   mapDrawFinishMarkerHelper(): Promise<any> {
     return new Promise(resolve => {
-      if(this.map.getLayer("finishMarker") != undefined){
-        this.map.removeLayer("finishMarker");
+      if (this.map.getLayer('finishMarker') !== undefined) {
+        this.map.removeLayer('finishMarker');
         resolve(this.map.addLayer({
           id: 'finishMarker',
           source: 'finishMarker',
           type: 'symbol',
           layout: {
-            'visibility': 'visible',
+            visibility: 'visible',
             'icon-image': 'target',
             'icon-size': 0.5,
             'icon-allow-overlap': true,
             'icon-offset': [0, -30]
           },
-        }))
-      }
-      else{
+        }));
+      } else {
         resolve(this.map.addLayer({
           id: 'finishMarker',
           source: 'finishMarker',
           type: 'symbol',
           layout: {
-            'visibility': 'visible',
+            visibility: 'visible',
             'icon-image': 'target',
             'icon-size': 0.5,
             'icon-allow-overlap': true,
             'icon-offset': [0, -30]
           },
-        }))
+        }));
       }
     });
   }
@@ -636,12 +632,12 @@ export class MapBoxComponent implements OnInit {
   removeRoute(): Promise<any> {
     return new Promise(resolve => {
       this.assemblyPointMarkers = this.mapDataFetchService.aps;
-      
-      if (this.map.getLayer('finishMarker') != undefined) {
+
+      if (this.map.getLayer('finishMarker') !== undefined) {
         this.map.removeLayer('finishMarker');
         this.map.removeSource('finishMarker');
       }
-      if (this.map.getLayer('route') != undefined) {
+      if (this.map.getLayer('route') !== undefined) {
         this.map.removeLayer('route');
         this.map.removeSource('routeSource');
       }
@@ -650,63 +646,63 @@ export class MapBoxComponent implements OnInit {
   }
 
 
-  removeAllPoints(): Promise<any>{
+  removeAllPoints(): Promise<any> {
     return new Promise(resolve => {
       const temp = this.assemblyPointMarkers;
       temp.forEach(element => {
-        element.properties.iconName='marker_DAP';
-        element.properties.textField='';
+        element.properties.iconName = 'marker_DAP';
+        element.properties.textField = '';
       });
-      this.assemblyPointMarkers=temp;
+      this.assemblyPointMarkers = temp;
       this.drawUpdateChooseAssemblyPoints();
       resolve();
     });
   }
 
-  disableFutureChooseAssemblyPoints():Promise<any>{
+  disableFutureChooseAssemblyPoints(): Promise<any> {
     return new Promise(resolve => {
       const temp = this.assemblyPointMarkers;
       temp.forEach(element => {
-        if(element.properties.iconName != 'marker_CAP'){
-          element.properties.iconName='marker_UNAP';
-          element.properties.textField='';
+        if (element.properties.iconName !== 'marker_CAP') {
+          element.properties.iconName = 'marker_UNAP';
+          element.properties.textField = '';
         }
       });
-      this.assemblyPointMarkers=temp;
+      this.assemblyPointMarkers = temp;
       this.disableAssemblyClick();
       this.drawUpdateChooseAssemblyPoints();
       resolve();
-    
+
     });
   }
 
-  enableFutureChooseAssemblyPoints():Promise<any>{
+  enableFutureChooseAssemblyPoints(): Promise<any> {
     return new Promise(resolve => {
       const temp = this.assemblyPointMarkers;
-      let number=0;
-      this.routingUserService.getPoints().then(x=>{
-        number = Number(x[x.length-1].textField);
-        console.log(x);
+      let num = 0;
+      this.routingUserService.getPoints().then(x => {
+        num = Number(x[x.length - 1].textField);
+        // console.log(x);
         temp.forEach(element => {
-           x[x.length-1].available.forEach(ava => {
-             if(element.properties.title == ava){
+           x[x.length - 1].available.forEach(ava => {
+             if (element.properties.title === ava) {
                console.log(ava);
-               if(element.properties.textField==''){
-                element.properties.iconName='marker_DAP';
-                element.properties.textField='';
+               if (element.properties.textField === '') {
+                element.properties.iconName = 'marker_DAP';
+                element.properties.textField = '';
                }
              }
            });
         });
-        if (this.map.getLayer('route') != undefined) {
+        if (this.map.getLayer('route') !== undefined) {
           this.map.removeLayer('route');
           this.map.removeSource('routeSource');
         }
-        this.assemblyPointMarkers=temp;
+        this.assemblyPointMarkers = temp;
         this.map.on('click', 'assemblyPoints', this.drawChooseAssemblyPoints);
         this.drawUpdateChooseAssemblyPoints();
         resolve();
-      })
+      });
     });
   }
 }

@@ -237,4 +237,15 @@ export class recentShortcut{
   }
 }
 
+export class miniShortcut{
+  iconName:string;
+  city:string;
+  street:string;
+  constructor(iName:string,street:string,city:string){
+    this.iconName=iName;
+    this.city=city;
+    this.street=street;
+  }
+}
+
 

@@ -1,7 +1,8 @@
 
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { EditFavorSequenceComponent } from './Components/edit-favor-sequence/edit-favor-sequence.component';
 
 const routes: Routes = [
   {
@@ -87,9 +88,11 @@ const routes: Routes = [
   {
     path: 'settings-manual',
     loadChildren: () => import('./pages/settings/settings-manual/settings-manual.module').then( m => m.SettingsManualPageModule)
+  },
+  {
+    path: 'edit-sequence',
+    loadChildren: () => import('./Components/edit-favor-sequence/edit-favor-sequence.component').then(m => m.EditFavorSequenceComponent)
   }
-
-
 ];
 
 @NgModule({

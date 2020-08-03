@@ -18,6 +18,7 @@ export class EditFavoriteComponent implements OnInit {
     private routingUserService: RoutingUserService,
     private userService: UserService,
     private router: Router
+
   ) { }
   
   ngOnInit() {
@@ -54,4 +55,6 @@ export class EditFavoriteComponent implements OnInit {
   back(){
     this.dismiss();
   }
+  deleteFavor(){}
+  saveRoute(){}
 }

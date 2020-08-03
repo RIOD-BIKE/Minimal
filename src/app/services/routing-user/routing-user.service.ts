@@ -22,6 +22,7 @@ export class RoutingUserService {
   private centerPoint: BehaviorSubject<RoutingGeoAssemblyPoint> = new BehaviorSubject<RoutingGeoAssemblyPoint>(null);
   private displayType: BehaviorSubject<string> = new BehaviorSubject<string>('MainView');
   private displaySwitchCase: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
+  private displayRoutingStart: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private boundingArray: PolygonAssemblyPoint[]=[];
   private pointsDetailed: any=null;
   public routeFinished: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -294,6 +295,14 @@ export class RoutingUserService {
   }
   setDisplaySwitchCase(switchCase:boolean){
     this.displaySwitchCase.next(switchCase);
+  }
+
+  setDisplayRoutingStart(switchCase:boolean){
+    this.displayRoutingStart.next(switchCase);
+  }
+
+  getDisplayRoutingStart(): Observable<boolean>{
+    return this.displayRoutingStart.asObservable();
   }
 
 

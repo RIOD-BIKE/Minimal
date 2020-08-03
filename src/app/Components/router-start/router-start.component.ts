@@ -60,6 +60,14 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
       });
     });
 
+    this.routingUserService.getDisplayRoutingStart().subscribe(value=>{
+      if(value==true){
+        this.changeViewCreateStart(true, false);
+      } else if(value==false){
+        this.changeViewCreateStart(false, true);
+      }
+    })
+
     // get routing info
     this.routingUserService.getDurationasSub().subscribe(duration => {
       this.routingUserService.getDistanceasSub().subscribe(distance => {
@@ -96,6 +104,7 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
     this.infoArray = [];
     this.routingUserService.setDisplayType('Start');
     this.routingUserService.resetAll();
+    this.routingUserService.setDisplayRoutingStart(false);
     this.mapBox.removeRoute();
     this.mapBox.disableAssemblyClick().then(() => {
       this.mapBox.updateAssemblyPoints();
@@ -200,6 +209,7 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
 
   // delete all selected APs
   deleteAPPoints() {
+    this.routingUserService.setDisplayRoutingStart(false);
     this.seletectedAPs = [];
     this.routingUserService.deleteAllPoints();
     this.mapBox.removeAllPoints();
@@ -207,8 +217,8 @@ export class RouterStartComponent implements OnInit, AfterViewInit {
 
   // delete the route and go back to create route
   goBackToCreateRoute() {
+    this.routingUserService.setDisplayRoutingStart(false);
     this.mapBox.enableFutureChooseAssemblyPoints();
-    this.changeViewCreateStart(false, true);
   }
 
   // slider logic

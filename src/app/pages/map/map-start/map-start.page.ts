@@ -66,9 +66,11 @@ export class MapStartPage implements OnInit {
     if(x=='Start'){
      this.showType="";
     }
-    // if(x=='Route_Info'){
-    //   this.showType="showRouterInfo";
-    // }
+     if(x=='Route_Info'){
+       this.routingUserService.setDisplayRoutingStart(true);
+       this.mapBox.disableFutureChooseAssemblyPoints();
+       this.showType="showMain";
+     }
     if(x=='Main'){
       this.showType="showMain";
     }
@@ -96,6 +98,7 @@ export class MapStartPage implements OnInit {
   closeView() {
     this.mainMenu.closeView();
     this.routingUserService.setDisplayType('Start');
+    this.routingUserService.setDisplayRoutingStart(false);
     this.routingUserService.resetAll();
     this.mapBox.removeRoute();
     this.mapBox.disableAssemblyClick().then(() => {

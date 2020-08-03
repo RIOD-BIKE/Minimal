@@ -280,5 +280,7 @@ p {
 .mapboxgl-ctrl-bottom-left{
     visibility: hidden !important;  
 }
-
+.keyboard-open .has-footer{
+    bottom: 0px !important;
+}
   

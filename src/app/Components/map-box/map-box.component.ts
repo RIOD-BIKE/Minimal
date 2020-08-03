@@ -579,7 +579,7 @@ export class MapBoxComponent implements OnInit {
               this.mapDrawFinishMarkerHelper();
             } else {
               const img = new Image(62.7, 75);
-              img.src = 'assets/icon/ziel.svg';
+              img.src = 'assets/icon/Ziel.svg';
               img.onload = () => {
                 if (this.map.hasImage('target') === true) {
                   this.map.removeImage('target');

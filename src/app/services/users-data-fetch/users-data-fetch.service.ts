@@ -45,8 +45,8 @@ export class UsersDataFetchService {
         this.riodMembers=[];
         returnArray=[];
         for(let i=1; i<items.length;i++){
-          //&& items[i].key!=userHash
-         if(items[i].key!="__DUMMY__" ){
+          
+         if(items[i].key!="__DUMMY__" && items[i].key!=userHash){
           let recalculateWriteDBTime =items[i].payload.node_.children_.root_.value.value_+(60000*items[i].payload.node_.children_.root_.left.value.value_)*2;
           
           if(recalculateWriteDBTime>userTimestamp || items[i].payload.node_.children_.root_.left.value.value_ == 0){

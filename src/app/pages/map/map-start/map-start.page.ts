@@ -134,6 +134,9 @@ export class MapStartPage implements OnInit {
     this.setShowMain();
   }
 
+  presentModal(){
+    
+  }
 
 
   setShowRouterInfoBottom():Promise<any>{

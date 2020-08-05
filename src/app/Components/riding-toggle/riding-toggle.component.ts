@@ -1,3 +1,4 @@
+import { MapDataFetchService } from './../../services/map-data-fetch/map-data-fetch.service';
 import { MapStartPage } from 'src/app/pages/map/map-start/map-start.page';
 import { RideIndicatorComponent } from './../ride-indicator/ride-indicator.component';
 import { ModalController } from '@ionic/angular';
@@ -14,17 +15,31 @@ import { RoutingUserService } from 'src/app/services/routing-user/routing-user.s
 })
 export class RidingToggleComponent implements OnInit {
 
-  constructor(private mapStart: MapStartPage, private routingUserService: RoutingUserService) { }
+  public statusColor: string;
+
+  constructor(private mapStart: MapStartPage, private routingUserService: RoutingUserService, private mapDataFetch: MapDataFetchService) { }
 
   ngOnInit() {
-    this.routingUserService.getDisplaySwitchCase().subscribe(x=>{
+    this.routingUserService.getDisplaySwitchCase().subscribe(x => {
       console.log(x);
-    if(x==true){
-      this.toggleVisibility(false);
-    } else{
-      this.toggleVisibility(true);
-    }
-  });
+      if (x == true) {
+        this.toggleVisibility(false);
+      } else {
+        this.toggleVisibility(true);
+      }
+    });
+    this.mapDataFetch.activeCluster.subscribe(activeCluster => {
+      if (!activeCluster) {
+        this.statusColor = '#ffe500';
+        return;
+      }
+      const count = activeCluster.count;
+      if (count >= 5 && count <= 15) {
+        this.statusColor = '#00eeff';
+      } else if (count > 15) {
+        this.statusColor = '#ff1ad9';
+      }
+    });
   }
 
   async showIndicatorScreen() {
@@ -32,7 +47,7 @@ export class RidingToggleComponent implements OnInit {
   }
 
 
-  toggleVisibility(switchCase:boolean){
+  toggleVisibility(switchCase: boolean) {
     document.getElementById("toggle").hidden = switchCase;
   }
 }

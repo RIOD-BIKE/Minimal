@@ -17,23 +17,25 @@ import { MapDataFetchService } from '../map-data-fetch/map-data-fetch.service';
 })
 
 export class MapIntegrationService {
-  constructor(private MapDataFetchService:MapDataFetchService,private userDataFetchService:UsersDataFetchService ,private userService: UserService, private storage: Storage, private routingUserService: RoutingUserService, private http: HttpClient) {
+  constructor(private MapDataFetchService: MapDataFetchService, private userDataFetchService: UsersDataFetchService,
+              private userService: UserService, private storage: Storage, private routingUserService: RoutingUserService,
+              private http: HttpClient) {
   }
 
-  private apsBoundaryData: number=null;
-  private apsVisitedData: number[]=[];
+  private apsBoundaryData: number = null;
+  private apsVisitedData: number[] = [];
   private apDetail;
-  private lastVisitedAP:string[]=[];
-  private nextVisitAP:string[]=[];
-  private activeBoundary:boolean=false;
-  private commandRun:boolean=false;
-  private commandRunInside:boolean=false;
-  private ended:boolean=false;
+  private lastVisitedAP: string[] = [];
+  private nextVisitAP: string[] = [];
+  private activeBoundary = false;
+  private commandRun = false;
+  private commandRunInside = false;
+  private ended = false;
   private tempBounding;
-  private subscription=null;
-  private APsubscription:boolean=false;
-  public CurrentApNumber:BehaviorSubject<number> = new BehaviorSubject<number>(null);
-  public ToApNumber:BehaviorSubject<number> = new BehaviorSubject<number>(null);
+  private subscription = null;
+  private APsubscription = false;
+  public CurrentApNumber: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+  public ToApNumber: BehaviorSubject<number> = new BehaviorSubject<number>(null);
 
   saveRouteOffline(startPosition: number[], endPosition: RoutingGeoAssemblyPoint, assemblyPoints: RoutingGeoAssemblyPoint[], duration: number, distance: number): Promise<any> {
     return new Promise(resolve => {
@@ -49,11 +51,11 @@ export class MapIntegrationService {
             } else {
               const endPosData = routeExists.value.endPosition[0];
               const endPosParam = endPosition[0];
-              if (endPosData[0] == endPosParam[0] && endPosData[1] == endPosParam[1]) {
+              if (endPosData[0] === endPosParam[0] && endPosData[1] === endPosParam[1]) {
                 this.storage.set(routeExists.key, {startPosition, endPosition, assemblyPoints, duration, distance});
                 resolve('Route Updated');
               }
-              if (endPosData[0] != endPosParam[0] || endPosData[1] != endPosParam[1]) {
+              if (endPosData[0] !== endPosParam[0] || endPosData[1] !== endPosParam[1]) {
                 this.storage.set(str, {startPosition, endPosition, assemblyPoints, duration, distance});
                 resolve('New Route Saved');
               }
@@ -73,7 +75,7 @@ export class MapIntegrationService {
           const str = key.slice(0, -1);
           if (str === 'Route_') {rLength += 1; }
           i++;
-          if (i + 1 == length || i == length) {resolve(rLength); }
+          if (i + 1 === length || i === length) {resolve(rLength); }
         });
       });
     });
@@ -94,28 +96,28 @@ export class MapIntegrationService {
   checkifRouteExistsHelper(startPosition, endPosition): Promise<any> {
     return new Promise(resolve => {
       let i = 0;
-      let endPointExists;
-      let tempSaveResolveData;
+      let endPointExists: boolean;
+      let tempSaveResolveData: { value: any; key: string; index: Number; };
       endPointExists = false;
       this.storage.length().then(length => {
         this.storage.forEach((value, key, index) => {
           const str = key.slice(0, -1);
-          if (str == 'Route_') {
+          if (str === 'Route_') {
             const endPosData = value.endPosition[0];
             const endPosParam = endPosition[0];
             this.checkAddressProximity(endPosData, endPosParam).then(isEndNear => {
-              if (isEndNear == true) {
-                if (endPosData[0] == endPosParam[0] && endPosParam[1] == endPosData[1]) {
+              if (isEndNear === true) {
+                if (endPosData[0] === endPosParam[0] && endPosParam[1] === endPosData[1]) {
                   endPointExists = true;
                 }
                 this.checkAddressProximity(value.startPosition[0], startPosition[0]).then(isStartNear => {
-                  if (isStartNear == true) {
-                    if (endPointExists == true) {
+                  if (isStartNear === true) {
+                    if (endPointExists === true) {
                       resolve({value, key, index});
                     } else {
                       i++;
                       tempSaveResolveData = {value, key, index};
-                      if (length == i + 1) {
+                      if (length === i + 1) {
                         resolve(tempSaveResolveData);
                       }
                     }
@@ -130,8 +132,8 @@ export class MapIntegrationService {
           } else {
             i++;
           }
-          if (length == i + 1 || i == length) {
-            if (tempSaveResolveData != undefined && endPointExists == false) {
+          if (length === i + 1 || i === length) {
+            if (tempSaveResolveData !== undefined && endPointExists === false) {
               resolve(tempSaveResolveData);
             } else {
               resolve(false);
@@ -142,7 +144,7 @@ export class MapIntegrationService {
     });
   }
 
-  checkAddressProximity(address1, address2): Promise<boolean> {
+  checkAddressProximity(address1: number[], address2: turf.helpers.Position): Promise<boolean> {
     return new Promise(resolve => {
       const pt = turf.point(address2);
       const polygon = [];
@@ -153,14 +155,14 @@ export class MapIntegrationService {
         const dLat = dLatN / R;
         const dLon = dLongN / (R * Math.cos(Math.PI * address1[0] / 180));
         polygon.push([address1[0] + dLat * 180 / Math.PI, address1[1] + dLon * 180 / Math.PI]);
-        if (time == 0) {
+        if (time === 0) {
           dLongN = 400;
         }
-        if (time == 1) {
+        if (time === 1) {
           dLongN = 400;
           dLatN = -400;
         }
-        if (time == 2) {
+        if (time === 2) {
           dLongN = -400;
         }
       }
@@ -176,14 +178,14 @@ export class MapIntegrationService {
       this.storage.length().then(length => {
         this.storage.forEach((value, key, index) => {
           const str = key.slice(0, -1);
-          if (str == 'Route_') {
-            if (arr.some(route => route.endPosition[1] == value.endPosition[1])) {
+          if (str === 'Route_') {
+            if (arr.some(route => route.endPosition[1] === value.endPosition[1])) {
             } else {
               arr.push(value);
             }
           }
           i++;
-          if (i == length) {
+          if (i === length) {
             resolve(arr);
           }
         });
@@ -196,118 +198,118 @@ export class MapIntegrationService {
   checkGPSChangeRoutingPosition(): Promise<any> {
     return new Promise(resolve => {
       this.routingUserService.getBoundingArray().then((boundingArray) => {
-        this.tempBounding=boundingArray;
+        this.tempBounding = boundingArray;
           // for time that Interval living -> Go through and check if Position is inside bbox of AP
-          this.commandRun=false;
-          this.apsBoundaryData=0;
-          this.nextVisitAP=[];
-          this.lastVisitedAP=[];
-          this.activeBoundary=null;
-          let temp:boolean=false;
-          let checkForNewAP:boolean=false;
-          let cachePosition=[];
-          let lastPosition;
-          const source = interval(5000);
-          this.subscription=source.subscribe(()=>{
-
-        
-            
+        this.commandRun = false;
+        this.apsBoundaryData = 0;
+        this.nextVisitAP = [];
+        this.lastVisitedAP = [];
+        this.activeBoundary = null;
+        let temp = false;
+        let checkForNewAP = false;
+        const cachePosition = [];
+        let lastPosition: any;
+        const source = interval(5000);
+        this.subscription = source.subscribe(() => {
 
 
-            //GPS-Blödsinn -> wechseln zwischen APS und senden an Firebase RTDB - Bullshit - Shit Shit and more Shit, but it works
-            console.log("Interval Run");
-            let userPosition = this.userService.behaviorMyOwnPosition.value;
-            
-                //senden an RTDB aktuellen Standort
-            if(userPosition==lastPosition){
 
-            } else{
+
+
+            // GPS-Blödsinn -> wechseln zwischen APS und senden an Firebase RTDB - Bullshit - Shit Shit and more Shit, but it works
+            console.log('Interval Run');
+            const userPosition = this.userService.behaviorMyOwnPosition.value;
+
+                // senden an RTDB aktuellen Standort
+            if (userPosition === lastPosition) {
+
+            } else {
               this.MapDataFetchService.sendUserPosition();
             }
-            lastPosition=userPosition;
+            lastPosition = userPosition;
 
-            let pt = turf.point([userPosition.coords.longitude, userPosition.coords.latitude]);
+            const pt = turf.point([userPosition.coords.longitude, userPosition.coords.latitude]);
 
-            if(this.ended==true){
+            if (this.ended === true) {
               this.deleteAllRTDB_Entries();
               this.subscription.unsubscribe();
               resolve(false);
-            } else{
+            } else {
             // go through bboxArray
             for (let i = 0; i < boundingArray.length; i++) {
               // check if position is inside of Element i-BBOX / is near i-AssemblyPoint
-              let bool = turf.booleanPointInPolygon(pt, boundingArray[i].polygon);
+              const bool = turf.booleanPointInPolygon(pt, boundingArray[i].polygon);
               // yes inside
-              if (bool == true ) {
-                if(this.activeBoundary==true){
-                  //wait  
-                  this.apsBoundaryData=i;
-                  console.log("WAITING");
+              if (bool === true ) {
+                if (this.activeBoundary === true) {
+                  // wait
+                  this.apsBoundaryData = i;
+                  console.log('WAITING');
 
-                  if(boundingArray[i].name =="start"){
-                    if(temp==false){
+                  if (boundingArray[i].name === 'start') {
+                    if (temp === false) {
                       boundingArray.forEach(element => {
-                        let bool = turf.booleanPointInPolygon(pt, element.polygon);
-                        if(bool == true && element.name!="start"){
-                          console.log("Inside AP and Start");
-                          this.userService.updateNextApTimingToRTDB(userPosition.timestamp, 0, boundingArray[i+1].name, boundingArray[i + 2].name);
-                          checkForNewAP=false;
-                          this.lastVisitedAP=[ boundingArray[i+1].name, boundingArray[i+2].name]
-                          temp=true;
+                        const bool = turf.booleanPointInPolygon(pt, element.polygon);
+                        if (bool === true && element.name != 'start') {
+                          console.log('Inside AP and Start');
+                          this.userService.updateNextApTimingToRTDB(userPosition.timestamp, 0, boundingArray[i + 1].name, boundingArray[i + 2].name);
+                          checkForNewAP = false;
+                          this.lastVisitedAP = [ boundingArray[i + 1].name, boundingArray[i + 2].name];
+                          temp = true;
                         }
                       });
                     }
                   }
 
-                  if(boundingArray[i].name !="start" && boundingArray.length==i+1 ){
-                    console.log("Ziel erreicht");
-                    checkForNewAP=false;
-                    this.commandRun=true;
+                  if (boundingArray[i].name != 'start' && boundingArray.length == i + 1 ) {
+                    console.log('Ziel erreicht');
+                    checkForNewAP = false;
+                    this.commandRun = true;
                     this.deleteAllRTDB_Entries();
                     this.subscription.unsubscribe();
                     resolve(true);
                   }
-                }else{
-                  if(this.commandRunInside == false){
-                    if(this.apsBoundaryData==null|| this.apsBoundaryData==undefined){
-                      console.log("New Inside Start")
+                } else {
+                  if (this.commandRunInside == false) {
+                    if (this.apsBoundaryData == null || this.apsBoundaryData == undefined) {
+                      console.log('New Inside Start');
 
-                      this.commandRunInside=true;
-                      this.commandRun=false;
-                      checkForNewAP=false;
-                      let bool = turf.booleanPointInPolygon(pt, boundingArray[i+1].polygon);
-                      if(bool==true){
-                      this.apsBoundaryData=i+1;
-                    } else{
-                      this.apsBoundaryData=i;
+                      this.commandRunInside = true;
+                      this.commandRun = false;
+                      checkForNewAP = false;
+                      const bool = turf.booleanPointInPolygon(pt, boundingArray[i + 1].polygon);
+                      if (bool == true) {
+                      this.apsBoundaryData = i + 1;
+                    } else {
+                      this.apsBoundaryData = i;
                     }
-                      
-                    }else{
-                      if(boundingArray[i].name !="start"){
+
+                    } else {
+                      if (boundingArray[i].name != 'start') {
                         this.CurrentApNumber.next(i);
                       }
-                      let n= this.apsBoundaryData;
-                      this.apsBoundaryData=i;
-                      if(boundingArray.length>n+2 ){
-                          console.log("NEW INSIDE");
-                          this.activeBoundary=true;
-                          checkForNewAP=false;
-                          if(boundingArray[i].name != this.nextVisitAP[0] && boundingArray[i].name != "start"){
-                            console.log("not expected next AP");
+                      const n = this.apsBoundaryData;
+                      this.apsBoundaryData = i;
+                      if (boundingArray.length > n + 2 ) {
+                          console.log('NEW INSIDE');
+                          this.activeBoundary = true;
+                          checkForNewAP = false;
+                          if (boundingArray[i].name != this.nextVisitAP[0] && boundingArray[i].name != 'start') {
+                            console.log('not expected next AP');
                             console.log(this.nextVisitAP);
                             console.log(this.lastVisitedAP);
                             this.userService.deleteOldApTimingtoRTDB(this.nextVisitAP[0], this.nextVisitAP[1]);
                             this.userService.deleteOldApTimingtoRTDB(this.lastVisitedAP[0], this.lastVisitedAP[1]);
-                            this.nextVisitAP=[];
+                            this.nextVisitAP = [];
                             }
-                            if(boundingArray.length-2==i){
-                              this.userService.updateNextApTimingToRTDB(userPosition.timestamp, 0, boundingArray[i].name, "lastAP");
-                              this.nextVisitAP=[boundingArray[i].name,"lastAP"];
-                            }else{
+                          if (boundingArray.length - 2 == i) {
+                              this.userService.updateNextApTimingToRTDB(userPosition.timestamp, 0, boundingArray[i].name, 'lastAP');
+                              this.nextVisitAP = [boundingArray[i].name, 'lastAP'];
+                            } else {
                               this.userService.updateNextApTimingToRTDB(userPosition.timestamp, 0, boundingArray[i].name, boundingArray[i + 1].name);
                             }
-                          this.commandRunInside=true;
-                          this.commandRun=false;
+                          this.commandRunInside = true;
+                          this.commandRun = false;
                           this.apsVisitedData.push(i);
 
                       }
@@ -315,93 +317,93 @@ export class MapIntegrationService {
                   }
                 }
 
-              } else{
-                if(this.apsBoundaryData==null){resolve(false);}
-                  if(this.commandRun==false){
+              } else {
+                if (this.apsBoundaryData == null) {resolve(false); }
+                if (this.commandRun == false) {
 
-                  let bool = turf.booleanPointInPolygon(pt, boundingArray[this.apsBoundaryData].polygon);
-                  if(bool!=true){
-                    if(this.apsBoundaryData!=0){
-                      let n= this.apsBoundaryData;
+                  const bool = turf.booleanPointInPolygon(pt, boundingArray[this.apsBoundaryData].polygon);
+                  if (bool != true) {
+                    if (this.apsBoundaryData != 0) {
+                      const n = this.apsBoundaryData;
 
-                      if(this.APsubscription==true && checkForNewAP==false){
-                        console.log("unsub");
+                      if (this.APsubscription === true && checkForNewAP === false) {
+                        console.log('unsub');
                         this.userDataFetchService.rtdb_getDetailsAP_unsub();
-                        this.APsubscription=false;
+                        this.APsubscription = false;
                       }
-                      if(boundingArray.length>n+2){
-                        console.log("JUST LEFT");
-                        console.log(boundingArray[i+1].name);
+                      if (boundingArray.length > n + 2) {
+                        console.log('JUST LEFT');
+                        console.log(boundingArray[i + 1].name);
                         console.log(n);
-                        if(this.APsubscription==false){
-                          if(boundingArray.length >n+3  ){
-                            console.log("t1");
-                            this.ToApNumber.next(n+1);
-                            this.userService.getDetailsToAP(boundingArray[n+1].name,boundingArray[n+2].name,true,userPosition.timestamp)
-                            this.APsubscription=true;
-                            checkForNewAP=true;
-                          } else if(boundingArray.length ==n+3){
-                            console.log("t2");
-                            this.userService.getDetailsToAP(boundingArray[n+1].name,boundingArray[n+2].name,false,userPosition.timestamp)
-                            this.APsubscription=true;
-                            checkForNewAP=true;
+                        if (this.APsubscription === false) {
+                          if (boundingArray.length > n + 3  ) {
+                            console.log('t1');
+                            this.ToApNumber.next(n + 1);
+                            this.userService.getDetailsToAP(boundingArray[n + 1].name, boundingArray[n + 2].name, true, userPosition.timestamp);
+                            this.APsubscription = true;
+                            checkForNewAP = true;
+                          } else if (boundingArray.length === n + 3) {
+                            console.log('t2');
+                            this.userService.getDetailsToAP(boundingArray[n + 1].name, boundingArray[n + 2].name, false, userPosition.timestamp);
+                            this.APsubscription = true;
+                            checkForNewAP = true;
                           }
                         }
-                        if(boundingArray[n].name !="start"){
+                        if (boundingArray[n].name !== 'start') {
                           console.log(this.lastVisitedAP);
                           this.userService.deleteOldApTimingtoRTDB(this.lastVisitedAP[0], this.lastVisitedAP[1]);
                           this.userService.deleteOldApTimingtoRTDB(this.nextVisitAP[0], this.nextVisitAP[1]);
                         }
-                        this.ToApNumber.next(n+1);
-                        if(boundingArray.length==n+3){
-                         
+                        this.ToApNumber.next(n + 1);
+                        if (boundingArray.length === n + 3) {
+
                           this.apsVisitedData.push(i);
-                          this.userService.updateNextApTimingToRTDB(userPosition.timestamp, boundingArray[n].duration, boundingArray[n+1].name, "lastAP");
+                          this.userService.updateNextApTimingToRTDB(userPosition.timestamp, boundingArray[n].duration, boundingArray[n + 1].name, 'lastAP');
                         // this.lastVisitedAP=[boundingArray[i].name,"lastAP"]
-                          this.nextVisitAP=[boundingArray[i+1].name,"lastAP"];
-                        }else{
-                        this.userService.updateNextApTimingToRTDB(userPosition.timestamp, boundingArray[n].duration, boundingArray[n+1].name, boundingArray[n + 2].name);
+                          this.nextVisitAP = [boundingArray[i + 1].name, 'lastAP'];
+                        } else {
+                        this.userService.updateNextApTimingToRTDB(userPosition.timestamp, boundingArray[n].duration, boundingArray[n + 1].name, boundingArray[n + 2].name);
                       // this.lastVisitedAP=[boundingArray[i+1].name,boundingArray[i + 2].name]
-                        this.nextVisitAP=[boundingArray[n+1].name,boundingArray[n + 2].name];
-                        this.lastVisitedAP=[boundingArray[n].name,boundingArray[n +1].name];
+                        this.nextVisitAP = [boundingArray[n + 1].name, boundingArray[n + 2].name];
+                        this.lastVisitedAP = [boundingArray[n].name, boundingArray[n + 1].name];
                         }
                         this.apsVisitedData.push(i);
-                        this.activeBoundary=false;
-                        this.commandRun=true;
-                        this.commandRunInside=false;
-                      } else{
-                        console.log("FINISH LEFT");
-                        this.ToApNumber.next(n+1);
+                        this.activeBoundary = false;
+                        this.commandRun = true;
+                        this.commandRunInside = false;
+                      } else {
+                        console.log('FINISH LEFT');
+                        this.ToApNumber.next(n + 1);
                         this.apsVisitedData.push(i);
-                        if(this.lastVisitedAP!=[]){
+                        if (this.lastVisitedAP !== []) {
                           this.userService.deleteOldApTimingtoRTDB(this.lastVisitedAP[0], this.lastVisitedAP[1]);
-                          this.lastVisitedAP=[];
+                          this.lastVisitedAP = [];
                         }
-                        if(this.nextVisitAP!=[]){
+                        if (this.nextVisitAP !== []) {
                           this.userService.deleteOldApTimingtoRTDB(this.nextVisitAP[0], this.nextVisitAP[1]);
-                          this.nextVisitAP=[];
+                          this.nextVisitAP = [];
                         }
-                          this.commandRun=true;
+                        this.commandRun = true;
                       }
-                      } else{
-                          console.log("JUST LEFT Start");
+                      } else {
+                          console.log('JUST LEFT Start');
                           this.ToApNumber.next(1);
                           this.userService.updateNextApTimingToRTDB(userPosition.timestamp, boundingArray[0].duration, boundingArray[1].name, boundingArray[ 2].name);
-                          this.nextVisitAP=[boundingArray[1].name,boundingArray[2].name];
-                          this.activeBoundary=false;
-                          this.commandRun=true;
-                          this.commandRunInside=false;
-                          if(this.APsubscription==false){
-                            if(boundingArray.length >i+2  ){
-                              console.log("t4");
-                              this.userService.getDetailsToAP(boundingArray[i+1].name,boundingArray[i+2].name,true,userPosition.timestamp)
-                              this.APsubscription=true;
-                              checkForNewAP=true;
-                            } else if(boundingArray.length ==i+2){
-                              console.log("t5");
-                              this.userService.getDetailsToAP(boundingArray[i+1].name,boundingArray[i+2].name,false,userPosition.timestamp)
-                              this.APsubscription=true;
-                              checkForNewAP=true;
+                          this.nextVisitAP = [boundingArray[1].name, boundingArray[2].name];
+                          this.activeBoundary = false;
+                          this.commandRun = true;
+                          this.commandRunInside = false;
+                          if (this.APsubscription === false) {
+                            if (boundingArray.length > i + 2  ) {
+                              console.log('t4');
+                              this.userService.getDetailsToAP(boundingArray[i + 1].name, boundingArray[i + 2].name, true, userPosition.timestamp);
+                              this.APsubscription = true;
+                              checkForNewAP = true;
+                            } else if (boundingArray.length === i + 2) {
+                              console.log('t5');
+                              this.userService.getDetailsToAP(boundingArray[i + 1].name, boundingArray[i + 2].name, false, userPosition.timestamp);
+                              this.APsubscription = true;
+                              checkForNewAP = true;
                             }
                           }
                         }
@@ -411,41 +413,41 @@ export class MapIntegrationService {
 
               }
             }
-           })
+           });
       });
     });
     }
 
-    deleteAllRTDB_Entries(){
-      if(this.lastVisitedAP!=[]){
+    deleteAllRTDB_Entries() {
+      if (this.lastVisitedAP !== []) {
         this.userService.deleteOldApTimingtoRTDB(this.lastVisitedAP[0], this.lastVisitedAP[1]);
-        this.lastVisitedAP=[];
+        this.lastVisitedAP = [];
       }
-      if(this.nextVisitAP!=[]){
+      if (this.nextVisitAP !== []) {
         this.userService.deleteOldApTimingtoRTDB(this.nextVisitAP[0], this.nextVisitAP[1]);
-        this.nextVisitAP=[];
+        this.nextVisitAP = [];
       }
-      if(this.subscription!=null){
+      if (this.subscription != null) {
         this.subscription.unsubscribe();
       }
-        this.lastVisitedAP=[];
-        this.nextVisitAP=[];
-        this.ended=true;
-        this.apsBoundaryData=null;
-        this.commandRun=false;
-        this.apsBoundaryData=null;
-        this.apsVisitedData=[];
-        this.commandRunInside=false;
-        this.activeBoundary=null;
-        this.commandRun=false;
-        this.commandRunInside=false;
-        this.ended=false;
-        this.ToApNumber.next(null);
-        this.CurrentApNumber.next(null);
+      this.lastVisitedAP = [];
+      this.nextVisitAP = [];
+      this.ended = true;
+      this.apsBoundaryData = null;
+      this.commandRun = false;
+      this.apsBoundaryData = null;
+      this.apsVisitedData = [];
+      this.commandRunInside = false;
+      this.activeBoundary = null;
+      this.commandRun = false;
+      this.commandRunInside = false;
+      this.ended = false;
+      this.ToApNumber.next(null);
+      this.CurrentApNumber.next(null);
     }
 
     // can be used for other locations when parameters are defined
-    calculateBBBox(latitude, longitude) {
+    calculateBBBox(latitude: number, longitude: number) {
       const bbox = [];
       const latD = this.deg2rad(latitude);
       const lonD = this.deg2rad(longitude);
@@ -489,7 +491,7 @@ export class MapIntegrationService {
     searchAddress(query: string) {
         const myPosition = this.userService.behaviorMyOwnPosition.value;
         const bbox = this.calculateBBBox(myPosition.coords.latitude, myPosition.coords.longitude);
-        return this.http.get("https://api.mapbox.com/geocoding/v5/mapbox.places/" + query + '.json?autocomplete?types=address&country=de&bbox='+bbox[0]+","+bbox[1]+","+bbox[2]+","+bbox[3]+"&access_token=" + environment.mapbox.accessToken)
+        return this.http.get('https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?autocomplete?types=address&country=de&bbox=' + bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + '&access_token=' + environment.mapbox.accessToken)
         .pipe(map((res: MapboxOutput) => {
         return res.features;
       }));

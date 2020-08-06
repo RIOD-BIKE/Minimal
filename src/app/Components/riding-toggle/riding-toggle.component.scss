@@ -27,8 +27,8 @@
   }
 
   $input-bg-static: #4F4F4F;
-  $input-bg-pseudo-active: #FFe500; //yellow
-  $input-bg-pseudo-static: #F2F2f2; //white
+  $input-bg-pseudo-active: #FFe500; 
+  $input-bg-pseudo-static: #F2F2f2;
 
 
   $input-width: 80px; // adjust only this number for dimensions
@@ -43,19 +43,17 @@
   }
 
 
-
   input[type="checkbox"] {
       position: relative;
       appearance: none;
       width: $input-width;
       height: $input-height;
-
-      background: url('../../../assets/icon/map-riod.svg');
+      //background: url('../../../assets/icon/map-riod.svg');
       background-repeat: no-repeat;
       background-position: center;
       border-radius: $input-radius;
       background-color: $input-bg-static;
-      outline: none; // 
+      outline: none; 
       transition: background 450ms ease;
       box-shadow: 0 0 0 2px darken($input-bg-static, 7.5%);
 

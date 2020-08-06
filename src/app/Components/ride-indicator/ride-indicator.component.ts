@@ -11,7 +11,7 @@ import { Status } from 'src/app/services/status-audio/status-audio.service';
 })
 export class RideIndicatorComponent implements OnInit {
 
-  statusColor: string;
+ public statusColor: string = '#ffe500';
 
   constructor(private modalController: ModalController, private mapDataFetch: MapDataFetchService) { }
 
@@ -25,6 +25,9 @@ export class RideIndicatorComponent implements OnInit {
         this.statusColor = '#ff1ad9';
       }
     });
+    console.log("hihhihi"+ this.statusColor);
+    
+    document.getElementById('overID').style.backgroundColor = this.statusColor;
     // uncomment for a little party
     // setInterval(() => {
     //   this.statusColor = `rgb(${ Math.floor((Math.random() * 255) + 1) }, ${ Math.floor((Math.random() * 255) + 1) }, ${ Math.floor((Math.random() * 255) + 1) })`;

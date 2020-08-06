@@ -13,7 +13,8 @@ import { Status } from 'src/app/services/status-audio/status-audio.service';
 })
 export class RidingToggleComponent implements OnInit {
 
-  public statusColor: string;
+  public statusColor: string = "url('../../../assets/icon/map-riod.svg')";
+  public urlBefore: string ="url('../../../assets/icon/riod.svg')";
 
   constructor(private mapStart: MapStartPage, private routingUserService: RoutingUserService, private mapDataFetch: MapDataFetchService) { }
 
@@ -28,12 +29,22 @@ export class RidingToggleComponent implements OnInit {
     });
     this.mapDataFetch.activeClusterStatus.subscribe(status => {
       if (status === Status.ALONE) {
-        this.statusColor = '#ffe500';
+        this.statusColor = "url('../../../assets/icon/map-riod.svg')";
+        this.urlBefore = "url('../../../assets/icon/riod.svg')";
       } else if (status === Status.GROUP) {
-        this.statusColor = '#00eeff';
+        this.statusColor = "url('../../../assets/icon/map-riod1.svg')";
+        this.urlBefore = "url('../../../assets/icon/riod1.svg')";
       } else if (status === Status.ASSOCIATION) {
-        this.statusColor = '#ff1ad9';
+        this.statusColor = "url('../../../assets/icon/map-riod2.svg')";
+        this.urlBefore = "url('../../../assets/icon/riod2.svg')";
       }
+      
+      //console.log("hahah" +this.statusColor);
+      
+      const toggleBackground = document.getElementById('toggleBtn');
+      toggleBackground.style.backgroundImage = this.statusColor;
+      
+      
     });
   }
 

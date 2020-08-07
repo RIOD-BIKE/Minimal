@@ -80,7 +80,7 @@
         </ion-row>
         <!-- TODO make me pretty -->
         <ion-row style="height: 55%;" [hidden]="hideselectedAp" >
-          <ion-col style="height: 36px; width:30px; padding: 0px;" *ngFor="let a of seletectedAPs">
+          <ion-col style="height: 36px; width:30px; padding: 0px; text-align-last: center;" *ngFor="let a of seletectedAPs">
               <ion-icon id="selectedAP"></ion-icon>
               <p style="font-weight: 700; color:white">{{a.textField}}</p>
               <p style="color:white">{{a.name}}</p>

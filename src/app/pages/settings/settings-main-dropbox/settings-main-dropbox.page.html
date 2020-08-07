@@ -91,7 +91,7 @@
         <ion-toggle [(ngModel)]="vibration" (ionChange)="onVibrationChange()"></ion-toggle>
       </ion-col>
     </ion-row>
-    <ion-row style="flex-grow: 1;">
+    <ion-row style="flex-grow: 1;" *ngIf="platformAndroid == false">
       <ion-col class="col-adjust" size="2">
         <ion-icon class="display"></ion-icon>
       </ion-col>

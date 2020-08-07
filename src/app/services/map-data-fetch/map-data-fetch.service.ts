@@ -4,10 +4,11 @@ import { AngularFireDatabase } from '@angular/fire/database';
 import { GeoCluster, GeoAssemblyPoint, AssemblyPointReference } from '../../Classess/map/map';
 import { Injectable } from '@angular/core';
 import { Subscriber, Observable, BehaviorSubject, Subject, Subscription } from 'rxjs';
-import { AngularFirestore, AngularFirestoreCollection, DocumentReference, DocumentSnapshot, DocumentData  } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, DocumentReference, DocumentSnapshot, DocumentData, AngularFirestoreDocument  } from '@angular/fire/firestore';
 import { AuthService } from '../auth/auth.service';
 import { ThrowStmt } from '@angular/compiler';
 import { stat } from 'fs';
+import { computeStackId } from '@ionic/angular/directives/navigation/stack-utils';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,9 @@ export class MapDataFetchService {
   private activeClusterSubscription: Subscription;
   private activeClusterRef: DocumentReference;
   private lastClusterStatus: Status;
+
+  private lastClusters: string[] = [];
+  private lastAPs: string[] = [];
 
   constructor(private db: AngularFirestore, private auth: AuthService,
               private rtDB: AngularFireDatabase, private userService: UserService) {
@@ -84,6 +88,14 @@ export class MapDataFetchService {
 
   retrieveClusters(): BehaviorSubject<Array<GeoCluster>> {
     this.userFirestore.subscribe(data => {
+      const equals = data['clusters'].length === this.lastClusters.length
+        && data['clusters'].every((cluster, index) => this.lastClusters[index] === this.db.doc(cluster).ref.path);
+      if (equals) return;
+      this.lastClusters = [];
+      data['clusters'].forEach((cluster, index) => {
+        this.lastClusters[index] = this.db.doc(cluster).ref.path;
+      });
+
       for (const path of data['clusters']) {
         const ref = this.db.doc(path);
         ref.get().toPromise().then(cData => {
@@ -101,6 +113,14 @@ export class MapDataFetchService {
 
   retrieveAssemblyPoints(): BehaviorSubject<Array<GeoAssemblyPoint>> {
     this.userFirestore.subscribe(data => {
+      const equals = data['assemblyPoints'].length === this.lastAPs.length
+        && data['assemblyPoints'].every((AP, index) => this.lastAPs[index] === this.db.doc(AP).ref.path);
+      if (equals) return;
+      this.lastAPs = [];
+      data['assemblyPoints'].forEach((AP, index) => {
+        this.lastAPs[index] = this.db.doc(AP).ref.path;
+      });
+
       this.assemblyPointReference=[];
       this.aps = [];
       for (const path of data['assemblyPoints']) {

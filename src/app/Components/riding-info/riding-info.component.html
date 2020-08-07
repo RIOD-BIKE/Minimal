@@ -41,7 +41,7 @@
      <ion-row class="text-row"><h3 class="text">{{countOfRiods}}</h3></ion-row>
    </ion-col>
     <ion-col class="padding-top" style="align-self: center;" size="4">
-      <p id="timeRect" style="color: white;">{{timeToDispatch}}</p>
+      <p id="timeRect" style="color: white;">{{timeToDispatchMin}}:{{timeToDispatchSec}}</p>
    </ion-col>
 
   </ion-row>
@@ -103,7 +103,7 @@
 
     <ion-row [hidden]="atSammelpunkt" class="info-margin" >
       <ion-col size="9">
-       <p class="info-text" style="color: white; opacity: 0.4;">In maximal {{timeToDispatch}} werden {{countOfRiods}} weitere RIODS zusammen mit dir weiterfahren.</p>
+       <p class="info-text" style="color: white; opacity: 0.4;">In maximal {{timeToDispatchMin}}:{{timeToDispatchSec}} werden {{countOfRiods}} weitere zusammen mit dir weiterfahren.</p>
       </ion-col>
 
    </ion-row> 

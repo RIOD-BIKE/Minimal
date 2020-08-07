@@ -5,6 +5,8 @@ import { MapIntegrationService } from 'src/app/services/map-integration/map-inte
 import { UsersDataFetchService } from 'src/app/services/users-data-fetch/users-data-fetch.service';
 import { riodMembersAtAP } from 'src/app/Classess/map/map';
 import { RoutingUserService } from 'src/app/services/routing-user/routing-user.service';
+import { ThrowStmt } from '@angular/compiler';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -22,14 +24,15 @@ export class RidingInfoComponent implements AfterViewInit {
   @Input() toSammelpunktLeg: boolean = true;
   @Input() fromStartLeg: boolean = false;
   @Input() finish: boolean = true;
+  @Input() timeToDispatchMin;
+  @Input() timeToDispatchSec;
 
   @Input() countOfRiods=0;
   @Input() timeToDispatch="0:30";
-  private timeAdapter=60;
   private targetAP;
-  private timeNullAdapter=30;
   private membersAtAP:riodMembersAtAP[]=[];
   private bounding:riodMembersAtAP[]=[];
+  private tempSeconds:number;
 
 
 
@@ -46,8 +49,7 @@ export class RidingInfoComponent implements AfterViewInit {
 
 
 
-  ngOnInit() {
-   
+  ngOnInit() {   
     this.routingUserService.getDisplayManuelShow().subscribe((x)=>{
       if(x==true){
         console.log(x);
@@ -73,27 +75,30 @@ export class RidingInfoComponent implements AfterViewInit {
      this.userDataFetchService.riodMembersValueChange.subscribe(()=>{
        this.membersAtAP=this.userDataFetchService.riodMembers;
        console.log(this.membersAtAP);
-       if(this.membersAtAP!=undefined){
-        this.countOfRiods=this.membersAtAP.length;
-        let highestNumber=0.5;
-        this.membersAtAP.forEach(element => {
-          if(parseInt(element.duration)<6){
-            highestNumber=parseInt(element.duration);
-          }
-        });
-        if(highestNumber!=null){
-          this.countTimeToDepartcher(highestNumber);
-        }
-        }
+
      })
      this.mapIntegration.CurrentApNumber.subscribe((currentAP)=>{
        if(currentAP!=null){
-         console.log(currentAP);
-
-         this.countOfRiods=this.membersAtAP.length;
+         console.log(this.bounding);
          this.timeToTarget=this.bounding[currentAP-1].duration + " min";
          this.targetAP=currentAP;
-         this.setDisplayToAPWait();
+         if(this.membersAtAP!=undefined){
+          this.countOfRiods=this.membersAtAP.length;
+          let highestNumber=0.5;
+          this.membersAtAP.forEach(element => {
+            if(parseInt(element.duration)<6){
+              console.log(element.duration)
+              highestNumber=parseInt(element.duration);
+            }
+          });
+          if(highestNumber!=null){
+
+            this.countTimeToDepartcher(highestNumber).then(()=>{
+              this.setDisplayToAPWait();
+            });
+          }
+          }
+
        }
  
      })
@@ -151,16 +156,54 @@ export class RidingInfoComponent implements AfterViewInit {
     this.finish=false;
   }
 
+   convert(value, inSeconds) {
+    if (value > inSeconds) {
+        let x = value % inSeconds;
+        this.tempSeconds = x;
+        return (value - x) / inSeconds;
+    } else {
+        return 0;
+    }
+  };
+
   countTimeToDepartcher(time){
+    return new Promise<any>(resolve => {
+    console.log(time);
+    let totalSec = time*60;
+    let firstTry:boolean=false;
+    var x = setInterval(() => {
+    //clears countdown when all seconds are counted
+    if (totalSec <= 0) {
+        clearInterval(x);
+        console.log("TIMER == 0 -> GO");
+    }
+    if(firstTry==true){
+    this.setMinutes(this.convert(this.tempSeconds, 60));
+    this.setSeconds(this.tempSeconds == 60 ? 59 : this.tempSeconds);
+    resolve();
+    }
 
+    totalSec--;
+    this.tempSeconds = totalSec;
+    firstTry=true;
 
-    
+    }, 1000);
+    })
   }
 
+  setMinutes(time){
+    this.timeToDispatchMin=time;
+    console.log(this.timeToDispatchMin)
+  }
+
+  setSeconds(time){
+    this.timeToDispatchSec=time;
+    console.log(this.timeToDispatchSec)
+  }
 
   resetAll(){
     this.timeToTarget="0 min";
-
+    this.tempSeconds=0;
     this.countOfRiods=0;
     this.timeToDispatch="0:30";
     this.membersAtAP=[];

@@ -44,22 +44,27 @@ export class UsersDataFetchService {
       this.riodSubscribtion= this.riodRef.snapshotChanges().subscribe(items=>{
         this.riodMembers=[];
         returnArray=[];
-        for(let i=1; i<items.length;i++){
-          
-         if(items[i].key!="__DUMMY__" && items[i].key!=userHash){
+        console.log(items);
+        for(let i=0; i<items.length;i++){
+         if(items[i].key!= "__DUMMY__" && items[i].payload.node_.children_.root_.value.value_!=undefined){
+          console.log(items[i])
           let recalculateWriteDBTime =items[i].payload.node_.children_.root_.value.value_+(60000*items[i].payload.node_.children_.root_.left.value.value_)*2;
-          
+          console.log(recalculateWriteDBTime + "|"+userTimestamp)
           if(recalculateWriteDBTime>userTimestamp || items[i].payload.node_.children_.root_.left.value.value_ == 0){
+            console.log("iF")
+            if(items[i].key!=userHash){
             returnArray.push(new riodMembersAtAP(items[i].payload.node_.children_.root_.left.value.value_,items[i].payload.node_.children_.root_.value.value_));
-            
+            }
             if(items.length==i+1){
 
               this.riodMembers=returnArray;
+              console.log(this.riodMembers)
               this.riodMembersValueChange.next(new riodMembersAtAP(items[i].payload.node_.children_.root_.left.value.value_,items[i].payload.node_.children_.root_.value.value_));
             }
           }
           if(items.length==i+1 && items[i].payload.node_.children_.root_.left.value.value_ != 0){
             this.riodMembers=returnArray;
+            console.log(this.riodMembers)
             this.riodMembersValueChange.next(new riodMembersAtAP(items[i].payload.node_.children_.root_.left.value.value_,items[i].payload.node_.children_.root_.value.value_));
           }
         }
@@ -67,6 +72,7 @@ export class UsersDataFetchService {
       })
     } else{
       console.log("No buddys");
+      this.riodMembers=[];
       this.riodMembersValueChange.next(new riodMembersAtAP("Last",""));
     }
   }

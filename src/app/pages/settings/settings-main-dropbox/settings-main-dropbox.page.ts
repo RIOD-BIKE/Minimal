@@ -46,7 +46,6 @@ export class SettingsMainDropboxPage implements OnInit {
     this.name = await this.userDataFetch.firestore_getName(this.uid);
     this.contact = await this.userDataFetch.firestore_getContact(this.uid);
     
-    this.gps = await this.settingsService.getGPS();
     this.volume = await this.settingsService.getVolume();
     this.vibration = await this.settingsService.getVibration();
     this.display = await this.settingsService.getDisplay();
@@ -93,9 +92,6 @@ export class SettingsMainDropboxPage implements OnInit {
     this.navController.back();
   }
 
-  onGPSChange() {
-    this.settingsService.setGPS(this.gps);
-  }
   onVolumeChange() {
     this.settingsService.setVolume(this.volume);
   }

@@ -12,16 +12,11 @@ export class SettingsService {
   private readonly KEY_DISPLAY = 'settings_display';
 
 
-  private gps: boolean;
   private volume: number;
   private vibration: boolean;
   private display: boolean;
 
   constructor(private storage: Storage) {
-  }
-
-  async getGPS() {
-    return this.gps ?? await this.storageGet(this.KEY_GPS) as boolean ?? true;
   }
 
   async getVolume() {
@@ -34,11 +29,6 @@ export class SettingsService {
 
   async getDisplay() {
     return this.display ?? await this.storageGet(this.KEY_DISPLAY) as boolean ?? true;
-  }
-
-  setGPS(isOn: boolean) {
-    this.gps = isOn;
-    this.storageSet(this.KEY_GPS, isOn);
   }
 
   setVolume(level: number) {

@@ -159,6 +159,7 @@ export class SearchBarComponent implements OnInit {
         this.hideIcon = true;
         document.getElementById('avaBtn').hidden = false;
       } else {
+        this.iconNew = '';
         console.log('this.ICONNEW33 != \'\'');
         document.getElementById('saveBtn').hidden = false;
         this.hideIcon = true;
@@ -379,10 +380,10 @@ export class SearchBarComponent implements OnInit {
     this.back();
     this.iconNew = icon;
     console.log(this.iconNew);
-    if (icon == '') {
-      console.log('nulllslls');
+    if (this.iconNew == '') {
+      //console.log('nulllslls');
       this.hideIcon = true;
-      document.getElementById('saveBtn').hidden = true;
+      document.getElementById('saveBtn').hidden = false;
       document.getElementById('cross').hidden = true;
       document.getElementById('avaBtn').hidden = true;
 

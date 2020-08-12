@@ -238,13 +238,15 @@ export class recentShortcut{
 }
 
 export class miniShortcut{
-  iconName:string;
-  city:string;
-  street:string;
-  constructor(iName:string,street:string,city:string){
-    this.iconName=iName;
-    this.city=city;
-    this.street=street;
+  iconName: string;
+  city: string;
+  street: string;
+  icon: iconShortcut;
+  constructor(iName: string, street: string, city: string, icon: iconShortcut) {
+    this.iconName = iName;
+    this.city = city;
+    this.street = street;
+    this.icon = icon;
   }
 }
 

@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class EditFavoriteComponent implements OnInit {
   public favorList: miniShortcut[] = [];
+
   constructor(
     private modalController: ModalController,
     private routingUserService: RoutingUserService,
@@ -20,32 +21,32 @@ export class EditFavoriteComponent implements OnInit {
     private router: Router
 
   ) { }
-  
+
   ngOnInit() {
     this.userService.getAllShortcuts().then((allShortcuts) => {
       let temp: iconShortcut[] = [];
       temp = allShortcuts;
-      
+
       for (const route of temp) {
         const splitString = route.address.split(",");
        // console.log(splitString); 
         const splitPLz = splitString[2].toString().split(" ");
         console.log(splitPLz);
-        
+
         const city = splitPLz[1];
         const street = splitString[0] + ", " + splitString[1]; 
-        
+
       //  console.log(city + street);
-        this.favorList.push(new miniShortcut(route.iconName, street, city));
+        this.favorList.push(new miniShortcut(route.iconName, street, city, route));
       }
     });
   }
-  
+
   changeSequence(){
     console.log("klick");
-    
+
   }
-  
+
 
   dismiss() {
     this.modalController.dismiss({
@@ -55,6 +56,8 @@ export class EditFavoriteComponent implements OnInit {
   back(){
     this.dismiss();
   }
-  deleteFavor(){}
+  deleteFavor(shortcut: miniShortcut) {
+    this.userService.deleteShortcut(shortcut.icon);
+  }
   saveRoute(){}
 }

@@ -126,7 +126,6 @@ export class SearchBarComponent implements OnInit {
     document.getElementById('with-content').hidden = false;
     document.getElementById('wrap').style.width = '100%';
     if (this.searchBarInputV.length > 0) {
-      console.log('should be vissible');
       document.getElementById('saveBtn').hidden = false;
       document.getElementById('avaBtn').hidden = true;
     } else {
@@ -379,10 +378,11 @@ export class SearchBarComponent implements OnInit {
     document.getElementById('cross').hidden = true;
     this.back();
     this.iconNew = icon;
-    console.log(this.iconNew);
-    if (this.iconNew == '') {
-      //console.log('nulllslls');
+    //console.log("bbb"+this.iconNew.length+"bbb");
+    if (this.iconNew.length == 4) {
       this.hideIcon = true;
+
+      
       document.getElementById('saveBtn').hidden = false;
       document.getElementById('cross').hidden = true;
       document.getElementById('avaBtn').hidden = true;
@@ -472,8 +472,13 @@ export class SearchBarComponent implements OnInit {
     });
     return await modal.present();
   }
+
+
   editFavor() {
+    console.log("click111");
+    
     this.editModal();
+    console.log("click222");
   }
 
   async editModal() {

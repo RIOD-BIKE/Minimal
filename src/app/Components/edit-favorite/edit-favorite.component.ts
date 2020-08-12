@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { RoutingUserService } from 'src/app/services/routing-user/routing-user.service';
 import { UserService } from 'src/app/services/user/user.service';
 import { iconShortcut, miniShortcut } from 'src/app/Classess/map/map';
@@ -18,7 +18,8 @@ export class EditFavoriteComponent implements OnInit {
     private modalController: ModalController,
     private routingUserService: RoutingUserService,
     private userService: UserService,
-    private router: Router
+    private router: Router,
+    private navController: NavController
 
   ) { }
 
@@ -43,8 +44,7 @@ export class EditFavoriteComponent implements OnInit {
   }
 
   changeSequence(){
-    console.log("klick");
-
+    this.navController.navigateForward('edit-favor-sequence');
   }
 
 

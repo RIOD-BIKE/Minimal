@@ -7,6 +7,7 @@ import { Storage } from '@ionic/storage';
 import * as hash from 'hash.js';
 import { UsersDataFetchService } from '../users-data-fetch/users-data-fetch.service';
 import { MapDataFetchService } from '../map-data-fetch/map-data-fetch.service';
+import { resolve } from 'url';
 
 
 
@@ -73,7 +74,8 @@ export class UserService {
   }
 
   // Delete Shortcut
-  public async deleteShortcut(icon: iconShortcut) {
+  public async deleteShortcut(icon: iconShortcut) : Promise<any>{
+    return new Promise(resolve => {
     this.storage.length().then(length => {
       this.storage.forEach((value, key, index) => {
         const keySpliced = key.split('_');
@@ -81,9 +83,11 @@ export class UserService {
           if (value.iconName === icon.iconName && value.address === icon.address &&
             value.plz[0] === icon.coords[0] && value.plz[1] === icon.coords[1]) {
             this.storage.remove(key);
+            resolve();
           }
         }
       });
+    });
     });
   }
 

@@ -95,7 +95,7 @@ export class MapDataFetchService {
       data['clusters'].forEach((cluster, index) => {
         this.lastClusters[index] = this.db.doc(cluster).ref.path;
       });
-
+      this.cluster=[];
       for (const path of data['clusters']) {
         const ref = this.db.doc(path);
         ref.get().toPromise().then(cData => {
@@ -142,29 +142,6 @@ export class MapDataFetchService {
 
   retrieveAssemblyPointsObservable(): Observable<Array<GeoAssemblyPoint>> {
     return this.apsValueChange.asObservable();
-  }
-
-
-
-
-
-
-
-
-  // get, set & update User Settings of User via Firestore
-  getUserSettings() {
-
-
-  }
-
-  // initialization of User -> After that only Update (you know why, when implementing)
-  setUserSettings() {
-
-  }
-
-  // update Settings  ->  Try to imperativ update selected Values -> Not all values most be accessed in the DB (Expensive when updating all values)
-  updateUserSettings() {
-
   }
 
   // send UserPosition to Firebase RealTime DB

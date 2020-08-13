@@ -13,7 +13,7 @@ export class ButtonOverlayComponent implements OnInit {
   public street: any = "";
   public favorite: any = "";
   public saveAddress: any = "";
-  public plz: any = [];
+  public coords: any = [];
   
   
   constructor(
@@ -26,7 +26,7 @@ export class ButtonOverlayComponent implements OnInit {
   
     this.street = this.userService.behaviorFavorite.value[1];
     this.city = this.userService.behaviorFavorite.value[2];
-    this.plz = this.userService.behaviorFavorite.value[3];
+    this.coords = this.userService.behaviorFavorite.value[3];
   }
 
   dismiss() {
@@ -44,7 +44,7 @@ export class ButtonOverlayComponent implements OnInit {
   }
   saveFavor(){ 
     console.log(this.saveAddress + " " + this.favorite);
-    this.userService.saveShortcut(this.saveAddress, this.favorite, this.plz ).then(x=>{
+    this.userService.saveShortcut(this.saveAddress, this.favorite, this.coords ).then(()=>{
       this.userService.updateFavor.next(true);
       this.modalController.dismiss({
         dismissed: true,

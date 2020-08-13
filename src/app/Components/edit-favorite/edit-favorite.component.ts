@@ -40,8 +40,9 @@ export class EditFavoriteComponent implements OnInit {
     this.userService.getAllShortcuts().then((allShortcuts) => {
       let temp: iconShortcut[] = [];
       temp = allShortcuts;
-
+      console.log(allShortcuts);
       for (const route of temp) {
+        console.log(route.address);
         const splitString = route.address.split(",");
        // console.log(splitString); 
         const splitPLz = splitString[2].toString().split(" ");

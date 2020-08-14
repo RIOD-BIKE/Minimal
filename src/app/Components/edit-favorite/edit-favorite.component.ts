@@ -29,6 +29,7 @@ export class EditFavoriteComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     this.loadShortcuts();
     // this.userService.updateFavor.subscribe( a => {
     //   if (a) {
@@ -60,6 +61,7 @@ export class EditFavoriteComponent implements OnInit {
 
   changeSequence(){
     // this.navController.navigateForward('edit-favor-sequence');
+    this.hideMove = !this.hideMove;
     this.hideTrash = !this.hideTrash;
     this.hideChange = !this.hideChange;
     this.hideSave = !this.hideSave;

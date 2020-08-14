@@ -24,7 +24,7 @@ export enum ThirdParties {
   providedIn: 'root'
 })
 export class AuthService {
-  private authState = new BehaviorSubject<{ role: string, uid: string }>(null);
+  private authState = new BehaviorSubject<{ role: string, uid: string }>(undefined);
   private verificationId: string;
 
   constructor(private userDataFetch: UsersDataFetchService, public navCtrl: NavController, public alertCtrl: AlertController,
@@ -118,7 +118,7 @@ export class AuthService {
   getCurrentUser() {
     const currentValue = this.authState.getValue();
     // TODO: find out why authState yields null for the first time
-    return currentValue || this.authState.pipe(take(2)).toPromise();
+    return currentValue === null ? null : currentValue ?? this.authState.pipe(take(2)).toPromise();
   }
   async getCurrentUID() {
     const currentUser = await this.getCurrentUser();
@@ -126,7 +126,7 @@ export class AuthService {
   }
   async isLoggedIn() {
     const currentUser = await this.getCurrentUser();
-    return currentUser.role !== null && currentUser.uid !== null;
+    return currentUser?.role != null && currentUser?.uid != null;
   }
 
   async signout() {

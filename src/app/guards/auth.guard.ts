@@ -16,8 +16,8 @@ export class AuthGuard implements CanActivate {
     const expectedRole = next.data.role;
     return new Promise(async (resolve, reject) => {
       const user = await this.auth.getCurrentUser();
-      if (user.role !== expectedRole) {
-        console.log(`User with role ${user.role} not authorized (expected ${expectedRole})`);
+      if (user?.role !== expectedRole) {
+        console.log(`User with role ${user?.role} not authorized (expected ${expectedRole})`);
         this.router.parseUrl('/sign-up-tab1');
         return resolve(false);
       }

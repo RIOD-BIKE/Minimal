@@ -47,6 +47,10 @@ export class SettingsService {
     this.storageSet(this.KEY_DISPLAY, keepOn);
   }
 
+  wipeStorage() {
+    this.storage.clear();
+  }
+
   private async storageGet(key: string) {
     return await this.storage.get(key);
   }

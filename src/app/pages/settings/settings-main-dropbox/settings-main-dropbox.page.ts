@@ -28,7 +28,7 @@ export class SettingsMainDropboxPage implements OnInit {
 
   constructor(public platform: Platform, private userDataFetch: UsersDataFetchService, private authService: AuthService,
     private router: Router, private alertController: AlertController, private navController: NavController,
-    private settingsService: SettingsService) {
+    private settingsService: SettingsService, private settingsSerice: SettingsService) {
   }
 
   async ngOnInit() {
@@ -65,6 +65,7 @@ export class SettingsMainDropboxPage implements OnInit {
             await this.userDataFetch.firestore_wipeUser(uid);
             await this.authService.deleteUser();
             await this.authService.signout();
+            this.settingsSerice.wipeStorage();
             console.log(`Wiped ${uid} from RTDB & Firestore`);
             this.router.navigate(['first-screen']);
           }

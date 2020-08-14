@@ -51,7 +51,7 @@ export class MapDataFetchService {
 
     // Init activeCluster Observable
     this.userFirestore.subscribe(async data => {
-      if (this.activeClusterRef?.path === data.activeCluster?.path) { return; }
+      if (!data || this.activeClusterRef?.path === data.activeCluster?.path) { return; }
       if (data.activeCluster === null) {
         this.activeClusterRef = null;
         this.activeClusterSubscription.unsubscribe();
@@ -88,6 +88,9 @@ export class MapDataFetchService {
 
   retrieveClusters(): BehaviorSubject<Array<GeoCluster>> {
     this.userFirestore.subscribe(data => {
+      if (!data) {
+        return null;
+      }
       const equals = data['clusters'].length === this.lastClusters.length
         && data['clusters'].every((cluster, index) => this.lastClusters[index] === this.db.doc(cluster).ref.path);
       if (equals) return;
@@ -113,6 +116,9 @@ export class MapDataFetchService {
 
   retrieveAssemblyPoints(): BehaviorSubject<Array<GeoAssemblyPoint>> {
     this.userFirestore.subscribe(data => {
+      if (!data) {
+        return null;
+      }
       const equals = data['assemblyPoints'].length === this.lastAPs.length
         && data['assemblyPoints'].every((AP, index) => this.lastAPs[index] === this.db.doc(AP).ref.path);
       if (equals) return;

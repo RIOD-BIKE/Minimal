@@ -42,7 +42,7 @@
       >
         <ion-reorder-group (ionItemReorder)="doReorder($event)">
           <div class="listElement" *ngFor="let shortcut of favorList">
-            <ion-reorder>
+           
               <ion-item>
                 <div style="background: #383838; padding: 0;">
                   <ion-row>
@@ -98,22 +98,12 @@
                           style="width: 25px; height: 25px; color: white;"
                         ></ion-icon>
                       </button>
-                      <ion-icon
-                        name="reorder-three-outline"
-                        style="
-                          width: 30px;
-                          height: 30px;
-                          color: white;
-                          margin-top: 1em;
-                          margin-left: 0.5em;
-                        "
-                        [hidden]="hideReorder"
-                      ></ion-icon>
+                      <ion-reorder style="--margin-top:50%;" [hidden]="hideReorder"></ion-reorder>
                     </ion-col>
                   </ion-row>
                 </div>
               </ion-item>
-            </ion-reorder>
+             
           </div>
         </ion-reorder-group>
       </div>

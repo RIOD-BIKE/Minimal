@@ -17,6 +17,7 @@ export class EditFavoriteComponent implements OnInit {
   public hideTrash = false;
   public hideChange = false;
   public hideSave = true;
+  public hideReorder = true;
 
   constructor(
     private modalController: ModalController,
@@ -62,6 +63,7 @@ export class EditFavoriteComponent implements OnInit {
     this.hideTrash = !this.hideTrash;
     this.hideChange = !this.hideChange;
     this.hideSave = !this.hideSave;
+    this.hideReorder = !this.hideReorder;
     this.reorderGroup.disabled = !this.reorderGroup.disabled;
   }
 

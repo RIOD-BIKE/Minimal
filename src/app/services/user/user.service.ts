@@ -63,7 +63,7 @@ export class UserService {
             // console.log(value);
             if (value.iconName === iconName) {  // iconName already saved -> override? Question
               this.storage.set(key, {address, coords, iconName});
-              console.log("hey");
+              // console.log("hey");
               resolve('Updated Address with icon');
             }
           }
@@ -79,15 +79,16 @@ export class UserService {
   }
 
   // Delete Shortcut
-  public async deleteShortcut(icon: iconShortcut): Promise<any>{
+  public deleteShortcut(icon: iconShortcut): Promise<any>{
     return new Promise(resolve => {
     this.storage.length().then(length => {
       this.storage.forEach((value, key, index) => {
         const keySpliced = key.split('_');
         if (keySpliced[0] === 'SavedIcon') {
           if (value.iconName === icon.iconName && value.address === icon.address) {
-            console.log(value);
+            // console.log(this.storage.get(key));
             this.storage.remove(key);
+            // console.log(this.storage.get(key));
             resolve();
           }
         }
@@ -95,14 +96,20 @@ export class UserService {
     });
     });
   }
-  public async deleteAllShortcuts(icon: iconShortcut[]): Promise<any> {
+
+  public deleteAllShortcuts(icon: iconShortcut[]): Promise<any> {
+    let i = 0;
     return new Promise(resolve => {
     icon.forEach(element=>{
-      console.log(element);
-      this.deleteShortcut(element);
+      this.deleteShortcut(element).then(() => {
+        i++;
+        if (i === icon.length) {
+            resolve();
+        }
+      });
       // console.log("timer inside");
     });
-    resolve();
+
     });
   }
 
@@ -128,22 +135,25 @@ export class UserService {
 
 
   public saveAllShortcuts(iconList:iconShortcut[]):Promise<any>{
+    let k = 0;
     return new Promise(resolve => {
       // here right order
-      console.log(iconList);
+      // console.log(iconList);
       this.getAllShortcuts().then(allShortcuts => {
+        console.log(allShortcuts);
         this.deleteAllShortcuts(allShortcuts).then(()=>{
           for(let i = 0; i < iconList.length; i++) {
             //here correct order 
-            console.log(iconList[i]);
-            this.saveShortcut(iconList[i].address, iconList[i].iconName, iconList[i].coords);
-            if( i == iconList.length-1) {
+            // console.log(iconList[i]);
+            this.saveShortcut(iconList[i].address, iconList[i].iconName, iconList[i].coords).then(() => {
+              k++;
+            });
+            if( k === iconList.length-1) {
               this.getAllShortcuts().then (x=>{
                 // here wrong order 
                 console.log(x);
                 resolve();
               });
-
             }
           }
         });

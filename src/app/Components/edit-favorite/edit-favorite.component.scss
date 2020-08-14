@@ -13,6 +13,7 @@
     }
   }
 
+
   .move-favor{
     margin: 0 auto;
     width: 60%;
@@ -42,6 +43,41 @@
     float: left;
     width: 10%;
   }
+
+
+#home-outline{
+  background: url('../../../assets/icon/homeW.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#heart-outline{
+  background: url('../../../assets/icon/heartW.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#basket-outline{
+  
+  background: url('../../../assets/icon/shopping-cartW.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#star-outline{
+  background: url('../../../assets/icon/starW.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#briefcase-outline{ 
+  background: url('../../../assets/icon/briefcaseW.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#book-outline{
+  
+  background: url('../../../assets/icon/bookW.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+}
   ion-item{
     --inner-padding-end: 0px;
     --padding-start:0px

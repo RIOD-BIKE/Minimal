@@ -15,7 +15,6 @@
 
   .move-favor{
     margin: 0 auto;
-    margin-top: 20px;
     width: 60%;
     height: 50px;
     border-radius: 25px;
@@ -42,4 +41,8 @@
     position: fixed;
     float: left;
     width: 10%;
+  }
+  ion-item{
+    --inner-padding-end: 0px;
+    --padding-start:0px
   }

@@ -1,4 +1,3 @@
-import { EditFavorSequenceComponent } from './edit-favor-sequence/edit-favor-sequence.component';
 import { EditFavoriteComponent } from './edit-favorite/edit-favorite.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RideIndicatorComponent } from './ride-indicator/ride-indicator.component';
@@ -20,14 +19,14 @@ import { RidingInfoComponent } from './riding-info/riding-info.component';
   import { from } from 'rxjs';
 @NgModule({
   declarations: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
-    RidingToggleComponent,EditFavorSequenceComponent,
+    RidingToggleComponent,
     RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent, RidingInfoComponent, RideIndicatorComponent, EditFavoriteComponent],
   imports: [IonicModule, CommonModule, FormsModule],
   exports: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
-    RidingToggleComponent,EditFavorSequenceComponent,
+    RidingToggleComponent,
     RideMapAssemblyComponent, RideMapFinalComponent, WaitingAtAsSmallComponent, RouterStartComponent, RidingInfoComponent, RideIndicatorComponent, EditFavoriteComponent],
   providers: [MapBoxComponent, MainMenuComponent, RouterInfoInBottomComponent, SearchBarComponent,
-    RidingToggleComponent,EditFavorSequenceComponent,
+    RidingToggleComponent,
     RideMapAssemblyComponent, RideMapFinalComponent, RouterStartComponent, RideIndicatorComponent, EditFavoriteComponent]
 })
 export class ComponentsModule { }

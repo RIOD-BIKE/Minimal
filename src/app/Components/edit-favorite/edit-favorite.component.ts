@@ -80,8 +80,9 @@ export class EditFavoriteComponent implements OnInit {
       newIconOrder.push(this.favorList[i].icon);
     }
     console.log(newIconOrder);
-    this.userService.saveAllShortcuts(newIconOrder);
-    this.back();
+    this.userService.saveAllShortcuts(newIconOrder).then(() => {
+      this.back();
+    });
   }
 
   back() {

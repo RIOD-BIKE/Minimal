@@ -38,8 +38,8 @@ export class UserService {
         if (this.firstTimeCalling === true) {
           this.firstTimeCalling = false;
           this.geolocation.watchPosition(options).subscribe(x => {
-          this.behaviorMyOwnPosition.next(x);
-        });
+            this.behaviorMyOwnPosition.next(x);
+          });
         }
         this.geolocation.getCurrentPosition().then((resp) => {
           resolve(new PositionI(resp.coords.longitude, resp.coords.latitude));
@@ -48,11 +48,11 @@ export class UserService {
     });
   }
 
-// TODO change plz to coords
-// Uncomplete -> Dependend on new UI System
-  public saveShortcut(address: any, iconName: any, coords: any,): Promise<any> {
-    return new Promise(resolve => {
-
+  // TODO change plz to coords
+  // Uncomplete -> Dependend on new UI System
+  public saveShortcut(address: any, iconName: any, coords: any, iterator?: number): Promise<any> {
+    return new Promise( resolve => {
+      let updated = false;
       let i = 0;
       let j = 0;
       this.storage.length().then(length => {
@@ -60,18 +60,24 @@ export class UserService {
           const keySpliced = key.split('_');
           if (keySpliced[0] == 'SavedIcon') {
             j++;
-            // console.log(value);
             if (value.iconName === iconName) {  // iconName already saved -> override? Question
-              this.storage.set(key, {address, coords, iconName});
-              // console.log("hey");
+              this.storage.set(key, { address, coords, iconName });
+              updated = true;
               resolve('Updated Address with icon');
             }
           }
           i++;
-          if (i == length) {
-            this.storage.set('SavedIcon_' + j+1, {address, coords, iconName});
-            // console.log("hey2");
-            resolve('New Address saved with icon');
+
+          if (iterator !== undefined) {
+            if (updated === false) {
+              this.storage.set('SavedIcon_' + iterator, { address, coords, iconName });
+              resolve('New Address saved with icon');
+            }
+          } else {
+            if (i === length && updated === false) {
+              this.storage.set('SavedIcon_' + j++, { address, coords, iconName });
+              resolve('New Address saved with icon');
+            }
           }
         });
       });
@@ -79,36 +85,33 @@ export class UserService {
   }
 
   // Delete Shortcut
-  public deleteShortcut(icon: iconShortcut): Promise<any>{
+  public deleteShortcut(icon: iconShortcut): Promise<any> {
     return new Promise(resolve => {
-    this.storage.length().then(length => {
-      this.storage.forEach((value, key, index) => {
-        const keySpliced = key.split('_');
-        if (keySpliced[0] === 'SavedIcon') {
-          if (value.iconName === icon.iconName && value.address === icon.address) {
-            // console.log(this.storage.get(key));
-            this.storage.remove(key);
-            // console.log(this.storage.get(key));
-            resolve();
+      this.storage.length().then(length => {
+        this.storage.forEach((value, key, index) => {
+          const keySpliced = key.split('_');
+          if (keySpliced[0] === 'SavedIcon') {
+            if (value.iconName === icon.iconName && value.address === icon.address) {
+              this.storage.remove(key);
+              resolve();
+            }
           }
-        }
+        });
       });
-    });
     });
   }
 
   public deleteAllShortcuts(icon: iconShortcut[]): Promise<any> {
     let i = 0;
     return new Promise(resolve => {
-    icon.forEach(element=>{
-      this.deleteShortcut(element).then(() => {
-        i++;
-        if (i === icon.length) {
+      icon.forEach(element => {
+        this.deleteShortcut(element).then(() => {
+          i++;
+          if (i === icon.length) {
             resolve();
-        }
+          }
+        });
       });
-      // console.log("timer inside");
-    });
 
     });
   }
@@ -121,11 +124,10 @@ export class UserService {
         this.storage.forEach((value, key, index) => {
           const keySpliced = key.split('_');
           if (keySpliced[0] === 'SavedIcon') {
-              // console.log(keySpliced);
-              tempArray.push(new iconShortcut(value.iconName, i, value.address, value.coords));
+            tempArray.push(new iconShortcut(value.iconName, i, value.address, value.coords));
           }
           i++;
-          if (i == length) {
+          if (i == length - 1) {
             resolve(tempArray);
           }
         });
@@ -134,27 +136,18 @@ export class UserService {
   }
 
 
-  public saveAllShortcuts(iconList:iconShortcut[]):Promise<any>{
+  public saveAllShortcuts(iconList: iconShortcut[]): Promise<any> {
     let k = 0;
     return new Promise(resolve => {
-      // here right order
-      // console.log(iconList);
       this.getAllShortcuts().then(allShortcuts => {
-        console.log(allShortcuts);
-        this.deleteAllShortcuts(allShortcuts).then(()=>{
-          for(let i = 0; i < iconList.length; i++) {
-            //here correct order 
-            // console.log(iconList[i]);
-            this.saveShortcut(iconList[i].address, iconList[i].iconName, iconList[i].coords).then(() => {
-              k++;
+        this.deleteAllShortcuts(allShortcuts).then(() => {
+          for (let i = 0; i < iconList.length; i++) {
+              this.saveShortcut(iconList[i].address, iconList[i].iconName, iconList[i].coords, i).then(() => {
+                k++;
+                if ( k === iconList.length) {
+                  resolve(this.updateFavor.next(true));
+                }
             });
-            if( k === iconList.length-1) {
-              this.getAllShortcuts().then (x=>{
-                // here wrong order 
-                console.log(x);
-                resolve();
-              });
-            }
           }
         });
       });
@@ -183,16 +176,16 @@ export class UserService {
     });
   }
 
-  public updateNextApTimingToRTDB(userTimestamp: number, duration: number, nextAps: string, followingAps: string, ) {
-      this.createHashedUID().then(hash => {
-        console.log(userTimestamp + '|' + duration + '|' + nextAps + '|' + followingAps + '|' + hash);
-        this.assemblyPointReference.forEach(ap => {
-          if (ap.name == nextAps) {
+  public updateNextApTimingToRTDB(userTimestamp: number, duration: number, nextAps: string, followingAps: string,) {
+    this.createHashedUID().then(hash => {
+      console.log(userTimestamp + '|' + duration + '|' + nextAps + '|' + followingAps + '|' + hash);
+      this.assemblyPointReference.forEach(ap => {
+        if (ap.name == nextAps) {
 
-            this.userDataFetch.rtdb_sendNextAps(ap.reference, followingAps, hash.toString(), duration, userTimestamp);
-          }
-        });
+          this.userDataFetch.rtdb_sendNextAps(ap.reference, followingAps, hash.toString(), duration, userTimestamp);
+        }
       });
+    });
   }
 
   public deleteOldApTimingtoRTDB(nextAps: string, followingAps: string) {
@@ -214,13 +207,13 @@ export class UserService {
       if (this.hashedUID != null) {
         resolve(this.hashedUID.toString());
       } else {
-      this.storage.get('user-access-token').then(value => {
-        const uid: string = value.uid;
-        this.hashString(uid).then(hash => {
-          this.hashedUID = hash.slice(0, 13);
-          resolve(this.hashedUID.toString());
+        this.storage.get('user-access-token').then(value => {
+          const uid: string = value.uid;
+          this.hashString(uid).then(hash => {
+            this.hashedUID = hash.slice(0, 13);
+            resolve(this.hashedUID.toString());
+          });
         });
-      });
       }
     });
 

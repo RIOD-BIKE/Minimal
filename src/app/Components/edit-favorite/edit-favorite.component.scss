@@ -15,16 +15,20 @@
 
 
   .move-favor{
-    margin: 0 auto;
-    width: 60%;
+    // margin: 0 auto;
+    width: 50%;
     height: 50px;
     border-radius: 25px;
-    font-family: effra;
-    font-size: 90%;
-    font-weight: 500;
     background-color: #4f4f4f;
     color: white;
   }
+
+  p {
+    font-family: effra;
+    font-size: 100%;
+    font-weight: 500;
+  }
+
   .save-favor{
     position: fixed;
     top: 85%;
